@@ -1,14 +1,26 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Sun, BookOpen, Play, User } from 'lucide-react'
+import { Sun, BookOpen, Play, User, Shield } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
+import { isAdmin } from '@/lib/auth/check-admin'
 
 export function BottomNav() {
   const pathname = usePathname()
+  const [showAdmin, setShowAdmin] = useState(false)
 
-  const navItems = [
+  useEffect(() => {
+    checkAdmin()
+  }, [])
+
+  const checkAdmin = async () => {
+    const admin = await isAdmin()
+    setShowAdmin(admin)
+  }
+
+  const baseNavItems = [
     {
       name: 'Daily Task',
       href: '/dashboard',
@@ -34,6 +46,15 @@ export function BottomNav() {
       activePattern: /^\/dashboard\/profile/,
     },
   ]
+
+  const adminNavItem = {
+    name: 'Admin',
+    href: '/admin',
+    icon: Shield,
+    activePattern: /^\/admin/,
+  }
+
+  const navItems = showAdmin ? [...baseNavItems, adminNavItem] : baseNavItems
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 pb-safe">
