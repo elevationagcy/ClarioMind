@@ -10,6 +10,7 @@ export const REFERRAL_SOURCES = [
   'Snapchat',
   'Reddit',
   'Therapist',
+  'Friend',
 ]
 
 export const RELATIONSHIP_STATUSES = [

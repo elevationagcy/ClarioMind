@@ -8,7 +8,7 @@ import { Progress } from '@/components/ui/progress'
 import { ArrowLeft } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { RELATIONSHIP_STATUSES } from '@/lib/constants/onboarding'
-import type { SexType, EnvironmentType } from '@/types'
+import type { SexType } from '@/types'
 
 export default function DemographicsPage() {
   const router = useRouter()
@@ -19,9 +19,8 @@ export default function DemographicsPage() {
   const [sex, setSex] = useState<SexType | ''>('')
   const [age, setAge] = useState('')
   const [relationshipStatus, setRelationshipStatus] = useState('')
-  const [environment, setEnvironment] = useState<EnvironmentType | ''>('')
 
-  const totalSteps = 4
+  const totalSteps = 3
 
   const handleNext = () => {
     if (step < totalSteps) {
@@ -50,7 +49,6 @@ export default function DemographicsPage() {
             sex: sex as SexType,
             age: parseInt(age),
             relationship_status: relationshipStatus,
-            environment: environment as EnvironmentType,
           })
           .eq('user_id', user.id)
 
@@ -68,7 +66,6 @@ export default function DemographicsPage() {
       case 1: return sex !== ''
       case 2: return age !== '' && parseInt(age) > 0
       case 3: return relationshipStatus !== ''
-      case 4: return environment !== ''
       default: return false
     }
   }
@@ -88,7 +85,6 @@ export default function DemographicsPage() {
         {step === 1 && <Step1 sex={sex} setSex={setSex} />}
         {step === 2 && <Step2 age={age} setAge={setAge} />}
         {step === 3 && <Step3 status={relationshipStatus} setStatus={setRelationshipStatus} />}
-        {step === 4 && <Step4 environment={environment} setEnvironment={setEnvironment} />}
       </div>
 
       {/* Next button */}
@@ -221,56 +217,3 @@ function Step3({ status, setStatus }: { status: string; setStatus: (val: string)
     </div>
   )
 }
-
-// Step 4: Environment
-function Step4({ environment, setEnvironment }: { environment: string; setEnvironment: (val: EnvironmentType) => void }) {
-  return (
-    <div>
-      <p className="text-primary font-semibold mb-3">
-        🏘️ Your environment matters
-      </p>
-      
-      <h2 className="text-2xl font-bold text-gray-900 mb-3">
-        Where do you live?
-      </h2>
-      
-      <p className="text-sm text-gray-600 mb-8">
-        Different environments come with unique triggers and opportunities. We'll help you thrive wherever you are.
-      </p>
-
-      <div className="space-y-3">
-        <button
-          onClick={() => setEnvironment('country')}
-          className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
-            environment === 'country'
-              ? 'bg-primary text-white'
-              : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-primary'
-          }`}
-        >
-          Country
-        </button>
-        <button
-          onClick={() => setEnvironment('suburbs')}
-          className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
-            environment === 'suburbs'
-              ? 'bg-primary text-white'
-              : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-primary'
-          }`}
-        >
-          Suburbs
-        </button>
-        <button
-          onClick={() => setEnvironment('major_city')}
-          className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
-            environment === 'major_city'
-              ? 'bg-primary text-white'
-              : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-primary'
-          }`}
-        >
-          Major City
-        </button>
-      </div>
-    </div>
-  )
-}
-
