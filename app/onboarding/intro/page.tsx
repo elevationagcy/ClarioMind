@@ -14,7 +14,7 @@ export default function IntroPage() {
   const [step, setStep] = useState(1)
   const [referralSource, setReferralSource] = useState('')
   const [loading, setLoading] = useState(false)
-  const totalSteps = 5
+  const totalSteps = 3
 
   const handleNext = () => {
     if (step < totalSteps) {
@@ -71,9 +71,7 @@ export default function IntroPage() {
       <div className="flex-1 px-6 pb-8">
         {step === 1 && <Step1 />}
         {step === 2 && <Step2 referralSource={referralSource} setReferralSource={setReferralSource} />}
-        {step === 3 && <Step3 />}
-        {step === 4 && <Step4 />}
-        {step === 5 && <Step5 />}
+        {step === 3 && <Step5 />}
       </div>
 
       {/* Next button */}
@@ -154,119 +152,6 @@ function Step2({ referralSource, setReferralSource }: { referralSource: string; 
             {source}
           </button>
         ))}
-      </div>
-    </div>
-  )
-}
-
-// Step 3: You're in the right place
-function Step3() {
-  return (
-    <div className="text-gray-900">
-      <h2 className="text-3xl font-bold mb-3">
-        You're in the right place.
-      </h2>
-      
-      <p className="text-lg text-primary font-semibold mb-8">
-        🎯 Great choice! Let us show you what makes Reframe different.
-      </p>
-      
-      <div className="my-12 flex items-center justify-center">
-        <img
-          src="/assets/venn-diagram.png"
-          alt="Reframe Approach Illustration"
-          className="max-h-80 w-auto"
-        />
-      </div>
-
-      <p className="text-center text-lg mb-4">
-        Reframe is the only platform that brings together<br />
-        a scientific evidence-based change program,<br />
-        personalized tools, and a supportive community.
-      </p>
-      
-      <div className="bg-white rounded-xl p-4 shadow-sm border border-orange-100 mt-6">
-        <p className="text-sm text-gray-700 text-center">
-          💡 This isn't about willpower—it's about rewiring your brain for lasting change.
-        </p>
-      </div>
-    </div>
-  )
-}
-
-// Step 4: Program preview
-function Step4() {
-  return (
-    <div className="text-gray-900">
-      <h2 className="text-2xl font-bold mb-3">
-        Here's what your daily experience looks like
-      </h2>
-      
-      <p className="text-gray-600 mb-8">
-        📱 Small, achievable tasks that fit into your daily routine
-      </p>
-
-      {/* Preview card */}
-      <div className="bg-white rounded-2xl p-6 text-gray-900">
-        <div className="flex items-center justify-between mb-4">
-          <button className="text-gray-400">←</button>
-          <span className="font-semibold">Day 26</span>
-          <button className="text-gray-400">→</button>
-        </div>
-
-        {/* Streak illustration */}
-        <div className="bg-gradient-to-b from-blue-100 to-green-100 rounded-xl p-6 mb-6 text-center">
-          <p className="text-sm text-gray-600 mb-2">Keep up the good work!</p>
-          <p className="text-2xl font-bold">7 Day Streak</p>
-        </div>
-
-        {/* Daily tasks */}
-        <div>
-          <div className="flex items-center justify-between mb-3">
-            <span className="font-semibold">Daily Tasks</span>
-            <span className="text-sm text-gray-500">1/4</span>
-          </div>
-          <div className="h-2 bg-gray-200 rounded-full mb-4">
-            <div className="h-2 bg-primary rounded-full" style={{ width: '25%' }} />
-          </div>
-
-          <div className="space-y-3">
-            <div className="flex items-center p-3 bg-gray-50 rounded-xl">
-              <div className="w-10 h-10 bg-orange-200 rounded-full mr-3 flex items-center justify-center">📚</div>
-              <div className="flex-1">
-                <p className="font-medium text-sm">Alcohol, Dopamine, and the Hedonic Set Point</p>
-                <p className="text-xs text-gray-500">⏱ 3 min read</p>
-              </div>
-              <div className="text-green-500">✓</div>
-            </div>
-
-            <div className="flex items-center p-3 bg-white shadow-md rounded-xl border-2 border-primary">
-              <div className="w-10 h-10 bg-yellow-200 rounded-full mr-3 flex items-center justify-center">☀️</div>
-              <div className="flex-1">
-                <p className="font-medium text-sm">Urge Surfing Exercise</p>
-                <p className="text-xs text-gray-500">⏱ 2 mins</p>
-              </div>
-            </div>
-
-            <div className="flex items-center p-3 bg-gray-50 rounded-xl opacity-50">
-              <div className="w-10 h-10 bg-purple-200 rounded-full mr-3 flex items-center justify-center">🧠</div>
-              <div className="flex-1">
-                <p className="font-medium text-sm">Log Your Stress</p>
-                <p className="text-xs text-gray-500">⏱ 1 min</p>
-              </div>
-              <div className="text-gray-400">🔒</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-xl p-4 shadow-sm border border-orange-100 mt-8">
-        <p className="text-center font-semibold text-gray-900 mb-2">
-          🎉 Reframe has 100+ research-backed tools designed for you to succeed!
-        </p>
-        <p className="text-sm text-gray-600 text-center">
-          Each day brings new insights and practical exercises tailored to your journey.
-        </p>
       </div>
     </div>
   )

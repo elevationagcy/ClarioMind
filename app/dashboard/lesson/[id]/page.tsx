@@ -243,9 +243,14 @@ export default function LessonPage() {
         {/* Quizzes */}
         {quizzes.length > 0 && (
           <div className="bg-white rounded-2xl p-6 shadow-md">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
-              📝 Check Your Understanding
-            </h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-gray-900">
+                📝 Check Your Understanding
+              </h2>
+              <span className="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                {Object.keys(selectedAnswers).length}/{quizzes.length}
+              </span>
+            </div>
             
             <div className="space-y-6">
               {quizzes.map((quiz, index) => (

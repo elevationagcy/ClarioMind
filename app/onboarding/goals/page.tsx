@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress'
 import { ArrowLeft } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { CHANGE_REASONS } from '@/lib/constants/onboarding'
-import type { AlcoholGoalType, RegretFrequencyType } from '@/types'
+import type { AlcoholGoalType } from '@/types'
 
 export default function GoalsPage() {
   const router = useRouter()
@@ -18,9 +18,8 @@ export default function GoalsPage() {
   const [triedQuitBefore, setTriedQuitBefore] = useState<boolean | null>(null)
   const [reasons, setReasons] = useState<string[]>([])
   const [alcoholGoal, setAlcoholGoal] = useState<AlcoholGoalType | ''>('')
-  const [regretFrequency, setRegretFrequency] = useState<RegretFrequencyType | ''>('')
 
-  const totalSteps = 5
+  const totalSteps = 3
 
   const handleNext = () => {
     if (step < totalSteps) {
@@ -58,7 +57,6 @@ export default function GoalsPage() {
             tried_quit_before: triedQuitBefore,
             reasons: reasons,
             alcohol_relationship_goal: alcoholGoal as AlcoholGoalType,
-            regret_frequency: regretFrequency as RegretFrequencyType,
           })
 
         router.push('/onboarding/patterns')
@@ -72,11 +70,9 @@ export default function GoalsPage() {
 
   const canProceed = () => {
     switch (step) {
-      case 1: return true // Intro screen
-      case 2: return triedQuitBefore !== null
-      case 3: return reasons.length > 0
-      case 4: return alcoholGoal !== ''
-      case 5: return regretFrequency !== ''
+      case 1: return triedQuitBefore !== null
+      case 2: return reasons.length > 0
+      case 3: return alcoholGoal !== ''
       default: return false
     }
   }
@@ -93,11 +89,9 @@ export default function GoalsPage() {
 
       {/* Content */}
       <div className="flex-1 px-6 py-8">
-        {step === 1 && <Step1 />}
-        {step === 2 && <Step2 triedBefore={triedQuitBefore} setTriedBefore={setTriedQuitBefore} />}
-        {step === 3 && <Step3 reasons={reasons} toggleReason={toggleReason} />}
-        {step === 4 && <Step4 goal={alcoholGoal} setGoal={setAlcoholGoal} />}
-        {step === 5 && <Step5 frequency={regretFrequency} setFrequency={setRegretFrequency} />}
+        {step === 1 && <Step2 triedBefore={triedQuitBefore} setTriedBefore={setTriedQuitBefore} />}
+        {step === 2 && <Step3 reasons={reasons} toggleReason={toggleReason} />}
+        {step === 3 && <Step4 goal={alcoholGoal} setGoal={setAlcoholGoal} />}
       </div>
 
       {/* Next button */}
@@ -110,30 +104,6 @@ export default function GoalsPage() {
         >
           {step === totalSteps ? (loading ? 'Saving...' : 'Next') : 'Next'}
         </Button>
-      </div>
-    </div>
-  )
-}
-
-// Step 1: Intro
-function Step1() {
-  return (
-    <div>
-      <p className="text-primary font-semibold mb-4">
-        🎯 Let's understand your goals
-      </p>
-      
-      <h2 className="text-2xl font-bold text-gray-900 mb-4 leading-tight">
-        We want to learn more about your goals for healthier drinking.
-      </h2>
-      <p className="text-gray-600 mb-6">
-        These following answers will help us create the best experience.
-      </p>
-      
-      <div className="bg-white rounded-xl p-4 shadow-sm border border-orange-100">
-        <p className="text-sm text-gray-700">
-          💭 <strong>Remember:</strong> There are no wrong answers. This is about YOUR journey and what YOU want to achieve.
-        </p>
       </div>
     </div>
   )
@@ -272,66 +242,3 @@ function Step4({ goal, setGoal }: { goal: string; setGoal: (val: AlcoholGoalType
     </div>
   )
 }
-
-// Step 5: Regret frequency
-function Step5({ frequency, setFrequency }: { frequency: string; setFrequency: (val: RegretFrequencyType) => void }) {
-  return (
-    <div>
-      <p className="text-primary font-semibold mb-3">
-        🧠 Understanding your feelings
-      </p>
-      
-      <h2 className="text-2xl font-bold text-gray-900 mb-3">
-        After consuming a drink how often do you feel regret?
-      </h2>
-      
-      <p className="text-sm text-gray-600 mb-8">
-        Your honesty here helps us provide the right support. You're in a judgment-free zone.
-      </p>
-
-      <div className="space-y-3">
-        <button
-          onClick={() => setFrequency('always')}
-          className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
-            frequency === 'always'
-              ? 'bg-primary text-white'
-              : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-primary'
-          }`}
-        >
-          Always
-        </button>
-        <button
-          onClick={() => setFrequency('often')}
-          className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
-            frequency === 'often'
-              ? 'bg-primary text-white'
-              : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-primary'
-          }`}
-        >
-          Often
-        </button>
-        <button
-          onClick={() => setFrequency('somewhat_often')}
-          className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
-            frequency === 'somewhat_often'
-              ? 'bg-primary text-white'
-              : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-primary'
-          }`}
-        >
-          Somewhat Often
-        </button>
-        <button
-          onClick={() => setFrequency('never')}
-          className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
-            frequency === 'never'
-              ? 'bg-primary text-white'
-              : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-primary'
-          }`}
-        >
-          Never
-        </button>
-      </div>
-    </div>
-  )
-}
-

@@ -6,13 +6,10 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeft, DollarSign, Flame, Moon } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { calculateYearlySavings, calculateCaloriesSaved, calculateREMCycles, formatCurrency, formatNumber } from '@/lib/utils/calculations'
-import type { DrinkIntentionFrequencyType } from '@/types'
 
 export default function SummaryPage() {
   const router = useRouter()
-  const [step, setStep] = useState(1)
   const [loading, setLoading] = useState(false)
-  const [drinkMoreThanIntended, setDrinkMoreThanIntended] = useState<DrinkIntentionFrequencyType | ''>('')
   
   // Calculated values
   const [drinksPerWeek, setDrinksPerWeek] = useState(0)
@@ -53,42 +50,13 @@ export default function SummaryPage() {
     }
   }
 
-  const handleNext = () => {
-    if (step < 2) {
-      setStep(step + 1)
-    } else {
-      handleComplete()
-    }
-  }
-
   const handleBack = () => {
-    if (step > 1) {
-      setStep(step - 1)
-    } else {
-      router.back()
-    }
+    router.back()
   }
 
-  const handleComplete = async () => {
+  const handleNext = () => {
     setLoading(true)
-    try {
-      const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
-      
-      if (user) {
-        // Update drinking patterns with drink_more_than_intended
-        await supabase
-          .from('drinking_patterns')
-          .update({ drink_more_than_intended: drinkMoreThanIntended as DrinkIntentionFrequencyType })
-          .eq('user_id', user.id)
-
-        router.push('/onboarding/plan')
-      }
-    } catch (error) {
-      console.error('Error completing summary:', error)
-    } finally {
-      setLoading(false)
-    }
+    router.push('/onboarding/plan')
   }
 
   return (
@@ -102,8 +70,7 @@ export default function SummaryPage() {
 
       {/* Content */}
       <div className="flex-1 px-6 py-8 overflow-y-auto">
-        {step === 1 && <Step1 frequency={drinkMoreThanIntended} setFrequency={setDrinkMoreThanIntended} />}
-        {step === 2 && <Step2 savings={yearlySavings} calories={caloriesSaved} remCycles={remCycles} />}
+        <Step2 savings={yearlySavings} calories={caloriesSaved} remCycles={remCycles} />
       </div>
 
       {/* Next button */}
@@ -112,68 +79,16 @@ export default function SummaryPage() {
           onClick={handleNext}
           size="lg"
           className="w-full"
-          disabled={(step === 1 && !drinkMoreThanIntended) || loading}
+          disabled={loading}
         >
-          {step === 2 ? (loading ? 'Loading...' : 'See my plan') : 'Next'}
+          {loading ? 'Loading...' : 'See my plan'}
         </Button>
       </div>
     </div>
   )
 }
 
-// Step 1: Drink more than intended
-function Step1({ frequency, setFrequency }: { frequency: string; setFrequency: (val: DrinkIntentionFrequencyType) => void }) {
-  return (
-    <div>
-      <p className="text-primary font-semibold mb-3">
-        🎯 One final question
-      </p>
-      
-      <h2 className="text-2xl font-bold text-gray-900 mb-3">
-        How often do you drink more than you intended to?
-      </h2>
-      
-      <p className="text-sm text-gray-600 mb-8">
-        This is a common experience. We'll help you regain control and stick to your goals.
-      </p>
-
-      <div className="space-y-3">
-        <button
-          onClick={() => setFrequency('often')}
-          className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
-            frequency === 'often'
-              ? 'bg-primary text-white'
-              : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-primary'
-          }`}
-        >
-          Often
-        </button>
-        <button
-          onClick={() => setFrequency('sometimes')}
-          className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
-            frequency === 'sometimes'
-              ? 'bg-primary text-white'
-              : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-primary'
-          }`}
-        >
-          Sometimes
-        </button>
-        <button
-          onClick={() => setFrequency('never')}
-          className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
-            frequency === 'never'
-              ? 'bg-primary text-white'
-              : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-primary'
-          }`}
-        >
-          Never
-        </button>
-      </div>
-    </div>
-  )
-}
-
-// Step 2: Summary with calculations
+// Summary with calculations
 function Step2({ savings, calories, remCycles }: { savings: number; calories: number; remCycles: number }) {
   return (
     <div>

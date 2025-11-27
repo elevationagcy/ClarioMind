@@ -25,7 +25,7 @@ export function BottomNav() {
       name: 'Daily Task',
       href: '/dashboard',
       icon: Sun,
-      activePattern: /^\/dashboard(\/lesson)?/,
+      activePattern: /^\/dashboard$|^\/dashboard\/lesson\//,
     },
     {
       name: 'Toolkit',
@@ -43,7 +43,7 @@ export function BottomNav() {
       name: 'Me',
       href: '/dashboard/profile',
       icon: User,
-      activePattern: /^\/dashboard\/profile/,
+      activePattern: /^\/dashboard\/profile|^\/dashboard\/settings/,
     },
   ]
 

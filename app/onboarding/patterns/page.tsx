@@ -7,7 +7,6 @@ import { Progress } from '@/components/ui/progress'
 import { Slider } from '@/components/ui/slider'
 import { ArrowLeft } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import { ALCOHOL_TYPES, DRINKING_TIMES, DRINKING_REASONS } from '@/lib/constants/onboarding'
 import type { InterferenceFrequencyType } from '@/types'
 
 export default function PatternsPage() {
@@ -18,12 +17,9 @@ export default function PatternsPage() {
   // Form data
   const [drinksPerWeek, setDrinksPerWeek] = useState(7)
   const [spendPerWeek, setSpendPerWeek] = useState(50)
-  const [alcoholTypes, setAlcoholTypes] = useState<string[]>([])
-  const [drinkingTimes, setDrinkingTimes] = useState<string[]>([])
-  const [drinkingReasons, setDrinkingReasons] = useState<string[]>([])
   const [interferenceFrequency, setInterferenceFrequency] = useState<InterferenceFrequencyType | ''>('')
 
-  const totalSteps = 6
+  const totalSteps = 2
 
   const handleNext = () => {
     if (step < totalSteps) {
@@ -36,14 +32,6 @@ export default function PatternsPage() {
   const handleBack = () => {
     if (step > 1) {
       setStep(step - 1)
-    }
-  }
-
-  const toggleItem = (items: string[], setItems: (items: string[]) => void, item: string) => {
-    if (items.includes(item)) {
-      setItems(items.filter(i => i !== item))
-    } else {
-      setItems([...items, item])
     }
   }
 
@@ -60,9 +48,6 @@ export default function PatternsPage() {
             user_id: user.id,
             drinks_per_week: drinksPerWeek,
             spend_per_week: spendPerWeek,
-            alcohol_types: alcoholTypes,
-            drinking_times: drinkingTimes,
-            drinking_reasons: drinkingReasons,
             interference_frequency: interferenceFrequency as InterferenceFrequencyType,
             drink_more_than_intended: null, // This will be set in summary page
           })
@@ -78,12 +63,8 @@ export default function PatternsPage() {
 
   const canProceed = () => {
     switch (step) {
-      case 1: return true // Intro screen
-      case 2: return true // Sliders always have values
-      case 3: return alcoholTypes.length > 0
-      case 4: return drinkingTimes.length > 0
-      case 5: return drinkingReasons.length > 0
-      case 6: return interferenceFrequency !== ''
+      case 1: return true // Sliders always have values
+      case 2: return interferenceFrequency !== ''
       default: return false
     }
   }
@@ -100,12 +81,8 @@ export default function PatternsPage() {
 
       {/* Content */}
       <div className="flex-1 px-6 py-8 overflow-y-auto">
-        {step === 1 && <Step1 />}
-        {step === 2 && <Step2 drinks={drinksPerWeek} setDrinks={setDrinksPerWeek} spend={spendPerWeek} setSpend={setSpendPerWeek} />}
-        {step === 3 && <Step3 types={alcoholTypes} toggleType={(type) => toggleItem(alcoholTypes, setAlcoholTypes, type)} />}
-        {step === 4 && <Step4 times={drinkingTimes} toggleTime={(time) => toggleItem(drinkingTimes, setDrinkingTimes, time)} />}
-        {step === 5 && <Step5 reasons={drinkingReasons} toggleReason={(reason) => toggleItem(drinkingReasons, setDrinkingReasons, reason)} />}
-        {step === 6 && <Step6 frequency={interferenceFrequency} setFrequency={setInterferenceFrequency} />}
+        {step === 1 && <Step2 drinks={drinksPerWeek} setDrinks={setDrinksPerWeek} spend={spendPerWeek} setSpend={setSpendPerWeek} />}
+        {step === 2 && <Step6 frequency={interferenceFrequency} setFrequency={setInterferenceFrequency} />}
       </div>
 
       {/* Next button */}
@@ -118,27 +95,6 @@ export default function PatternsPage() {
         >
           {step === totalSteps ? (loading ? 'Saving...' : 'Next') : 'Next'}
         </Button>
-      </div>
-    </div>
-  )
-}
-
-// Step 1: Intro
-function Step1() {
-  return (
-    <div>
-      <p className="text-primary font-semibold mb-4">
-        📊 Understanding your patterns
-      </p>
-      
-      <h2 className="text-2xl font-bold text-gray-900 mb-4 leading-tight">
-        We'd like to understand your drinking patterns so we can give you the best possible experience.
-      </h2>
-      
-      <div className="bg-white rounded-xl p-4 shadow-sm border border-orange-100 mt-6">
-        <p className="text-sm text-gray-700">
-          🔒 <strong>Your privacy matters.</strong> All information you share is confidential and used only to personalize your journey.
-        </p>
       </div>
     </div>
   )
@@ -192,106 +148,6 @@ function Step2({ drinks, setDrinks, spend, setSpend }: {
             suffix="€"
           />
         </div>
-      </div>
-    </div>
-  )
-}
-
-// Step 3: Alcohol types
-function Step3({ types, toggleType }: { types: string[]; toggleType: (type: string) => void }) {
-  return (
-    <div>
-      <p className="text-primary font-semibold mb-3">
-        🍷 Your preferences
-      </p>
-      
-      <h2 className="text-2xl font-bold text-gray-900 mb-3">
-        What types of alcohol do you usually drink?
-      </h2>
-      <p className="text-gray-600 mb-6 text-sm">Select all that apply</p>
-
-      <div className="space-y-3">
-        {ALCOHOL_TYPES.map((type) => (
-          <button
-            key={type}
-            onClick={() => toggleType(type)}
-            className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
-              types.includes(type)
-                ? 'bg-primary text-white'
-                : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-primary'
-            }`}
-          >
-            {type}
-          </button>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-// Step 4: When do you drink
-function Step4({ times, toggleTime }: { times: string[]; toggleTime: (time: string) => void }) {
-  return (
-    <div>
-      <p className="text-primary font-semibold mb-3">
-        ⏰ Identifying your triggers
-      </p>
-      
-      <h2 className="text-2xl font-bold text-gray-900 mb-3">
-        When do you typically drink alcohol?
-      </h2>
-      <p className="text-gray-600 mb-6 text-sm">
-        Select all that apply — knowing when helps us provide timely support
-      </p>
-
-      <div className="space-y-3">
-        {DRINKING_TIMES.map((time) => (
-          <button
-            key={time}
-            onClick={() => toggleTime(time)}
-            className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
-              times.includes(time)
-                ? 'bg-primary text-white'
-                : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-primary'
-            }`}
-          >
-            {time}
-          </button>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-// Step 5: Reasons for drinking
-function Step5({ reasons, toggleReason }: { reasons: string[]; toggleReason: (reason: string) => void }) {
-  return (
-    <div>
-      <p className="text-primary font-semibold mb-3">
-        💭 Understanding the "why"
-      </p>
-      
-      <h2 className="text-2xl font-bold text-gray-900 mb-3">
-        What are your reasons for drinking?
-      </h2>
-      <p className="text-gray-600 mb-6 text-sm">
-        Select all that apply — we'll help you find healthier ways to meet these needs
-      </p>
-
-      <div className="space-y-3">
-        {DRINKING_REASONS.map((reason) => (
-          <button
-            key={reason}
-            onClick={() => toggleReason(reason)}
-            className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
-              reasons.includes(reason)
-                ? 'bg-primary text-white'
-                : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-primary'
-            }`}
-          >
-            {reason}
-          </button>
-        ))}
       </div>
     </div>
   )
