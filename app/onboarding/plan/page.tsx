@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, Check } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { OnboardingProgress } from '@/components/onboarding/onboarding-progress'
 
 export default function PlanPage() {
   const router = useRouter()
@@ -100,9 +101,12 @@ export default function PlanPage() {
     <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5] flex flex-col">
       {/* Header */}
       <div className="bg-white p-6 shadow-sm">
-        <button onClick={() => router.back()} className="text-primary">
+        <button onClick={() => router.back()} className="text-primary mb-4">
           <ArrowLeft className="w-6 h-6" />
         </button>
+        
+        {/* Global Onboarding Progress */}
+        <OnboardingProgress currentPage="plan" currentStep={1} />
       </div>
 
       {/* Content */}

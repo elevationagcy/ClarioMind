@@ -4,10 +4,10 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Progress } from '@/components/ui/progress'
 import { ArrowLeft } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { RELATIONSHIP_STATUSES } from '@/lib/constants/onboarding'
+import { OnboardingProgress } from '@/components/onboarding/onboarding-progress'
 import type { SexType } from '@/types'
 
 export default function DemographicsPage() {
@@ -77,7 +77,9 @@ export default function DemographicsPage() {
         <button onClick={handleBack} disabled={step === 1} className="text-gray-900 disabled:text-gray-300 mb-4">
           <ArrowLeft className="w-6 h-6" />
         </button>
-        <Progress value={step} max={totalSteps} className="bg-orange-200" />
+        
+        {/* Global Onboarding Progress */}
+        <OnboardingProgress currentPage="demographics" currentStep={step} />
       </div>
 
       {/* Content */}

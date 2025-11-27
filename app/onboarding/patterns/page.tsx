@@ -3,10 +3,10 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
 import { Slider } from '@/components/ui/slider'
 import { ArrowLeft } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { OnboardingProgress } from '@/components/onboarding/onboarding-progress'
 import type { InterferenceFrequencyType } from '@/types'
 
 export default function PatternsPage() {
@@ -76,7 +76,9 @@ export default function PatternsPage() {
         <button onClick={handleBack} disabled={step === 1} className="text-gray-900 disabled:text-gray-300 mb-4">
           <ArrowLeft className="w-6 h-6" />
         </button>
-        <Progress value={step} max={totalSteps} className="bg-orange-200" />
+        
+        {/* Global Onboarding Progress */}
+        <OnboardingProgress currentPage="patterns" currentStep={step} />
       </div>
 
       {/* Content */}

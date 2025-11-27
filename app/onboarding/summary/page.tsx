@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeft, DollarSign, Flame, Moon } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { calculateYearlySavings, calculateCaloriesSaved, calculateREMCycles, formatCurrency, formatNumber } from '@/lib/utils/calculations'
+import { OnboardingProgress } from '@/components/onboarding/onboarding-progress'
 
 export default function SummaryPage() {
   const router = useRouter()
@@ -66,6 +67,9 @@ export default function SummaryPage() {
         <button onClick={handleBack} className="text-gray-900 mb-4">
           <ArrowLeft className="w-6 h-6" />
         </button>
+        
+        {/* Global Onboarding Progress */}
+        <OnboardingProgress currentPage="summary" currentStep={1} />
       </div>
 
       {/* Content */}

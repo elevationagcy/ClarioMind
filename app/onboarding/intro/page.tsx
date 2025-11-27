@@ -3,11 +3,11 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
 import { ArrowLeft } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { REFERRAL_SOURCES } from '@/lib/constants/onboarding'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
+import { OnboardingProgress } from '@/components/onboarding/onboarding-progress'
 
 export default function IntroPage() {
   const router = useRouter()
@@ -54,17 +54,16 @@ export default function IntroPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5] flex flex-col">
       {/* Header */}
-      <div className="p-6">
+      <div className="p-6 pb-0">
         {step > 1 && (
-          <button onClick={handleBack} className="text-gray-800">
+          <button onClick={handleBack} className="text-gray-800 mb-4">
             <ArrowLeft className="w-6 h-6" />
           </button>
         )}
-      </div>
-
-      {/* Progress bar */}
-      <div className="px-6 mb-8">
-        <Progress value={step} max={totalSteps} className="bg-orange-200" />
+        {step === 1 && <div className="h-10" />}
+        
+        {/* Global Onboarding Progress */}
+        <OnboardingProgress currentPage="intro" currentStep={step} />
       </div>
 
       {/* Content */}
