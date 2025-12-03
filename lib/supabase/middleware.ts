@@ -32,21 +32,40 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Define public routes
-  const publicRoutes = ['/welcome', '/auth/login', '/auth/register', '/auth/callback']
-  const isPublicRoute = publicRoutes.some(route => 
-    request.nextUrl.pathname.startsWith(route)
-  )
+  // Define route types
+  const pathname = request.nextUrl.pathname
+  const publicRoutes = ['/welcome', '/auth/login', '/auth/register', '/privacy', '/terms']
+  const authCallbackRoute = '/auth/callback'
+  const isRootPath = pathname === '/'
+  const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route))
+  const isAuthCallback = pathname.startsWith(authCallbackRoute)
+
+  // Allow auth callback to process (needed for email confirmation flow)
+  if (isAuthCallback) {
+    return supabaseResponse
+  }
+
+  // Root path "/" - redirect to welcome (let page.tsx handle it)
+  if (isRootPath && !user) {
+    return supabaseResponse
+  }
+
+  // If user is logged in and on root or public routes, redirect to dashboard
+  if (user && (isRootPath || isPublicRoute)) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/dashboard'
+    return NextResponse.redirect(url)
+  }
 
   // If user is not signed in and trying to access protected route, redirect to welcome
-  if (!user && !isPublicRoute) {
+  if (!user && !isPublicRoute && !isRootPath) {
     const url = request.nextUrl.clone()
     url.pathname = '/welcome'
     return NextResponse.redirect(url)
   }
 
-  // If user is signed in, check onboarding status
-  if (user && !isPublicRoute) {
+  // If user is signed in, check onboarding status for protected routes
+  if (user) {
     const { data: profile } = await supabase
       .from('user_profiles')
       .select('completed_onboarding')
@@ -55,8 +74,8 @@ export async function updateSession(request: NextRequest) {
 
     // If no profile exists or onboarding not completed, redirect to intro
     if ((!profile || !profile.completed_onboarding) && 
-        !request.nextUrl.pathname.startsWith('/onboarding') &&
-        !request.nextUrl.pathname.startsWith('/tutorial')) {
+        !pathname.startsWith('/onboarding') &&
+        !pathname.startsWith('/tutorial')) {
       const url = request.nextUrl.clone()
       url.pathname = '/onboarding/intro'
       return NextResponse.redirect(url)
@@ -64,19 +83,11 @@ export async function updateSession(request: NextRequest) {
 
     // If onboarding completed and trying to access onboarding, redirect to dashboard
     if (profile && profile.completed_onboarding && 
-        (request.nextUrl.pathname.startsWith('/onboarding') ||
-         request.nextUrl.pathname.startsWith('/tutorial'))) {
+        (pathname.startsWith('/onboarding') || pathname.startsWith('/tutorial'))) {
       const url = request.nextUrl.clone()
       url.pathname = '/dashboard'
       return NextResponse.redirect(url)
     }
-  }
-
-  // If user is signed in and trying to access public routes, redirect to dashboard
-  if (user && isPublicRoute) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/dashboard'
-    return NextResponse.redirect(url)
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
