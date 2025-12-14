@@ -8,7 +8,6 @@ import { Card } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ChevronLeft, ChevronRight, Check, Lock, Sparkles } from 'lucide-react'
-import { Logo } from '@/components/ui/logo'
 import { fadeInUp, staggerContainer, cardHover, cardTap } from '@/lib/animations'
 import { useLessons, useUserProgress, useGlobalProgress } from '@/lib/queries/lessons'
 import type { Lesson } from '@/types'
@@ -54,7 +53,7 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50">
         {/* Header Skeleton */}
-        <div className="p-6">
+        <div className="">
           <Skeleton className="h-8 w-64 mb-2" />
           <Skeleton className="h-4 w-48" />
         </div>
@@ -100,8 +99,8 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50">
       {/* Header */}
-      <div className="p-6">
-        <Logo size="md" className="mb-2" />
+      <div className="px-6 pt-4 pb-2">
+        <h1 className="text-2xl font-bold text-slate-800 mb-1">ClarioMind</h1>
         <p className="text-sm text-slate-500">
           A neuroscience-based program developed by leading experts
         </p>
