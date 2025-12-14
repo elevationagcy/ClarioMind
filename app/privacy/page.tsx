@@ -3,7 +3,7 @@ import { ArrowLeft } from 'lucide-react'
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5]">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50">
       <div className="max-w-4xl mx-auto p-6">
         <Link 
           href="/welcome" 
@@ -21,7 +21,7 @@ export default function PrivacyPolicyPage() {
             <section>
               <h2 className="text-xl font-bold text-gray-900 mb-3">1. Introduction</h2>
               <p className="text-gray-700 leading-relaxed">
-                Welcome to Reframe. We respect your privacy and are committed to protecting your personal data. 
+                Welcome to ClarioMind. We respect your privacy and are committed to protecting your personal data. 
                 This privacy policy will inform you about how we look after your personal data when you visit 
                 our App and tell you about your privacy rights and how the law protects you.
               </p>
@@ -112,7 +112,7 @@ export default function PrivacyPolicyPage() {
                 <li><strong>Right to Object:</strong> Object to our processing of your data</li>
               </ul>
               <p className="text-gray-700 leading-relaxed mt-3">
-                To exercise these rights, please contact us at privacy@reframe.app
+                To exercise these rights, please contact us at privacy@clariomind.com
               </p>
             </section>
 
@@ -167,8 +167,8 @@ export default function PrivacyPolicyPage() {
                 If you have any questions about this Privacy Policy, please contact us:
               </p>
               <ul className="list-none text-gray-700 space-y-2 mt-3">
-                <li>Email: privacy@reframe.app</li>
-                <li>Support: support@reframe.app</li>
+                <li>Email: privacy@clariomind.com</li>
+                <li>Support: support@clariomind.com</li>
               </ul>
             </section>
           </div>

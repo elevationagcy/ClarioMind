@@ -3,7 +3,7 @@ import { ArrowLeft } from 'lucide-react'
 
 export default function TermsOfServicePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5]">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50">
       <div className="max-w-4xl mx-auto p-6">
         <Link 
           href="/welcome" 
@@ -21,7 +21,7 @@ export default function TermsOfServicePage() {
             <section>
               <h2 className="text-xl font-bold text-gray-900 mb-3">1. Acceptance of Terms</h2>
               <p className="text-gray-700 leading-relaxed">
-                By accessing and using Reframe ("the App"), you accept and agree to be bound by the terms and 
+                By accessing and using ClarioMind ("the App"), you accept and agree to be bound by the terms and 
                 provision of this agreement. If you do not agree to abide by the above, please do not use this service.
               </p>
             </section>
@@ -73,7 +73,7 @@ export default function TermsOfServicePage() {
               <h2 className="text-xl font-bold text-gray-900 mb-3">6. Intellectual Property</h2>
               <p className="text-gray-700 leading-relaxed">
                 The App and its original content (excluding user-generated content), features, and functionality 
-                are and will remain the exclusive property of Reframe and its licensors. The App is protected by 
+                are and will remain the exclusive property of ClarioMind and its licensors. The App is protected by 
                 copyright, trademark, and other laws.
               </p>
             </section>
@@ -90,7 +90,7 @@ export default function TermsOfServicePage() {
             <section>
               <h2 className="text-xl font-bold text-gray-900 mb-3">8. Limitation of Liability</h2>
               <p className="text-gray-700 leading-relaxed">
-                In no event shall Reframe, nor its directors, employees, partners, agents, suppliers, or affiliates, 
+                In no event shall ClarioMind, nor its directors, employees, partners, agents, suppliers, or affiliates, 
                 be liable for any indirect, incidental, special, consequential or punitive damages, including without 
                 limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your 
                 access to or use of or inability to access or use the App.
@@ -109,7 +109,7 @@ export default function TermsOfServicePage() {
             <section>
               <h2 className="text-xl font-bold text-gray-900 mb-3">10. Contact Us</h2>
               <p className="text-gray-700 leading-relaxed">
-                If you have any questions about these Terms, please contact us at support@reframe.app
+                If you have any questions about these Terms, please contact us at support@clariomind.com
               </p>
             </section>
           </div>

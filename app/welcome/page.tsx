@@ -3,26 +3,28 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { DotLottieReact } from '@lottiefiles/dotlottie-react'
+import { Logo, LogoIcon } from '@/components/ui/logo'
 import { 
-  Brain, 
   Heart, 
   TrendingUp, 
   Users, 
   Shield, 
   Sparkles,
   ChevronDown,
-  Star,
   CheckCircle2,
   ArrowRight,
-  Zap,
-  Moon,
-  Wallet
+  Target,
+  Clock,
+  LineChart,
+  MessageCircle,
+  ChevronRight,
+  Star,
+  Brain
 } from 'lucide-react'
 
 export default function WelcomePage() {
   const [scrolled, setScrolled] = useState(false)
-  const [activeTestimonial, setActiveTestimonial] = useState(0)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50)
@@ -30,56 +32,44 @@ export default function WelcomePage() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveTestimonial((prev) => (prev + 1) % testimonials.length)
-    }, 5000)
-    return () => clearInterval(interval)
-  }, [])
-
-  const testimonials = [
+  const faqs = [
     {
-      name: "Sarah M.",
-      role: "3 months sober",
-      quote: "Reframe changed my life. I went from drinking daily to feeling completely in control.",
-      avatar: "🌸"
+      question: "Who is ClarioMind for?",
+      answer: "ClarioMind is for high functioning individuals who want to change their relationship with alcohol on their own terms."
     },
     {
-      name: "James K.",
-      role: "Cut back 70%",
-      quote: "The science-based approach finally made something click. I understand my triggers now.",
-      avatar: "🌊"
+      question: "How is ClarioMind different from other sobriety apps?",
+      answer: "ClarioMind is specifically designed for high-functioning individuals using neuroscience-based insights from dependency patterns. It addresses the underlying neurological pathways and emotional triggers that keep you returning to alcohol."
     },
     {
-      name: "Emily R.",
-      role: "6 months free",
-      quote: "The daily lessons and community support kept me going when it got tough.",
-      avatar: "✨"
+      question: "What if I'm not sure I'm a \"high-functioning alcoholic\"?",
+      answer: "If you're successful on the outside but struggling privately with alcohol dependence, if traditional recovery models don't resonate, or if you're maintaining functionality while knowing something needs to change, ClarioMind is for you."
+    },
+    {
+      question: "How is my data protected?",
+      answer: "All data is encrypted using industry-standard security protocols. We never sell, share, or distribute your personal information to third parties. Your drinking logs and progress data remain completely confidential."
     }
   ]
 
   return (
-    <div className="min-h-screen bg-[#FFFBF7] overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50">
       {/* Floating Header */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white/80 backdrop-blur-lg shadow-sm' : 'bg-transparent'
+        scrolled 
+          ? 'bg-white/90 backdrop-blur-md shadow-sm border-b border-slate-100' 
+          : 'bg-transparent'
       }`}>
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-orange-400 rounded-xl flex items-center justify-center">
-              <span className="text-white text-xl">🧡</span>
-            </div>
-            <span className="text-xl font-bold text-gray-900">Reframe</span>
-          </div>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+          <Logo size="md" />
           <div className="flex items-center gap-3">
             <Link href="/auth/login">
-              <Button variant="ghost" className="text-gray-700 hover:text-primary">
+              <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-800 hidden sm:inline-flex">
                 Log in
               </Button>
             </Link>
-            <Link href="/auth/register">
-              <Button className="bg-primary hover:bg-primary-dark text-white rounded-full px-6">
-                Get Started
+            <Link href="/quiz">
+              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5">
+                Take Quiz
               </Button>
             </Link>
           </div>
@@ -87,450 +77,367 @@ export default function WelcomePage() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-orange-200/40 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-amber-200/30 rounded-full blur-3xl animate-pulse delay-1000" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-orange-100/50 to-yellow-100/50 rounded-full blur-3xl" />
-        </div>
-
-        {/* Floating Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-32 left-[15%] animate-float">
-            <div className="w-16 h-16 bg-white rounded-2xl shadow-lg flex items-center justify-center">
-              <Brain className="w-8 h-8 text-primary" />
-            </div>
-          </div>
-          <div className="absolute top-48 right-[20%] animate-float delay-500">
-            <div className="w-14 h-14 bg-white rounded-2xl shadow-lg flex items-center justify-center">
-              <Heart className="w-7 h-7 text-rose-500" />
-            </div>
-          </div>
-          <div className="absolute bottom-32 left-[20%] animate-float delay-1000">
-            <div className="w-12 h-12 bg-white rounded-xl shadow-lg flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-amber-500" />
-            </div>
-          </div>
-          <div className="absolute bottom-48 right-[15%] animate-float delay-700">
-            <div className="w-14 h-14 bg-white rounded-2xl shadow-lg flex items-center justify-center">
-              <TrendingUp className="w-7 h-7 text-green-500" />
-            </div>
-          </div>
-        </div>
-
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+      <section className="relative min-h-screen flex items-center justify-center pt-20 pb-16">
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-orange-200 rounded-full px-4 py-2 mb-8 shadow-sm">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-            </span>
-            <span className="text-sm text-gray-700">Join 2,000,000+ people building healthier habits</span>
-          </div>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-8">
+            <Sparkles className="w-4 h-4 text-blue-600" />
+            <span className="text-sm text-blue-700 font-medium">Science-backed. Professional-grade.</span>
+      </div>
 
           {/* Main Headline */}
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-            Transform your
-            <span className="block bg-gradient-to-r from-primary via-orange-500 to-amber-500 bg-clip-text text-transparent">
-              relationship with alcohol
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-slate-800 mb-6 leading-tight">
+            Transform Your
+            <span className="block text-blue-600 mt-2">
+              Drinking Habits
             </span>
-          </h1>
+            <span className="block text-slate-400 text-3xl sm:text-4xl md:text-5xl mt-2">— for Good.</span>
+        </h1>
 
-          <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Science-backed tools, personalized guidance, and a supportive community — 
-            everything you need to drink less and live more.
+          <p className="text-lg sm:text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+            Are you tired of setting rules around drinking that never hold? ClarioMind gives you tools that use neuroscience to help you with your alcohol dependency.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-            <Link href="/auth/register">
-              <Button size="lg" className="bg-gradient-to-r from-primary to-orange-500 hover:from-primary-dark hover:to-orange-600 text-white rounded-full px-10 py-6 text-lg shadow-xl shadow-orange-500/25 transition-all hover:scale-105">
-                Start Your Free Trial
+          {/* CTA Button */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+            <Link href="/quiz">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 py-6 text-lg shadow-lg shadow-blue-200 transition-all hover:shadow-xl hover:shadow-blue-200">
+                Start Your Journey To Recovery
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
+            <Link href="/auth/login" className="text-slate-500 hover:text-slate-700 transition-colors">
+              Already have an account?
+            </Link>
+          </div>
+
+          {/* Stats Row */}
+          <div className="grid grid-cols-3 gap-4 sm:gap-8 max-w-2xl mx-auto">
+            {[
+              { value: '80%', label: 'See Results' },
+              { value: '10k+', label: 'Professionals' },
+              { value: '4.9★', label: 'Rating' },
+            ].map((stat, i) => (
+              <div key={i} className="p-4 sm:p-6 rounded-2xl bg-white border border-slate-100 shadow-sm">
+                <div className="text-2xl sm:text-3xl font-bold text-blue-600">{stat.value}</div>
+                <div className="text-xs sm:text-sm text-slate-500 mt-1">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Problem Statement */}
+      <section className="relative py-24 sm:py-32">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-slate-100">
+            <p className="text-lg sm:text-xl text-slate-600 leading-relaxed mb-8">
+              Many professionals use alcohol to decompress, reset, or stay focused through long, high-pressure days. But sometimes, what starts as stress management can turn into dependency.
+            </p>
+            
+            <h2 className="text-3xl sm:text-4xl font-bold text-slate-800 mb-6">
+              And You're <span className="text-blue-600">Not Alone</span> in This
+            </h2>
+            
+            <p className="text-slate-500 mb-10">
+              Professionals can develop subtle patterns that associate with alcohol and affect their daily lives and work.
+            </p>
+
+            {/* Quiz CTA */}
+            <div className="bg-blue-50 rounded-2xl p-6 sm:p-8 border border-blue-100">
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-800 mb-4">
+                Take this 2-Minute Quiz to See Your Dependency Score
+              </h3>
+              <Link href="/quiz">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8">
+                  Take the Quiz
+                  <ChevronRight className="ml-2 w-5 h-5" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Banner */}
+      <section className="relative py-20 bg-blue-600">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center text-white">
+          <div className="text-5xl sm:text-7xl font-bold mb-4">80%</div>
+          <p className="text-xl sm:text-2xl text-blue-100">
+            of ClarioMind Users Noted a Decrease in alcohol use within 2 months.
+          </p>
+        </div>
+      </section>
+
+      {/* What is ClarioMind */}
+      <section className="relative py-24 sm:py-32 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-5xl font-bold text-slate-800 mb-6">
+              What is <span className="text-blue-600">ClarioMind</span>?
+            </h2>
+            <p className="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto">
+              A science-backed alcohol app made by professionals for professionals. Built on models specifically designed for high-functioning individuals.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Card 1 */}
+            <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center">
+                  <Brain className="w-7 h-7 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-800">Why Does it Work?</h3>
+              </div>
+              <p className="text-slate-600 leading-relaxed">
+                ClarioMind was developed by analyzing the patterns of high-functioning alcoholics: their habits, triggers, and cognitive strategies, to identify the core mechanisms behind their dependence.
+              </p>
+            </div>
+
+            {/* Card 2 */}
+            <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center">
+                  <Heart className="w-7 h-7 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-800">Neuroscience + Psychology</h3>
+              </div>
+              <p className="text-slate-600 leading-relaxed">
+                ClarioMind uses personalized, compassionate, evidence-based methods that puts you in control one day at a time.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Checklist */}
+      <section className="relative py-24 sm:py-32">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-slate-100">
+            <div className="space-y-6 mb-10">
+              {[
+                { icon: Target, text: "Flexible goal setting" },
+                { icon: LineChart, text: "Drink tracker with daily limits" },
+                { icon: Sparkles, text: "Daily motivational quotes" }
+              ].map((feature, index) => (
+                <div key={index} className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-green-50 border border-green-100 flex items-center justify-center">
+                    <CheckCircle2 className="w-6 h-6 text-green-600" />
+                  </div>
+                  <span className="text-lg text-slate-700 font-medium">{feature.text}</span>
+                </div>
+              ))}
+        </div>
+
+            <Link href="/quiz" className="block">
+              <Button size="lg" className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-6 text-lg">
+                Start Your Journey To Recovery Today
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
-            <Link href="#how-it-works">
-              <Button variant="outline" size="lg" className="rounded-full px-8 py-6 text-lg border-2 border-gray-300 hover:border-primary hover:text-primary">
-                See How It Works
-              </Button>
-            </Link>
-          </div>
-
-          {/* Social Proof */}
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-600">
-            <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
-              ))}
-              <span className="ml-2 font-semibold">4.8/5 rating</span>
-            </div>
-            <div className="hidden sm:block w-px h-6 bg-gray-300" />
-            <div className="flex items-center gap-2">
-              <Shield className="w-5 h-5 text-green-600" />
-              <span>200% money-back guarantee</span>
-            </div>
-            <div className="hidden sm:block w-px h-6 bg-gray-300" />
-            <div className="flex items-center gap-2">
-              <Users className="w-5 h-5 text-primary" />
-              <span>84 countries</span>
-            </div>
-          </div>
-
-          {/* Scroll indicator */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-            <ChevronDown className="w-8 h-8 text-gray-400" />
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { value: "70%", label: "Average reduction", icon: TrendingUp, color: "text-green-600" },
-              { value: "2M+", label: "Active users", icon: Users, color: "text-primary" },
-              { value: "84", label: "Countries", icon: Sparkles, color: "text-amber-500" },
-              { value: "4.8★", label: "App rating", icon: Star, color: "text-yellow-500" }
-            ].map((stat, index) => (
-              <div key={index} className="text-center group">
-                <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-50 mb-4 group-hover:scale-110 transition-transform ${stat.color}`}>
-                  <stat.icon className="w-8 h-8" />
-                </div>
-                <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">{stat.value}</div>
-                <div className="text-gray-600">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Benefits Section */}
-      <section className="py-24 bg-gradient-to-b from-white to-orange-50/50">
-        <div className="max-w-6xl mx-auto px-6">
+      {/* How Does it Work */}
+      <section className="relative py-24 sm:py-32 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              What you'll gain
+            <h2 className="text-3xl sm:text-5xl font-bold text-slate-800">
+              How Does it Work
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              When you drink less, you gain so much more
-            </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Wallet,
-                title: "Save Money",
-                description: "Users save an average of €2,400 per year. Imagine what you could do with that.",
-                color: "from-green-400 to-emerald-600",
-                bgColor: "bg-green-50"
-              },
-              {
-                icon: Zap,
-                title: "More Energy",
-                description: "Wake up refreshed, not drained. Better sleep means better days.",
-                color: "from-amber-400 to-orange-600",
-                bgColor: "bg-amber-50"
-              },
-              {
-                icon: Moon,
-                title: "Better Sleep",
-                description: "Restore your natural sleep cycles. Feel the difference in days.",
-                color: "from-purple-400 to-indigo-600",
-                bgColor: "bg-purple-50"
-              },
-              {
-                icon: Heart,
-                title: "Improved Health",
-                description: "Lower blood pressure, better liver function, clearer skin, and more.",
-                color: "from-rose-400 to-red-600",
-                bgColor: "bg-rose-50"
-              },
-              {
-                icon: Brain,
-                title: "Mental Clarity",
-                description: "Think clearer, focus better, and reduce anxiety naturally.",
-                color: "from-blue-400 to-cyan-600",
-                bgColor: "bg-blue-50"
-              },
-              {
-                icon: Users,
-                title: "Stronger Relationships",
-                description: "Be present for the people who matter most to you.",
-                color: "from-primary to-orange-600",
-                bgColor: "bg-orange-50"
-              }
-            ].map((benefit, index) => (
-              <div 
-                key={index} 
-                className={`${benefit.bgColor} rounded-3xl p-8 hover:shadow-xl transition-all hover:-translate-y-1 cursor-default`}
-              >
-                <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br ${benefit.color} mb-6`}>
-                  <benefit.icon className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{benefit.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{benefit.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works Section */}
-      <section id="how-it-works" className="py-24 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              How Reframe works
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              A proven, science-backed approach to lasting change
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6">
             {[
               {
                 step: "01",
-                title: "Personalized Assessment",
-                description: "Tell us about your goals and habits. We'll create a custom plan just for you.",
-                lottie: "https://lottie.host/f38cb803-24f4-498a-b24f-587078bfdfd2/BBZKJ20M6D.lottie"
+                title: "We get to know you",
+                description: "Tell us about your triggers, your goals, and what's been holding you back.",
+                icon: Target
               },
               {
                 step: "02",
-                title: "Daily Micro-Lessons",
-                description: "Learn the neuroscience behind habits in bite-sized, 5-minute daily sessions.",
-                lottie: "https://lottie.host/ca383446-5e30-450a-b61e-4f64bb6be0c8/EkFKv16aX3.lottie"
+                title: "You learn why you drink",
+                description: "Five minutes a day. Short, practical lessons about the neuroscience of habits.",
+                icon: Brain
               },
               {
                 step: "03",
-                title: "Track & Transform",
-                description: "Monitor your progress, celebrate wins, and watch your life improve day by day.",
-                lottie: "https://lottie.host/25aaa523-59ca-4185-9d8e-7e1ca254968c/770RwUrvID.lottie"
+                title: "You track what matters",
+                description: "See your progress in real-time. Celebrate the wins. Watch your life change.",
+                icon: LineChart
               }
             ].map((item, index) => (
-              <div key={index} className="relative">
-                <div className="bg-gradient-to-b from-orange-50 to-white rounded-3xl p-8 border border-orange-100 h-full">
-                  <div className="text-6xl font-bold text-orange-100 mb-4">{item.step}</div>
-                  <div className="h-40 mb-6">
-                    <DotLottieReact
-                      src={item.lottie}
-                      loop
-                      autoplay
-                      style={{ height: '100%', width: '100%' }}
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{item.title}</h3>
-                  <p className="text-gray-600">{item.description}</p>
+              <div key={index} className="bg-slate-50 rounded-3xl p-8 border border-slate-100">
+                <div className="text-sm font-mono text-blue-600 mb-4">{item.step}</div>
+                <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                  <item.icon className="w-7 h-7 text-blue-600" />
                 </div>
-                {index < 2 && (
-                  <div className="hidden md:block absolute top-1/2 -right-4 w-8 text-orange-300">
-                    <ArrowRight className="w-8 h-8" />
-                  </div>
-                )}
+                <h3 className="text-xl font-bold text-slate-800 mb-3">{item.title}</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">{item.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-24 bg-gradient-to-b from-orange-50/50 to-white">
-        <div className="max-w-4xl mx-auto px-6">
+      {/* What You'll Get */}
+      <section className="relative py-24 sm:py-32">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Real stories, real results
+            <h2 className="text-3xl sm:text-5xl font-bold text-slate-800">
+              What You'll Get Inside
             </h2>
-            <p className="text-xl text-gray-600">
-              Join thousands who've transformed their lives
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {[
+              {
+                icon: Clock,
+                title: "Daily 5-minute Lessons",
+                description: "Understand how alcohol affects your brain and why changing creates lasting transformation."
+              },
+              {
+                icon: Users,
+                title: "24/7 Anonymous Community",
+                description: "Connect with thousands on the same path. Celebrate wins, get support during tough moments."
+              },
+              {
+                icon: LineChart,
+                title: "Personalized Tracking",
+                description: "Monitor your progress in real-time and watch as data proves your transformation."
+              }
+            ].map((item, index) => (
+              <div key={index} className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
+                <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 border border-blue-100">
+                  <item.icon className="w-7 h-7 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-800 mb-3">{item.title}</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">{item.description}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Note card */}
+          <div className="bg-amber-50 border border-amber-100 rounded-2xl p-6 text-center">
+            <p className="text-amber-800 font-medium">
+              <strong>Track slip-ups without losing progress.</strong> Log drinks without resetting your start date. One setback shouldn't erase all your work.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Your Why Section */}
+      <section className="relative py-24 sm:py-32 bg-blue-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl sm:text-5xl font-bold text-slate-800 mb-4">
+              Your "<span className="text-blue-600">Why</span>" is Your Power
+            </h2>
+            <h3 className="text-xl text-slate-600">
+              What brought you here?
+            </h3>
+          </div>
+
+          <div className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-100 shadow-sm mb-10">
+            <p className="text-slate-600 leading-relaxed text-lg mb-6">
+              Maybe it's the 3 PM crash after a "productive" morning. Or the fog during meetings. The way you've started needing alcohol to function. Or maybe it's something you're moving towards — a sharper focus, genuine energy, showing up as the person you know you can be.
+            </p>
+            <p className="text-slate-800 font-medium text-lg">
+              ClarioMind helps you name it, explore the real reasons behind your decision to change.
             </p>
           </div>
 
-          <div className="relative bg-white rounded-3xl p-10 md:p-14 shadow-xl border border-orange-100">
-            <div className="absolute -top-6 left-10 text-8xl text-primary/20">"</div>
-            
-            <div className="relative z-10">
-              <p className="text-2xl md:text-3xl text-gray-800 leading-relaxed mb-8 font-medium">
-                {testimonials[activeTestimonial].quote}
-              </p>
-              
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-gradient-to-br from-primary to-orange-400 rounded-full flex items-center justify-center text-2xl">
-                  {testimonials[activeTestimonial].avatar}
-                </div>
-                <div>
-                  <div className="font-bold text-gray-900">{testimonials[activeTestimonial].name}</div>
-                  <div className="text-primary font-medium">{testimonials[activeTestimonial].role}</div>
-                </div>
-              </div>
-            </div>
+          <div className="text-center">
+            <p className="text-xl text-blue-600 font-semibold mb-8">
+              When your "why" is clear, your journey of sobriety becomes easier to navigate.
+            </p>
+            <Link href="/quiz">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-10 py-6 text-lg shadow-lg shadow-blue-200">
+                Start Your Journey To Recovery
+                <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+          </Link>
+          </div>
+        </div>
+      </section>
 
-            {/* Dots */}
-            <div className="flex items-center justify-center gap-2 mt-10">
-              {testimonials.map((_, index) => (
+      {/* FAQs */}
+      <section className="relative py-24 sm:py-32 bg-white">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-5xl font-bold text-slate-800">
+              FAQs
+            </h2>
+          </div>
+
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div 
+                key={index} 
+                className={`bg-slate-50 rounded-2xl border transition-all duration-300 ${
+                  openFaq === index ? 'border-blue-200' : 'border-slate-100'
+                }`}
+              >
                 <button
-                  key={index}
-                  onClick={() => setActiveTestimonial(index)}
-                  className={`w-3 h-3 rounded-full transition-all ${
-                    index === activeTestimonial 
-                      ? 'bg-primary w-8' 
-                      : 'bg-gray-300 hover:bg-gray-400'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features List */}
-      <section className="py-24 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Everything you need to succeed
-              </h2>
-              <p className="text-xl text-gray-600 mb-10">
-                Reframe combines cutting-edge neuroscience with practical tools for lasting change.
-              </p>
-
-              <div className="space-y-6">
-                {[
-                  "30-day neuroscience-based program",
-                  "Personalized daily lessons",
-                  "Meditation & breathing exercises",
-                  "Progress tracking & insights",
-                  "Supportive community",
-                  "24/7 expert support"
-                ].map((feature, index) => (
-                  <div key={index} className="flex items-center gap-4">
-                    <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                      <CheckCircle2 className="w-5 h-5 text-green-600" />
-                    </div>
-                    <span className="text-lg text-gray-700">{feature}</span>
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                  className="w-full px-6 py-5 text-left flex items-center justify-between gap-4"
+                >
+                  <span className="font-semibold text-slate-800">{faq.question}</span>
+                  <div className={`w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center flex-shrink-0 transition-transform duration-300 ${
+                    openFaq === index ? 'rotate-180' : ''
+                  }`}>
+                    <ChevronDown className="w-4 h-4 text-slate-500" />
                   </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-orange-200/20 rounded-3xl blur-3xl" />
-              <div className="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-8 shadow-2xl">
-                {/* Mock App Screen */}
-                <div className="bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5] rounded-2xl p-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="text-sm font-medium text-gray-600">Day 7</span>
-                    <span className="text-sm font-medium text-primary">7 🔥</span>
-                  </div>
-                  <div className="bg-white rounded-xl p-4 mb-4 shadow-sm">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">📚</div>
-                      <div>
-                        <div className="font-medium text-gray-900 text-sm">Understanding Triggers</div>
-                        <div className="text-xs text-gray-500">5 min read</div>
-                      </div>
-                      <CheckCircle2 className="w-5 h-5 text-green-500 ml-auto" />
-                    </div>
-                  </div>
-                  <div className="bg-white rounded-xl p-4 shadow-sm border-2 border-primary">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">🧘</div>
-                      <div>
-                        <div className="font-medium text-gray-900 text-sm">Mindful Breathing</div>
-                        <div className="text-xs text-gray-500">3 min exercise</div>
-                      </div>
-                    </div>
+                </button>
+                <div className={`overflow-hidden transition-all duration-300 ${
+                  openFaq === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                }`}>
+                  <div className="px-6 pb-5">
+                    <p className="text-slate-600 leading-relaxed">{faq.answer}</p>
                   </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
-        </div>
-      </section>
-
-      {/* Guarantee Section */}
-      <section className="py-20 bg-gradient-to-r from-primary to-orange-500">
-        <div className="max-w-4xl mx-auto px-6 text-center text-white">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full mb-8">
-            <Shield className="w-10 h-10" />
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            200% Money-Back Guarantee
-          </h2>
-          <p className="text-xl md:text-2xl opacity-90 mb-8 max-w-2xl mx-auto">
-            If you don't see results after following the program, we'll refund double your money. No questions asked.
-          </p>
-          <p className="text-lg opacity-75">
-            That's how confident we are in Reframe.
-          </p>
         </div>
       </section>
 
       {/* Final CTA */}
-      <section className="py-24 bg-white">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+      <section className="relative py-24 sm:py-32 bg-blue-600">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center text-white">
+          <h2 className="text-3xl sm:text-5xl font-bold mb-6">
             Ready to transform your life?
           </h2>
-          <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-            Join over 2 million people who've already started their journey with Reframe.
+          <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
+            Join thousands of professionals who've already started their journey with ClarioMind.
           </p>
           
-          <Link href="/auth/register">
-            <Button size="lg" className="bg-gradient-to-r from-primary to-orange-500 hover:from-primary-dark hover:to-orange-600 text-white rounded-full px-12 py-7 text-xl shadow-xl shadow-orange-500/25 transition-all hover:scale-105">
-              Start Your Free Trial Today
-              <ArrowRight className="ml-3 w-6 h-6" />
+          <Link href="/quiz">
+            <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 rounded-full px-10 py-6 text-lg shadow-lg">
+              Start Your Journey To Recovery
+              <ArrowRight className="ml-3 w-5 h-5" />
             </Button>
           </Link>
-
-          <p className="mt-6 text-gray-500">
-            No credit card required • Cancel anytime
-          </p>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 bg-gray-900 text-gray-400">
-        <div className="max-w-6xl mx-auto px-6">
+      <footer className="relative py-12 bg-slate-50 border-t border-slate-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary to-orange-400 rounded-xl flex items-center justify-center">
-                <span className="text-white text-xl">🧡</span>
-              </div>
-              <span className="text-xl font-bold text-white">Reframe</span>
-            </div>
-            
-            <div className="flex items-center gap-6 text-sm">
-              <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-              <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
-              <span>© 2024 Reframe. All rights reserved.</span>
+            <Logo size="md" />
+
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-sm text-slate-500">
+              <Link href="/privacy" className="hover:text-slate-800 transition-colors">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-slate-800 transition-colors">Terms of Service</Link>
+              <span>© 2024 ClarioMind. All rights reserved.</span>
             </div>
           </div>
         </div>
       </footer>
-
-      {/* Custom Styles */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        .delay-500 {
-          animation-delay: 0.5s;
-        }
-        .delay-700 {
-          animation-delay: 0.7s;
-        }
-        .delay-1000 {
-          animation-delay: 1s;
-        }
-      `}</style>
     </div>
   )
 }

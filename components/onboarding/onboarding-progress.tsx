@@ -1,8 +1,5 @@
 'use client'
 
-import { Progress } from '@/components/ui/progress'
-
-// Define the onboarding flow structure
 export const ONBOARDING_FLOW = {
   intro: { start: 1, steps: 3 },
   demographics: { start: 4, steps: 3 },
@@ -24,24 +21,25 @@ interface OnboardingProgressProps {
 export function OnboardingProgress({ currentPage, currentStep }: OnboardingProgressProps) {
   const pageConfig = ONBOARDING_FLOW[currentPage]
   const globalStep = pageConfig.start + currentStep - 1
+  const progress = (globalStep / TOTAL_ONBOARDING_STEPS) * 100
 
   return (
-    <div className="mb-6">
-      {/* Global progress text */}
+    <div className="mb-2">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs font-medium text-gray-500">Your progress</span>
-        <span className="text-xs font-semibold text-primary">
-          {globalStep}/{TOTAL_ONBOARDING_STEPS}
-        </span>
+        <span className="text-xs font-medium text-slate-500">Your progress</span>
+        <div className="flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-full">
+          <span className="text-sm font-medium text-blue-600">{globalStep}</span>
+          <span className="text-sm text-slate-400">/</span>
+          <span className="text-sm text-slate-500">{TOTAL_ONBOARDING_STEPS}</span>
+        </div>
       </div>
       
-      {/* Global progress bar */}
-      <Progress 
-        value={globalStep} 
-        max={TOTAL_ONBOARDING_STEPS} 
-        className="h-2 bg-orange-100"
-      />
+      <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+        <div 
+          className="h-full bg-blue-600 rounded-full transition-all duration-500 ease-out"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
     </div>
   )
 }
-

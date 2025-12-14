@@ -44,10 +44,10 @@ export default function TutorialPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5] flex flex-col">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 flex flex-col">
       {/* Header */}
       <div className="p-6 flex items-center justify-between">
-        <h1 className="text-gray-900 font-semibold">Welcome to Reframe</h1>
+        <h1 className="text-gray-900 font-semibold">Welcome to ClarioMind</h1>
         <button onClick={handleSkip} className="text-gray-900">
           <X className="w-6 h-6" />
         </button>
@@ -55,7 +55,7 @@ export default function TutorialPage() {
 
       {/* Progress */}
       <div className="px-6 mb-6">
-        <Progress value={step} max={totalSteps} className="bg-orange-200" />
+        <Progress value={step} max={totalSteps} className="bg-blue-200" />
       </div>
 
       {/* Content */}
@@ -87,19 +87,19 @@ function Step1({ userName }: { userName: string }) {
         Welcome,<br />{userName}!
       </h2>
 
-      {/* Reframe works card */}
+      {/* ClarioMind works card */}
       <div className="bg-primary rounded-2xl p-8 mb-6 text-center text-white">
         <h3 className="text-2xl font-bold mb-4">
-          Reframe<br />
+          ClarioMind<br />
           <span className="text-white">works.</span>
         </h3>
       </div>
 
       <p className="text-lg mb-6 leading-relaxed">
-        Though Reframe is built on a complex foundation of neuroscience, psychology, and the latest research, none of that matters unless you have one key thing...
+        Though ClarioMind is built on a complex foundation of neuroscience, psychology, and the latest research, none of that matters unless you have one key thing...
       </p>
 
-      <div className="bg-white rounded-2xl p-6 mb-6 shadow-md border border-orange-100">
+      <div className="bg-white rounded-2xl p-6 mb-6 shadow-md border border-blue-100">
         <div className="flex items-center mb-3">
           <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center mr-3">
             <span className="text-white text-xl">✓</span>
@@ -107,7 +107,7 @@ function Step1({ userName }: { userName: string }) {
           <h4 className="text-xl font-bold">A belief that this will work.</h4>
         </div>
         <p className="text-gray-700 leading-relaxed">
-          We believe deeply in your ability to dramatically change or end your relationship with alcohol. In fact, we've seen it done before, over and over, and many of us on the Reframe team have done it ourselves.
+          We believe deeply in your ability to dramatically change or end your relationship with alcohol. In fact, we've seen it done before, over and over, and many of us on the ClarioMind team have done it ourselves.
         </p>
       </div>
     </div>
@@ -120,19 +120,19 @@ function Step2() {
     <div className="text-gray-900">
       {/* Activity icons */}
       <div className="grid grid-cols-5 gap-4 mb-8">
-        <div className="w-full aspect-square bg-white rounded-xl flex items-center justify-center shadow-md border border-orange-100">
+        <div className="w-full aspect-square bg-white rounded-xl flex items-center justify-center shadow-md border border-blue-100">
           <BookOpen className="w-6 h-6 text-primary" />
         </div>
-        <div className="w-full aspect-square bg-white rounded-xl flex items-center justify-center shadow-md border border-orange-100">
+        <div className="w-full aspect-square bg-white rounded-xl flex items-center justify-center shadow-md border border-blue-100">
           <Edit className="w-6 h-6 text-primary" />
         </div>
-        <div className="w-full aspect-square bg-white rounded-xl flex items-center justify-center shadow-md border border-orange-100">
+        <div className="w-full aspect-square bg-white rounded-xl flex items-center justify-center shadow-md border border-blue-100">
           <Brain className="w-6 h-6 text-primary" />
         </div>
-        <div className="w-full aspect-square bg-white rounded-xl flex items-center justify-center shadow-md border border-orange-100">
+        <div className="w-full aspect-square bg-white rounded-xl flex items-center justify-center shadow-md border border-blue-100">
           <Mountain className="w-6 h-6 text-primary" />
         </div>
-        <div className="w-full aspect-square bg-white rounded-xl flex items-center justify-center shadow-md border border-orange-100">
+        <div className="w-full aspect-square bg-white rounded-xl flex items-center justify-center shadow-md border border-blue-100">
           <Calendar className="w-6 h-6 text-primary" />
         </div>
       </div>
@@ -141,7 +141,7 @@ function Step2() {
         Each day, you'll receive a new set of activities to help you transform your well-being and address all areas of your physical, mental, and emotional health.
       </p>
 
-      <div className="bg-white rounded-2xl p-6 shadow-md border border-orange-100">
+      <div className="bg-white rounded-2xl p-6 shadow-md border border-blue-100">
         <h3 className="text-xl font-bold mb-4">These activities include:</h3>
         
         <div className="space-y-3">
@@ -202,9 +202,9 @@ function Step3({ expandedPhase, setExpandedPhase }: { expandedPhase: number | nu
         Everyone's journey is different and that's why your roadmap is personalized to your unique path. Here is a summary of what to expect over the next few weeks!
       </p>
 
-      <div className="bg-white rounded-2xl p-6 shadow-md border border-orange-100 mb-6">
+      <div className="bg-white rounded-2xl p-6 shadow-md border border-blue-100 mb-6">
         <h3 className="text-xl font-bold mb-4">
-          Here's a preview of some of the skills you'll build in Phase I — your first 120 days with Reframe.
+          Here's a preview of some of the skills you'll build in Phase I — your first 120 days with ClarioMind.
         </h3>
       </div>
 

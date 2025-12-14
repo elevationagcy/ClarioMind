@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Sparkles, ArrowRight, Loader2 } from 'lucide-react'
+import { Logo } from '@/components/ui/logo'
 import { createClient } from '@/lib/supabase/client'
 import { REFERRAL_SOURCES } from '@/lib/constants/onboarding'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
@@ -52,56 +53,86 @@ export default function IntroPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5] flex flex-col">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 flex flex-col">
       {/* Header */}
-      <div className="p-6 pb-0">
-        {step > 1 && (
-          <button onClick={handleBack} className="text-gray-800 mb-4">
-            <ArrowLeft className="w-6 h-6" />
-          </button>
-        )}
-        {step === 1 && <div className="h-10" />}
-        
-        {/* Global Onboarding Progress */}
-        <OnboardingProgress currentPage="intro" currentStep={step} />
-      </div>
+      <header className="bg-white border-b border-slate-100 sticky top-0 z-10">
+        <div className="max-w-2xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between mb-4">
+            {step > 1 ? (
+              <button 
+                onClick={handleBack}
+                className="flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors"
+              >
+                <ArrowLeft className="w-5 h-5" />
+              </button>
+            ) : (
+              <div className="w-8" />
+            )}
+            <Logo size="sm" />
+            <div className="w-8" />
+          </div>
+          
+          <OnboardingProgress currentPage="intro" currentStep={step} />
+        </div>
+      </header>
 
       {/* Content */}
-      <div className="flex-1 px-6 pb-8">
+      <main className="flex-1 flex flex-col justify-center px-4 py-8 max-w-2xl mx-auto w-full">
         {step === 1 && <Step1 />}
         {step === 2 && <Step2 referralSource={referralSource} setReferralSource={setReferralSource} />}
         {step === 3 && <Step5 />}
-      </div>
+      </main>
 
-      {/* Next button */}
-      <div className="p-6">
-        <Button
-          onClick={handleNext}
-          size="lg"
-          className="w-full bg-primary text-white hover:bg-primary-dark"
-          disabled={step === 2 && !referralSource || loading}
-        >
-          {step === totalSteps ? (loading ? 'Loading...' : 'Start customizing my plan') : 'Next'}
-        </Button>
-      </div>
+      {/* Footer */}
+      <footer className="bg-white border-t border-slate-100 sticky bottom-0">
+        <div className="max-w-2xl mx-auto px-4 py-4">
+          <Button
+            onClick={handleNext}
+            size="lg"
+            disabled={(step === 2 && !referralSource) || loading}
+            className={`w-full py-6 rounded-xl text-lg font-semibold ${
+              (step === 2 && !referralSource) || loading
+                ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                : 'bg-blue-600 hover:bg-blue-700 text-white'
+            }`}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                Loading...
+              </>
+            ) : step === totalSteps ? (
+              <>
+                Start customizing my plan
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </>
+            ) : (
+              <>
+                Continue
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </>
+            )}
+          </Button>
+        </div>
+      </footer>
     </div>
   )
 }
 
-// Step 1: Reframe Works. Period.
 function Step1() {
   return (
-    <div className="text-center text-gray-900">
-      <h1 className="text-4xl font-bold mb-4">
-        Reframe Works.<br />Period.
-      </h1>
-      
-      <p className="text-lg text-primary font-semibold mb-8">
-        💪 You're taking the first step toward a healthier you!
-      </p>
+    <div className="text-center">
+      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-6">
+        <Sparkles className="w-4 h-4 text-blue-600" />
+        <span className="text-sm text-blue-700 font-medium">You're taking the first step</span>
+      </div>
 
-      {/* Earth Lottie Animation */}
-      <div className="my-12 relative h-48 flex items-center justify-center">
+      <h1 className="text-4xl sm:text-5xl font-bold text-slate-800 mb-4 leading-tight">
+        ClarioMind Works.
+        <span className="block text-blue-600">Period.</span>
+      </h1>
+
+      <div className="my-8 relative h-48 flex items-center justify-center">
         <DotLottieReact
           src="https://lottie.host/f38cb803-24f4-498a-b24f-587078bfdfd2/BBZKJ20M6D.lottie"
           loop
@@ -110,42 +141,42 @@ function Step1() {
         />
       </div>
 
-      <p className="text-xl leading-relaxed mb-6">
-        We are helping <span className="font-bold">2,000,000+ users</span><br />
-        to build healthier drinking habits<br />
-        in over <span className="font-bold">84 countries</span>
+      <p className="text-xl text-slate-600 leading-relaxed mb-6">
+        We are helping <span className="font-bold text-slate-800">thousands of professionals</span><br />
+        transform their drinking habits<br />
+        with <span className="font-bold text-blue-600">neuroscience</span>
       </p>
       
-      <div className="bg-white rounded-xl p-4 shadow-sm border border-orange-100">
-        <p className="text-sm text-gray-700">
-          ✨ <strong>You're not alone.</strong> Thousands of people just like you have transformed their lives with Reframe.
+      <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
+        <p className="text-sm text-slate-600">
+          <span className="text-blue-600">✨</span> <strong className="text-slate-800">You're not alone.</strong> Thousands of professionals just like you have transformed their lives with ClarioMind.
         </p>
       </div>
     </div>
   )
 }
 
-// Step 2: How did you hear about us?
 function Step2({ referralSource, setReferralSource }: { referralSource: string; setReferralSource: (val: string) => void }) {
   return (
-    <div className="text-gray-900">
-      <h2 className="text-3xl font-bold mb-3">
-        How did you hear about us?
-      </h2>
-      
-      <p className="text-gray-600 mb-8">
-        🌟 We're curious to know what brought you here today!
-      </p>
+    <div>
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-bold text-slate-800 mb-3">
+          How did you hear about us?
+        </h2>
+        <p className="text-slate-500">
+          We're curious to know what brought you here today!
+        </p>
+      </div>
 
       <div className="space-y-3">
         {REFERRAL_SOURCES.map((source) => (
           <button
             key={source}
             onClick={() => setReferralSource(source)}
-            className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
+            className={`w-full p-4 rounded-2xl text-left font-medium transition-all border-2 ${
               referralSource === source
-                ? 'bg-primary text-white'
-                : 'bg-white text-gray-900 hover:bg-orange-100 border border-gray-200'
+                ? 'bg-blue-50 border-blue-500 text-blue-700'
+                : 'bg-white border-slate-100 text-slate-700 hover:border-blue-200'
             }`}
           >
             {source}
@@ -156,45 +187,42 @@ function Step2({ referralSource, setReferralSource }: { referralSource: string; 
   )
 }
 
-// Step 5: Stats and creating plan
 function Step5() {
   return (
-    <div className="text-gray-900">
-      <p className="text-lg text-primary font-semibold mb-4 text-center">
-        🚀 Ready to see real results?
-      </p>
+    <div className="text-center">
+      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-6">
+        <Sparkles className="w-4 h-4 text-blue-600" />
+        <span className="text-sm text-blue-700 font-medium">Ready to see real results?</span>
+      </div>
       
-      <h2 className="text-2xl font-bold mb-8 leading-tight text-center">
-        Reframers noted a 70% decrease in their drinking after 3 months of using the app.
+      <h2 className="text-3xl font-bold text-slate-800 mb-8">
+        <span className="text-blue-600">80%</span> of ClarioMind users noted a decrease in alcohol use within 2 months.
       </h2>
 
-      {/* Chart */}
-      <div className="bg-white rounded-2xl p-6 text-gray-900 mb-6">
-        <div className="relative h-64 flex items-center justify-center">
+      <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm mb-6">
+        <div className="relative h-48 flex items-center justify-center">
           <img
             src="/assets/graph.png"
             alt="Usage stats graph"
             className="max-h-full max-w-full object-contain"
           />
         </div>
-
       </div>
 
-      <p className="text-xs text-center text-gray-600 mb-6">
-        *Note that this data is based on an estimate of 600k<br />
-        Reframe users
+      <p className="text-xs text-slate-400 mb-6">
+        *Based on user surveys and self-reported data
       </p>
       
-      <div className="bg-white rounded-xl p-4 shadow-sm border border-orange-100 mb-6">
-        <p className="text-center text-gray-700">
-          ✨ <strong>Your story could be next.</strong> These results are real people, just like you, who decided to take action.
+      <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm mb-6">
+        <p className="text-slate-600">
+          <span className="text-blue-600">✨</span> <strong className="text-slate-800">Your story could be next.</strong> These results are from real professionals, just like you, who decided to take action.
         </p>
       </div>
 
-      <p className="text-center text-lg font-semibold">
+      <p className="text-lg font-semibold text-slate-600 flex items-center justify-center gap-2">
+        <Loader2 className="w-5 h-5 animate-spin text-blue-600" />
         Creating your personalized plan...
       </p>
     </div>
   )
 }
-

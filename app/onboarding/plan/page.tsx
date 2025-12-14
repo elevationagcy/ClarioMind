@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, Check } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check, CheckCircle2, Loader2, Shield, Star } from 'lucide-react'
+import { Logo } from '@/components/ui/logo'
 import { createClient } from '@/lib/supabase/client'
 import { OnboardingProgress } from '@/components/onboarding/onboarding-progress'
 
@@ -23,12 +24,10 @@ export default function PlanPage() {
       const { data: { user } } = await supabase.auth.getUser()
       
       if (user) {
-        // Get user name from metadata
         if (user.user_metadata?.full_name) {
           setUserName(user.user_metadata.full_name.split(' ')[0])
         }
 
-        // Get user goals
         const { data: goalsData } = await supabase
           .from('user_goals')
           .select('alcohol_relationship_goal, reasons')
@@ -38,7 +37,6 @@ export default function PlanPage() {
         if (goalsData) {
           const userGoals: string[] = []
           
-          // Convert goal to text
           if (goalsData.alcohol_relationship_goal === 'quit') {
             userGoals.push('Continue your alcohol-free journey')
           } else if (goalsData.alcohol_relationship_goal === 'cut_back') {
@@ -47,7 +45,6 @@ export default function PlanPage() {
             userGoals.push('Stay sober')
           }
 
-          // Add top reasons
           if (goalsData.reasons && goalsData.reasons.length > 0) {
             userGoals.push(goalsData.reasons[0])
             if (goalsData.reasons.length > 1) {
@@ -63,6 +60,10 @@ export default function PlanPage() {
     }
   }
 
+  const handleBack = () => {
+    router.push('/onboarding/summary')
+  }
+
   const handleContinue = async () => {
     setLoading(true)
     try {
@@ -70,13 +71,11 @@ export default function PlanPage() {
       const { data: { user } } = await supabase.auth.getUser()
       
       if (user) {
-        // Mark onboarding as complete
         await supabase
           .from('user_profiles')
           .update({ completed_onboarding: true })
           .eq('user_id', user.id)
 
-        // Initialize user progress
         await supabase
           .from('user_progress')
           .upsert({
@@ -97,115 +96,114 @@ export default function PlanPage() {
     }
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5] flex flex-col">
-      {/* Header */}
-      <div className="bg-white p-6 shadow-sm">
-        <button onClick={() => router.back()} className="text-primary mb-4">
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-        
-        {/* Global Onboarding Progress */}
-        <OnboardingProgress currentPage="plan" currentStep={1} />
-      </div>
+  const features = [
+    'Neuroscience-based behavior change program',
+    'Daily exercises to build great habits',
+    'Evidence-based tools, meditations, breathing exercises',
+    'A supportive community to inspire & answer questions',
+    'A Thrive Coach to provide additional support'
+  ]
 
-      {/* Content */}
-      <div className="flex-1 px-6 py-8 overflow-y-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-          {userName}'s Plan
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 flex flex-col">
+      <header className="bg-white border-b border-slate-100 sticky top-0 z-10">
+        <div className="max-w-2xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between mb-4">
+            <button 
+              onClick={handleBack}
+              className="flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <Logo size="sm" />
+            <div className="w-8" />
+          </div>
+          <OnboardingProgress currentPage="plan" currentStep={1} />
+        </div>
+      </header>
+
+      <main className="flex-1 px-4 py-8 max-w-2xl mx-auto w-full overflow-y-auto">
+        <h1 className="text-3xl font-bold text-slate-800 mb-8 text-center">
+          <span className="text-blue-600">{userName}'s</span> Plan
         </h1>
 
         {/* Goals Section */}
         <div className="mb-8">
-          <h2 className="text-xl font-bold text-primary mb-2">
-            With our customized plan, we'll help you:
-          </h2>
-          <p className="text-gray-600 text-sm mb-4">(Based on your goals)</p>
+          <div className="flex items-center gap-2 mb-4">
+            <Star className="w-5 h-5 text-blue-600" />
+            <h2 className="text-xl font-bold text-slate-800">
+              With our customized plan, we'll help you:
+            </h2>
+          </div>
+          <p className="text-slate-500 text-sm mb-4">(Based on your goals)</p>
 
           <div className="space-y-3">
             {goals.map((goal, index) => (
-              <div key={index} className="bg-secondary rounded-xl p-4 text-primary font-medium">
-                {goal}
+              <div key={index} className="bg-blue-50 rounded-xl p-4 border border-blue-100 flex items-center gap-3">
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <CheckCircle2 className="w-4 h-4 text-white" />
+                </div>
+                <span className="font-medium text-blue-700">{goal}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Promise */}
-        <div className="bg-gradient-to-r from-primary to-primary-light rounded-2xl p-6 mb-8 text-white text-center">
-          <p className="text-lg font-bold">
-            Our promise is simple.<br />
+        <div className="bg-blue-600 rounded-2xl p-6 text-center text-white mb-8">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Shield className="w-5 h-5" />
+            <p className="text-lg font-bold">Our promise is simple.</p>
+          </div>
+          <p className="text-xl font-bold">
             See results or 200% money back.
           </p>
         </div>
 
         {/* How you'll get there */}
-        <div className="bg-white rounded-2xl p-6 shadow-md">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">
+        <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6">
+          <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+            <Star className="w-5 h-5 text-blue-600" />
             How you will get there with us:
           </h2>
 
           <div className="space-y-4">
-            <div className="flex items-start">
-              <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                <Check className="w-4 h-4 text-green-600" />
+            {features.map((feature, index) => (
+              <div key={index} className="flex items-start">
+                <div className="w-8 h-8 rounded-xl bg-green-50 border border-green-100 flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
+                  <Check className="w-4 h-4 text-green-600" />
+                </div>
+                <p className="text-slate-600">
+                  {feature}
+                </p>
               </div>
-              <p className="text-gray-700">
-                Neuroscience-based behavior change program
-              </p>
-            </div>
-
-            <div className="flex items-start">
-              <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                <Check className="w-4 h-4 text-green-600" />
-              </div>
-              <p className="text-gray-700">
-                Daily exercises to build great habits
-              </p>
-            </div>
-
-            <div className="flex items-start">
-              <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                <Check className="w-4 h-4 text-green-600" />
-              </div>
-              <p className="text-gray-700">
-                Evidence-based tools, meditations, breathing exercises and more
-              </p>
-            </div>
-
-            <div className="flex items-start">
-              <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                <Check className="w-4 h-4 text-green-600" />
-              </div>
-              <p className="text-gray-700">
-                A supportive community to inspire & answer questions
-              </p>
-            </div>
-
-            <div className="flex items-start">
-              <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                <Check className="w-4 h-4 text-green-600" />
-              </div>
-              <p className="text-gray-700">
-                A Thrive Coach to provide you with additional support
-              </p>
-            </div>
+            ))}
           </div>
         </div>
-      </div>
+      </main>
 
-      {/* Continue button */}
-      <div className="p-6 bg-white shadow-lg">
-        <Button
-          onClick={handleContinue}
-          size="lg"
-          className="w-full"
-          disabled={loading}
-        >
-          {loading ? 'Loading...' : 'Continue'}
-        </Button>
-      </div>
+      <footer className="bg-white border-t border-slate-100 sticky bottom-0">
+        <div className="max-w-2xl mx-auto px-4 py-4">
+          <Button
+            onClick={handleContinue}
+            size="lg"
+            disabled={loading}
+            className="w-full py-6 rounded-xl text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                Loading...
+              </>
+            ) : (
+              <>
+                Continue
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </>
+            )}
+          </Button>
+        </div>
+      </footer>
     </div>
   )
 }
-

@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Loader2, Sparkles } from 'lucide-react'
+import { Logo } from '@/components/ui/logo'
 import { createClient } from '@/lib/supabase/client'
 import { RELATIONSHIP_STATUSES } from '@/lib/constants/onboarding'
 import { OnboardingProgress } from '@/components/onboarding/onboarding-progress'
@@ -15,7 +15,6 @@ export default function DemographicsPage() {
   const [step, setStep] = useState(1)
   const [loading, setLoading] = useState(false)
   
-  // Form data
   const [sex, setSex] = useState<SexType | ''>('')
   const [age, setAge] = useState('')
   const [relationshipStatus, setRelationshipStatus] = useState('')
@@ -33,6 +32,8 @@ export default function DemographicsPage() {
   const handleBack = () => {
     if (step > 1) {
       setStep(step - 1)
+    } else {
+      router.push('/onboarding/intro')
     }
   }
 
@@ -71,145 +72,154 @@ export default function DemographicsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5] flex flex-col">
-      {/* Header */}
-      <div className="p-6">
-        <button onClick={handleBack} disabled={step === 1} className="text-gray-900 disabled:text-gray-300 mb-4">
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-        
-        {/* Global Onboarding Progress */}
-        <OnboardingProgress currentPage="demographics" currentStep={step} />
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 flex flex-col">
+      <header className="bg-white border-b border-slate-100 sticky top-0 z-10">
+        <div className="max-w-2xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between mb-4">
+            <button 
+              onClick={handleBack}
+              className="flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <Logo size="sm" />
+            <div className="w-8" />
+          </div>
+          <OnboardingProgress currentPage="demographics" currentStep={step} />
+        </div>
+      </header>
 
-      {/* Content */}
-      <div className="flex-1 px-6 py-8">
+      <main className="flex-1 flex flex-col justify-center px-4 py-8 max-w-2xl mx-auto w-full">
         {step === 1 && <Step1 sex={sex} setSex={setSex} />}
         {step === 2 && <Step2 age={age} setAge={setAge} />}
         {step === 3 && <Step3 status={relationshipStatus} setStatus={setRelationshipStatus} />}
-      </div>
+      </main>
 
-      {/* Next button */}
-      <div className="p-6">
-        <Button
-          onClick={handleNext}
-          size="lg"
-          className="w-full bg-primary text-white hover:bg-primary-dark"
-          disabled={!canProceed() || loading}
-        >
-          {step === totalSteps ? (loading ? 'Saving...' : 'Next') : 'Next'}
-        </Button>
-      </div>
+      <footer className="bg-white border-t border-slate-100 sticky bottom-0">
+        <div className="max-w-2xl mx-auto px-4 py-4">
+          <Button
+            onClick={handleNext}
+            size="lg"
+            disabled={!canProceed() || loading}
+            className={`w-full py-6 rounded-xl text-lg font-semibold ${
+              !canProceed() || loading
+                ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                : 'bg-blue-600 hover:bg-blue-700 text-white'
+            }`}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                Saving...
+              </>
+            ) : (
+              <>
+                Continue
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </>
+            )}
+          </Button>
+        </div>
+      </footer>
     </div>
   )
 }
 
-// Step 1: Sex
 function Step1({ sex, setSex }: { sex: string; setSex: (val: SexType) => void }) {
+  const options: { value: SexType; label: string }[] = [
+    { value: 'female', label: 'Female' },
+    { value: 'male', label: 'Male' },
+    { value: 'prefer_not_to_say', label: 'Prefer not to answer' }
+  ]
+
   return (
     <div>
-      <p className="text-primary font-semibold mb-3">
-        🧬 Let's personalize your experience
-      </p>
-      
-      <h2 className="text-2xl font-bold text-gray-900 mb-3">
-        Sex and hormones impact how our body responds to alcohol. Which sex best describes you?
-      </h2>
-      
-      <p className="text-sm text-gray-600 mb-8">
-        This helps us provide science-backed insights tailored to your biology.
-      </p>
+      <div className="text-center mb-8">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-4">
+          <Sparkles className="w-4 h-4 text-blue-600" />
+          <span className="text-sm text-blue-700 font-medium">Let's personalize your experience</span>
+        </div>
+        <h2 className="text-2xl font-bold text-slate-800 mb-3">
+          Sex and hormones impact how our body responds to alcohol.
+        </h2>
+        <p className="text-slate-500">
+          This helps us provide science-backed insights tailored to your biology.
+        </p>
+      </div>
 
       <div className="space-y-3">
-        <button
-          onClick={() => setSex('female')}
-          className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
-            sex === 'female'
-              ? 'bg-primary text-white'
-              : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-primary'
-          }`}
-        >
-          Female
-        </button>
-        <button
-          onClick={() => setSex('male')}
-          className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
-            sex === 'male'
-              ? 'bg-primary text-white'
-              : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-primary'
-          }`}
-        >
-          Male
-        </button>
-        <button
-          onClick={() => setSex('prefer_not_to_say')}
-          className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
-            sex === 'prefer_not_to_say'
-              ? 'bg-primary text-white'
-              : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-primary'
-          }`}
-        >
-          Prefer not to answer
-        </button>
+        {options.map((option) => (
+          <button
+            key={option.value}
+            onClick={() => setSex(option.value)}
+            className={`w-full p-4 rounded-2xl text-left font-medium transition-all border-2 ${
+              sex === option.value
+                ? 'bg-blue-50 border-blue-500 text-blue-700'
+                : 'bg-white border-slate-100 text-slate-700 hover:border-blue-200'
+            }`}
+          >
+            {option.label}
+          </button>
+        ))}
       </div>
     </div>
   )
 }
 
-// Step 2: Age
 function Step2({ age, setAge }: { age: string; setAge: (val: string) => void }) {
   return (
     <div>
-      <p className="text-primary font-semibold mb-3">
-        📊 Building your personalized profile
-      </p>
-      
-      <h2 className="text-2xl font-bold text-gray-900 mb-3">
-        What is your age?
-      </h2>
-      
-      <p className="text-sm text-gray-600 mb-8">
-        Age-specific insights help us recommend the most effective strategies for you.
-      </p>
+      <div className="text-center mb-8">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-4">
+          <Sparkles className="w-4 h-4 text-blue-600" />
+          <span className="text-sm text-blue-700 font-medium">Building your profile</span>
+        </div>
+        <h2 className="text-2xl font-bold text-slate-800 mb-3">
+          What is your age?
+        </h2>
+        <p className="text-slate-500">
+          Age-specific insights help us recommend the most effective strategies for you.
+        </p>
+      </div>
 
-      <Input
+      <input
         type="number"
         placeholder="Enter your age"
         value={age}
         onChange={(e) => setAge(e.target.value)}
         min="18"
         max="120"
-        className="text-center text-2xl"
+        className="w-full px-6 py-5 bg-white border-2 border-slate-200 rounded-2xl text-slate-800 text-center text-3xl font-bold placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
       />
     </div>
   )
 }
 
-// Step 3: Relationship Status
 function Step3({ status, setStatus }: { status: string; setStatus: (val: string) => void }) {
   return (
     <div>
-      <p className="text-primary font-semibold mb-3">
-        💞 Understanding your support system
-      </p>
-      
-      <h2 className="text-2xl font-bold text-gray-900 mb-3">
-        What is your relationship status?
-      </h2>
-      
-      <p className="text-sm text-gray-600 mb-8">
-        Your relationships play a key role in your journey. We'll help you navigate them successfully.
-      </p>
+      <div className="text-center mb-8">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-4">
+          <Sparkles className="w-4 h-4 text-blue-600" />
+          <span className="text-sm text-blue-700 font-medium">Understanding your support system</span>
+        </div>
+        <h2 className="text-2xl font-bold text-slate-800 mb-3">
+          What is your relationship status?
+        </h2>
+        <p className="text-slate-500">
+          Your relationships play a key role in your journey.
+        </p>
+      </div>
 
       <div className="space-y-3">
         {RELATIONSHIP_STATUSES.map((relationshipStatus) => (
           <button
             key={relationshipStatus}
             onClick={() => setStatus(relationshipStatus)}
-            className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
+            className={`w-full p-4 rounded-2xl text-left font-medium transition-all border-2 ${
               status === relationshipStatus
-                ? 'bg-primary text-white'
-                : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-primary'
+                ? 'bg-blue-50 border-blue-500 text-blue-700'
+                : 'bg-white border-slate-100 text-slate-700 hover:border-blue-200'
             }`}
           >
             {relationshipStatus}

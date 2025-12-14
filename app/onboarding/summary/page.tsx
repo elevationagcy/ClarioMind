@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, DollarSign, Flame, Moon } from 'lucide-react'
+import { ArrowLeft, ArrowRight, DollarSign, Flame, Moon, Loader2, TrendingUp } from 'lucide-react'
+import { Logo } from '@/components/ui/logo'
 import { createClient } from '@/lib/supabase/client'
 import { calculateYearlySavings, calculateCaloriesSaved, calculateREMCycles, formatCurrency, formatNumber } from '@/lib/utils/calculations'
 import { OnboardingProgress } from '@/components/onboarding/onboarding-progress'
@@ -12,7 +13,6 @@ export default function SummaryPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   
-  // Calculated values
   const [drinksPerWeek, setDrinksPerWeek] = useState(0)
   const [spendPerWeek, setSpendPerWeek] = useState(0)
   const [yearlySavings, setYearlySavings] = useState(0)
@@ -52,7 +52,7 @@ export default function SummaryPage() {
   }
 
   const handleBack = () => {
-    router.back()
+    router.push('/onboarding/patterns')
   }
 
   const handleNext = () => {
@@ -61,108 +61,116 @@ export default function SummaryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5] flex flex-col">
-      {/* Header */}
-      <div className="p-6">
-        <button onClick={handleBack} className="text-gray-900 mb-4">
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-        
-        {/* Global Onboarding Progress */}
-        <OnboardingProgress currentPage="summary" currentStep={1} />
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 flex flex-col">
+      <header className="bg-white border-b border-slate-100 sticky top-0 z-10">
+        <div className="max-w-2xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between mb-4">
+            <button 
+              onClick={handleBack}
+              className="flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <Logo size="sm" />
+            <div className="w-8" />
+          </div>
+          <OnboardingProgress currentPage="summary" currentStep={1} />
+        </div>
+      </header>
 
-      {/* Content */}
-      <div className="flex-1 px-6 py-8 overflow-y-auto">
-        <Step2 savings={yearlySavings} calories={caloriesSaved} remCycles={remCycles} />
-      </div>
+      <main className="flex-1 px-4 py-8 max-w-2xl mx-auto w-full">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-100 mb-4">
+            <TrendingUp className="w-4 h-4 text-green-600" />
+            <span className="text-sm text-green-700 font-medium">Your potential transformation</span>
+          </div>
+          <h2 className="text-3xl font-bold text-slate-800 mb-3">
+            Here's what you could achieve
+          </h2>
+          <p className="text-slate-500">
+            Based on your patterns and a 70% reduction
+          </p>
+        </div>
 
-      {/* Next button */}
-      <div className="p-6 bg-white shadow-lg">
-        <Button
-          onClick={handleNext}
-          size="lg"
-          className="w-full"
-          disabled={loading}
-        >
-          {loading ? 'Loading...' : 'See my plan'}
-        </Button>
-      </div>
+        <div className="space-y-4 mb-8">
+          {/* Savings Card */}
+          <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
+            <div className="flex items-start">
+              <div className="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center mr-4 border border-green-100">
+                <DollarSign className="w-7 h-7 text-green-600" />
+              </div>
+              <div className="flex-1">
+                <p className="text-slate-500 text-sm mb-1">Potential yearly savings</p>
+                <p className="text-4xl font-bold text-green-600">
+                  {formatCurrency(yearlySavings)}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Calories Card */}
+          <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
+            <div className="flex items-start">
+              <div className="w-14 h-14 bg-orange-50 rounded-xl flex items-center justify-center mr-4 border border-orange-100">
+                <Flame className="w-7 h-7 text-orange-600" />
+              </div>
+              <div className="flex-1">
+                <p className="text-slate-500 text-sm mb-1">Calories saved per year</p>
+                <p className="text-4xl font-bold text-orange-600">
+                  {formatNumber(caloriesSaved)}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* REM Cycles Card */}
+          <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
+            <div className="flex items-start">
+              <div className="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center mr-4 border border-purple-100">
+                <Moon className="w-7 h-7 text-purple-600" />
+              </div>
+              <div className="flex-1">
+                <p className="text-slate-500 text-sm mb-1">Additional REM cycles per year</p>
+                <p className="text-4xl font-bold text-purple-600">
+                  {formatNumber(remCycles)}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
+          <p className="text-sm text-slate-600 text-center mb-2">
+            <span className="text-blue-600">🎉</span> <strong className="text-slate-800">Exciting, isn't it?</strong> Thousands of professionals have achieved these results — and you can too!
+          </p>
+          <p className="text-xs text-slate-400 text-center">
+            These projections are based on average outcomes. Individual results may vary.
+          </p>
+        </div>
+      </main>
+
+      <footer className="bg-white border-t border-slate-100 sticky bottom-0">
+        <div className="max-w-2xl mx-auto px-4 py-4">
+          <Button
+            onClick={handleNext}
+            size="lg"
+            disabled={loading}
+            className="w-full py-6 rounded-xl text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                Loading...
+              </>
+            ) : (
+              <>
+                See my plan
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </>
+            )}
+          </Button>
+        </div>
+      </footer>
     </div>
   )
 }
-
-// Summary with calculations
-function Step2({ savings, calories, remCycles }: { savings: number; calories: number; remCycles: number }) {
-  return (
-    <div>
-      <p className="text-primary font-semibold mb-3 text-center">
-        ✨ Your potential transformation
-      </p>
-      
-      <h2 className="text-2xl font-bold text-gray-900 mb-4 text-center">
-        Here's what you could achieve with Reframe
-      </h2>
-      <p className="text-gray-600 mb-8 text-center">
-        Based on your drinking patterns and a 70% reduction — imagine what this could mean for your life!
-      </p>
-
-      <div className="space-y-4">
-        {/* Savings Card */}
-        <div className="bg-white rounded-2xl p-6 shadow-md">
-          <div className="flex items-start">
-            <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mr-4">
-              <DollarSign className="w-6 h-6 text-green-600" />
-            </div>
-            <div className="flex-1">
-              <p className="text-gray-600 text-sm mb-1">Potential yearly savings</p>
-              <p className="text-3xl font-bold text-gray-900">
-                {formatCurrency(savings)}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Calories Card */}
-        <div className="bg-white rounded-2xl p-6 shadow-md">
-          <div className="flex items-start">
-            <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mr-4">
-              <Flame className="w-6 h-6 text-orange-600" />
-            </div>
-            <div className="flex-1">
-              <p className="text-gray-600 text-sm mb-1">Calories saved per year</p>
-              <p className="text-3xl font-bold text-gray-900">
-                {formatNumber(calories)}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* REM Cycles Card */}
-        <div className="bg-white rounded-2xl p-6 shadow-md">
-          <div className="flex items-start">
-            <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mr-4">
-              <Moon className="w-6 h-6 text-purple-600" />
-            </div>
-            <div className="flex-1">
-              <p className="text-gray-600 text-sm mb-1">Additional REM cycles per year</p>
-              <p className="text-3xl font-bold text-gray-900">
-                {formatNumber(remCycles)}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-xl p-4 shadow-sm border border-orange-100 mt-8">
-        <p className="text-sm text-gray-700 text-center mb-3">
-          🎉 <strong>Exciting, isn't it?</strong> Thousands of users have achieved these results — and you can too!
-        </p>
-        <p className="text-xs text-gray-600 text-center">
-          These projections are based on average outcomes from Reframe users. Individual results may vary.
-        </p>
-      </div>
-    </div>
-  )
-}
-

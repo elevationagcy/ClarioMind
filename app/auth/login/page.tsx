@@ -3,18 +3,30 @@
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { ArrowLeft, CheckCircle2 } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
+import { 
+  ArrowLeft, 
+  Mail, 
+  Lock, 
+  Eye, 
+  EyeOff, 
+  Loader2, 
+  CheckCircle2,
+  AlertCircle
+} from 'lucide-react'
+import { Logo } from '@/components/ui/logo'
 
-function LoginForm() {
+function LoginPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const supabase = createClient()
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const [showConfirmationSuccess, setShowConfirmationSuccess] = useState(false)
 
   useEffect(() => {
@@ -26,124 +38,158 @@ function LoginForm() {
     }
   }, [searchParams])
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError('')
     setLoading(true)
+    setError('')
 
     try {
-      const supabase = createClient()
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
-      if (error) throw error
+      if (signInError) throw signInError
 
       router.push('/dashboard')
-      router.refresh()
     } catch (err: any) {
-      setError(err.message || 'Failed to log in')
+      console.error('Login error:', err)
+      setError(err.message || 'Failed to sign in. Please check your credentials.')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 flex flex-col">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Welcome back
-        </h1>
-        <p className="text-gray-600">
-          Log in to continue your journey
-        </p>
-      </div>
+      <header className="bg-white border-b border-slate-100">
+        <div className="max-w-md mx-auto px-4 py-4 flex items-center justify-between">
+          <Link 
+            href="/welcome"
+            className="flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span className="text-sm font-medium hidden sm:inline">Back</span>
+          </Link>
+          <Logo size="sm" />
+          <div className="w-8" />
+        </div>
+      </header>
 
-      {/* Login Form */}
-      <form onSubmit={handleLogin} className="space-y-4">
-        {showConfirmationSuccess && (
-          <div className="p-4 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm flex items-start gap-3">
-            <CheckCircle2 className="w-5 h-5 flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="font-semibold">Email confirmed successfully!</p>
-              <p className="text-green-600">Your account is verified. You can now log in.</p>
+      {/* Main Content */}
+      <main className="flex-1 flex items-center justify-center px-4 py-8">
+        <div className="w-full max-w-md">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-slate-800 mb-2">Welcome Back</h1>
+            <p className="text-slate-500">Sign in to continue your journey</p>
+          </div>
+
+          {/* Success Message */}
+          {showConfirmationSuccess && (
+            <div className="bg-green-50 border border-green-100 rounded-2xl p-4 mb-6 flex items-start gap-3">
+              <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <CheckCircle2 className="w-5 h-5 text-green-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-green-700">Email Confirmed!</h3>
+                <p className="text-sm text-green-600">Your account is verified. You can now sign in.</p>
+              </div>
+            </div>
+          )}
+
+          {/* Login Form */}
+          <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Email</label>
+                <div className="relative">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <input
+                    type="email"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                  />
+                </div>
+              </div>
+
+              {/* Password */}
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Password</label>
+                <div className="relative">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="w-full pl-12 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Error Message */}
+              {error && (
+                <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-100 rounded-xl text-red-600 text-sm">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                  <span>{error}</span>
+                </div>
+              )}
+
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full py-5 rounded-xl text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                    Signing in...
+                  </>
+                ) : (
+                  'Sign In'
+                )}
+              </Button>
+            </form>
+
+            {/* Register Link */}
+            <div className="mt-6 text-center">
+              <p className="text-sm text-slate-500">
+                Don't have an account?{' '}
+                <Link href="/auth/register" className="text-blue-600 hover:text-blue-700 font-medium">
+                  Create one
+                </Link>
+              </p>
             </div>
           </div>
-        )}
-
-        {error && (
-          <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm">
-            {error}
-          </div>
-        )}
-
-        <Input
-          type="email"
-          label="Email"
-          placeholder="you@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          disabled={loading}
-        />
-
-        <Input
-          type="password"
-          label="Password"
-          placeholder="••••••••"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          disabled={loading}
-        />
-
-        <Button 
-          type="submit" 
-          size="lg" 
-          className="w-full mt-6"
-          disabled={loading}
-        >
-          {loading ? 'Logging in...' : 'Log in'}
-        </Button>
-      </form>
-
-      {/* Sign up link */}
-      <p className="text-center mt-6 text-gray-600">
-        Don't have an account?{' '}
-        <Link href="/auth/register" className="text-primary font-semibold hover:underline">
-          Sign up
-        </Link>
-      </p>
-    </>
+        </div>
+      </main>
+    </div>
   )
 }
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5]">
-      <div className="container max-w-md mx-auto px-6 py-8">
-        {/* Back button */}
-        <Link href="/welcome" className="inline-flex items-center text-primary mb-8">
-          <ArrowLeft className="w-5 h-5 mr-2" />
-          Back
-        </Link>
-
-        <Suspense fallback={
-          <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-3/4 mb-2"></div>
-            <div className="h-4 bg-gray-200 rounded w-1/2 mb-8"></div>
-            <div className="space-y-4">
-              <div className="h-12 bg-gray-200 rounded"></div>
-              <div className="h-12 bg-gray-200 rounded"></div>
-              <div className="h-12 bg-gray-200 rounded"></div>
-            </div>
-          </div>
-        }>
-          <LoginForm />
-        </Suspense>
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
       </div>
-    </div>
+    }>
+      <LoginPageContent />
+    </Suspense>
   )
 }

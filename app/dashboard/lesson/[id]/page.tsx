@@ -163,29 +163,29 @@ export default function LessonPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5] flex items-center justify-center">
-        <p className="text-gray-600">Loading...</p>
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 flex items-center justify-center">
+        <p className="text-slate-500">Loading...</p>
       </div>
     )
   }
 
   if (!lesson) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5] flex items-center justify-center">
-        <p className="text-gray-600">Lesson not found</p>
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 flex items-center justify-center">
+        <p className="text-slate-500">Lesson not found</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5]">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm p-6 shadow-sm sticky top-0 z-10">
-        <button onClick={() => router.back()} className="text-gray-900 mb-4">
+      <div className="bg-white border-b border-slate-100 p-6 sticky top-0 z-10">
+        <button onClick={() => router.back()} className="text-slate-800 mb-4">
           <ArrowLeft className="w-6 h-6" />
         </button>
         <div className="flex items-center">
-          <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center text-3xl mr-4 relative overflow-hidden">
+          <div className="w-16 h-16 bg-blue-50 rounded-xl flex items-center justify-center text-3xl mr-4 relative overflow-hidden border border-blue-100">
             {lesson.icon?.startsWith('http') ? (
               <Image
                 src={lesson.icon}
@@ -212,8 +212,8 @@ export default function LessonPage() {
             )}
           </div>
           <div className="flex-1">
-            <h1 className="text-xl font-bold text-gray-900">{lesson.title}</h1>
-            <p className="text-sm text-gray-600">
+            <h1 className="text-xl font-bold text-slate-800">{lesson.title}</h1>
+            <p className="text-sm text-slate-500">
               ⏱ {lesson.duration_minutes} min {lesson.category}
             </p>
           </div>
@@ -223,8 +223,8 @@ export default function LessonPage() {
       {/* Content */}
       <div className="p-6 pb-32">
         {/* Lesson Content */}
-        <div className="bg-white rounded-2xl p-6 shadow-md mb-6">
-          <div className="prose prose-sm max-w-none text-gray-900">
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 mb-6">
+          <div className="prose prose-sm max-w-none text-slate-800">
             <ReactMarkdown>{lesson.content}</ReactMarkdown>
           </div>
         </div>
@@ -242,20 +242,20 @@ export default function LessonPage() {
 
         {/* Quizzes */}
         {quizzes.length > 0 && (
-          <div className="bg-white rounded-2xl p-6 shadow-md">
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900">
-                📝 Check Your Understanding
-              </h2>
-              <span className="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+              <h2 className="text-xl font-bold text-slate-800">
+              📝 Check Your Understanding
+            </h2>
+              <span className="text-sm font-medium text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
                 {Object.keys(selectedAnswers).length}/{quizzes.length}
               </span>
             </div>
             
             <div className="space-y-6">
               {quizzes.map((quiz, index) => (
-                <div key={quiz.id} className="border-b last:border-b-0 pb-6 last:pb-0">
-                  <p className="font-semibold text-gray-900 mb-3">
+                <div key={quiz.id} className="border-b border-slate-100 last:border-b-0 pb-6 last:pb-0">
+                  <p className="font-semibold text-slate-800 mb-3">
                     {index + 1}. {quiz.question}
                   </p>
                   
@@ -273,17 +273,17 @@ export default function LessonPage() {
                           className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
                             showFeedback
                               ? isCorrect
-                                ? 'border-green-500 bg-green-50 text-gray-900'
+                                ? 'border-green-500 bg-green-50 text-slate-800'
                                 : isSelected
-                                ? 'border-red-500 bg-red-50 text-gray-900'
-                                : 'border-gray-200 bg-gray-50 text-gray-900'
+                                ? 'border-red-500 bg-red-50 text-slate-800'
+                                : 'border-slate-200 bg-slate-50 text-slate-800'
                               : isSelected
-                              ? 'border-primary bg-primary/10 text-gray-900'
-                              : 'border-gray-200 hover:border-primary/50 text-gray-900'
+                              ? 'border-blue-500 bg-blue-50 text-slate-800'
+                              : 'border-slate-200 hover:border-blue-300 text-slate-800'
                           }`}
                         >
                           <div className="flex items-center justify-between">
-                            <span className="text-gray-900">{option}</span>
+                            <span className="text-slate-800">{option}</span>
                             {showFeedback && (
                               <span>
                                 {isCorrect ? (
@@ -306,20 +306,20 @@ export default function LessonPage() {
               <Button
                 onClick={handleCheckAnswers}
                 size="lg"
-                className="w-full mt-6"
+                className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white"
               >
                 Check Answers
               </Button>
             )}
 
             {showResults && (
-              <div className="mt-6 p-4 rounded-xl bg-primary/10 border border-primary/20">
-                <p className="text-center font-semibold text-gray-900">
+              <div className="mt-6 p-4 rounded-xl bg-blue-50 border border-blue-100">
+                <p className="text-center font-semibold text-slate-800">
                   Score: {getQuizScore().correct} / {getQuizScore().total}
                   {canComplete() ? (
                     <span className="text-green-600 block mt-1">✓ Great job!</span>
                   ) : (
-                    <span className="text-orange-600 block mt-1">Review the lesson and try again</span>
+                    <span className="text-amber-600 block mt-1">Review the lesson and try again</span>
                   )}
                 </p>
               </div>
@@ -329,11 +329,11 @@ export default function LessonPage() {
       </div>
 
       {/* Complete Button */}
-      <div className="fixed bottom-16 left-0 right-0 p-6 bg-white shadow-lg border-t">
+      <div className="fixed bottom-16 left-0 right-0 p-6 bg-white shadow-lg border-t border-slate-100">
         <Button
           onClick={handleComplete}
           size="lg"
-          className="w-full"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
           disabled={completing || !canComplete()}
         >
           {completing ? 'Completing...' : 'Mark as Complete'}

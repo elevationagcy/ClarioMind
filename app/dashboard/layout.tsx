@@ -6,10 +6,9 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5]">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50">
       {children}
       <BottomNav />
     </div>
   )
 }
-

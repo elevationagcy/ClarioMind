@@ -34,14 +34,21 @@ export async function updateSession(request: NextRequest) {
 
   // Define route types
   const pathname = request.nextUrl.pathname
-  const publicRoutes = ['/welcome', '/auth/login', '/auth/register', '/privacy', '/terms']
+  const publicRoutes = ['/welcome', '/auth/login', '/auth/register', '/privacy', '/terms', '/quiz']
+  const apiRoutes = ['/api/stripe']
   const authCallbackRoute = '/auth/callback'
   const isRootPath = pathname === '/'
   const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route))
+  const isApiRoute = apiRoutes.some(route => pathname.startsWith(route))
   const isAuthCallback = pathname.startsWith(authCallbackRoute)
 
   // Allow auth callback to process (needed for email confirmation flow)
   if (isAuthCallback) {
+    return supabaseResponse
+  }
+
+  // Allow API routes (like Stripe webhooks) to pass through
+  if (isApiRoute) {
     return supabaseResponse
   }
 
@@ -58,7 +65,7 @@ export async function updateSession(request: NextRequest) {
   }
 
   // If user is not signed in and trying to access protected route, redirect to welcome
-  if (!user && !isPublicRoute && !isRootPath) {
+  if (!user && !isPublicRoute && !isRootPath && !isApiRoute) {
     const url = request.nextUrl.clone()
     url.pathname = '/welcome'
     return NextResponse.redirect(url)

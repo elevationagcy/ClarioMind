@@ -13,14 +13,14 @@ const config: Config = {
       },
       colors: {
         primary: {
-          DEFAULT: "#F97316",
-          dark: "#C2410C",
-          light: "#FB923C",
+          DEFAULT: "#2563EB",
+          dark: "#1D4ED8",
+          light: "#3B82F6",
         },
         secondary: {
-          DEFAULT: "#FDBA74",
-          light: "#FED7AA",
-          dark: "#F97316",
+          DEFAULT: "#93C5FD",
+          light: "#BFDBFE",
+          dark: "#2563EB",
         },
         background: "var(--background)",
         foreground: "var(--foreground)",

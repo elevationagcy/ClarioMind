@@ -10,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Reframe - The world's most comprehensive alcohol reduction platform",
-  description: "Build healthier drinking habits with neuroscience-based behavior change program, daily exercises, and supportive community.",
+  title: "ClarioMind - Transform Your Drinking Habits for Good",
+  description: "Science-backed alcohol reduction app for professionals. Use neuroscience and psychology to take control of your relationship with alcohol.",
 };
 
 export default function RootLayout({

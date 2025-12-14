@@ -25,13 +25,13 @@ export default function DiscoverPage() {
   const loading = challengesLoading || tipsLoading || lessonsLoading
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5] pb-24">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 pb-24">
       {/* Header */}
       <div className="p-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900">Discover</h1>
-          <div className="flex items-center bg-primary/20 px-3 py-1 rounded-full">
-            <span className="text-sm font-medium text-primary">⭐ 0</span>
+          <h1 className="text-2xl font-bold text-slate-800">Discover</h1>
+          <div className="flex items-center bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+            <span className="text-sm font-medium text-blue-600">⭐ 0</span>
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@ export default function DiscoverPage() {
       <div className="p-6 space-y-8">
         {/* Guided Challenges */}
         <div>
-          <h2 className="text-lg font-bold text-gray-900 mb-1">Guided Challenges</h2>
+          <h2 className="text-lg font-bold text-slate-800 mb-1">Guided Challenges</h2>
           {loading ? (
             <div className="flex gap-4 overflow-x-auto pb-2 -mx-6 px-6">
               {[1, 2].map((i) => (
@@ -69,10 +69,10 @@ export default function DiscoverPage() {
                 >
                   <Card
                     variant="elevated"
-                    className="p-4 cursor-pointer h-full"
+                    className="p-4 cursor-pointer h-full bg-white border border-slate-100"
                     onClick={() => router.push(`/dashboard/challenge/${challenge.id}`)}
                   >
-                    <div className="bg-gradient-to-br from-primary/20 to-purple-100 rounded-xl h-48 mb-3 relative overflow-hidden">
+                    <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl h-48 mb-3 relative overflow-hidden border border-blue-100">
                       {challenge.icon ? (
                         <Image
                           src={challenge.icon}
@@ -88,9 +88,9 @@ export default function DiscoverPage() {
                         </div>
                       )}
                     </div>
-                    <h3 className="font-bold text-gray-900 mb-2 line-clamp-2">{challenge.title}</h3>
-                    <p className="text-xs text-gray-600 mb-2 line-clamp-2">{challenge.description}</p>
-                    <div className="flex items-center justify-between text-xs text-gray-600">
+                    <h3 className="font-bold text-slate-800 mb-2 line-clamp-2">{challenge.title}</h3>
+                    <p className="text-xs text-slate-500 mb-2 line-clamp-2">{challenge.description}</p>
+                    <div className="flex items-center justify-between text-xs text-slate-500">
                       <span>{challenge.participants_count.toLocaleString()} joined</span>
                       <span>• {challenge.duration_days} days</span>
                     </div>
@@ -104,10 +104,10 @@ export default function DiscoverPage() {
         {/* Courses */}
         <div>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg font-bold text-gray-900">Courses</h2>
-            <button className="text-primary text-sm font-medium">See all</button>
+            <h2 className="text-lg font-bold text-slate-800">Courses</h2>
+            <button className="text-blue-600 text-sm font-medium">See all</button>
           </div>
-          <p className="text-gray-600 text-sm mb-4">
+          <p className="text-slate-500 text-sm mb-4">
             Empower yourself through our science-backed courses. Explore a diverse range of topics and acquire practical strategies for your journey!
           </p>
 
@@ -145,10 +145,10 @@ export default function DiscoverPage() {
                 >
                   <Card
                     variant="elevated"
-                    className="cursor-pointer h-full"
+                    className="cursor-pointer h-full bg-white border border-slate-100"
                     onClick={() => router.push(`/dashboard/lesson/${course.id}`)}
                   >
-                    <div className="rounded-t-2xl h-52 flex items-center justify-center bg-gradient-to-br from-orange-100 to-orange-200 relative overflow-hidden">
+                    <div className="rounded-t-2xl h-52 flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 relative overflow-hidden">
                       {course.icon?.startsWith('http') ? (
                         <Image
                           src={course.icon}
@@ -163,17 +163,17 @@ export default function DiscoverPage() {
                       )}
                     </div>
                     <div className="p-4">
-                      <p className="text-xs text-gray-600 mb-1">{course.category}</p>
-                      <h3 className="font-bold text-gray-900 mb-2 line-clamp-2">{course.title}</h3>
+                      <p className="text-xs text-slate-500 mb-1">{course.category}</p>
+                      <h3 className="font-bold text-slate-800 mb-2 line-clamp-2">{course.title}</h3>
                       <div className="flex items-center gap-2 text-xs mb-2">
-                        <span className="flex items-center text-gray-600">
+                        <span className="flex items-center text-slate-500">
                           ⏱ {course.duration_minutes} min
                         </span>
                       </div>
-                      <div className="flex items-center justify-between text-xs text-gray-600">
+                      <div className="flex items-center justify-between text-xs text-slate-500">
                         <span>Day {course.order}</span>
-                        <div className="flex items-center bg-secondary px-2 py-1 rounded">
-                          <span className="font-medium text-primary">Start</span>
+                        <div className="flex items-center bg-blue-50 px-2 py-1 rounded border border-blue-100">
+                          <span className="font-medium text-blue-600">Start</span>
                         </div>
                       </div>
                     </div>
@@ -187,12 +187,12 @@ export default function DiscoverPage() {
         {/* Tips from Coaches */}
         <div>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg font-bold text-gray-900">Tips from Coaches</h2>
+            <h2 className="text-lg font-bold text-slate-800">Tips from Coaches</h2>
           </div>
           {loading ? (
             <div className="space-y-3">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="flex items-start gap-4 p-4 bg-white rounded-2xl shadow-md">
+                <div key={i} className="flex items-start gap-4 p-4 bg-white rounded-2xl shadow-sm border border-slate-100">
                   <Skeleton className="w-20 h-20 rounded-xl flex-shrink-0" />
                   <div className="flex-1 space-y-2">
                     <Skeleton className="h-5 w-3/4" />
@@ -220,11 +220,11 @@ export default function DiscoverPage() {
                 >
                   <Card
                     variant="elevated"
-                    className="p-4 cursor-pointer"
+                    className="p-4 cursor-pointer bg-white border border-slate-100"
                     onClick={() => router.push(`/dashboard/tip/${tip.id}`)}
                   >
                     <div className="flex items-start gap-4">
-                      <div className="w-20 h-20 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-xl flex-shrink-0 relative overflow-hidden">
+                      <div className="w-20 h-20 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl flex-shrink-0 relative overflow-hidden border border-blue-100">
                         {tip.icon ? (
                           <Image
                             src={tip.icon}
@@ -241,12 +241,12 @@ export default function DiscoverPage() {
                         )}
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-bold text-gray-900 mb-1">{tip.title}</h3>
-                        <p className="text-xs text-primary mb-2">by {tip.coach_name}</p>
-                        <p className="text-sm text-gray-600 line-clamp-2 mb-2">
+                        <h3 className="font-bold text-slate-800 mb-1">{tip.title}</h3>
+                        <p className="text-xs text-blue-600 mb-2">by {tip.coach_name}</p>
+                        <p className="text-sm text-slate-500 line-clamp-2 mb-2">
                           {tip.content.split('\n').find(line => !line.startsWith('#') && line.trim().length > 0)}
                         </p>
-                        <div className="flex items-center gap-2 text-xs text-gray-500">
+                        <div className="flex items-center gap-2 text-xs text-slate-400">
                           <span>{tip.category}</span>
                           <span>•</span>
                           <span>{tip.duration_minutes} min read</span>
@@ -263,4 +263,3 @@ export default function DiscoverPage() {
     </div>
   )
 }
-

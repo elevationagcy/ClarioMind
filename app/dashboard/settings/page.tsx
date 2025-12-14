@@ -140,45 +140,45 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5] p-6 pb-24">
-        <p className="text-center text-gray-600 mt-12">Loading settings...</p>
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 p-6 pb-24">
+        <p className="text-center text-slate-500 mt-12">Loading settings...</p>
       </div>
     )
   }
 
   if (!settings) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5] p-6 pb-24">
-        <p className="text-center text-gray-600 mt-12">Failed to load settings.</p>
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 p-6 pb-24">
+        <p className="text-center text-slate-500 mt-12">Failed to load settings.</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5] pb-24">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 pb-24">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm p-6 shadow-sm sticky top-0 z-10">
-        <button onClick={() => router.back()} className="text-gray-900 mb-4">
+      <div className="bg-white border-b border-slate-100 p-6 sticky top-0 z-10">
+        <button onClick={() => router.back()} className="text-slate-800 mb-4">
           <ArrowLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-        <p className="text-sm text-gray-600">{userEmail}</p>
+        <h1 className="text-2xl font-bold text-slate-800">Settings</h1>
+        <p className="text-sm text-slate-500">{userEmail}</p>
       </div>
 
       {/* Content */}
       <div className="p-6 space-y-4">
         {/* Notifications Section */}
-        <Card variant="elevated" className="p-6">
+        <Card variant="elevated" className="p-6 bg-white border border-slate-100">
           <div className="flex items-center mb-4">
-            <Bell className="w-5 h-5 text-primary mr-2" />
-            <h2 className="text-lg font-bold text-gray-900">Notifications</h2>
+            <Bell className="w-5 h-5 text-blue-600 mr-2" />
+            <h2 className="text-lg font-bold text-slate-800">Notifications</h2>
           </div>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900">Daily Reminders</p>
-                <p className="text-xs text-gray-600">Get reminded to complete your daily lesson</p>
+                <p className="font-medium text-slate-800">Daily Reminders</p>
+                <p className="text-xs text-slate-500">Get reminded to complete your daily lesson</p>
               </div>
               <label className="relative inline-block w-12 h-6">
                 <input
@@ -187,27 +187,27 @@ export default function SettingsPage() {
                   onChange={(e) => updateSetting('daily_reminder', e.target.checked)}
                   className="sr-only peer"
                 />
-                <span className="absolute inset-0 bg-gray-300 rounded-full peer-checked:bg-primary transition cursor-pointer"></span>
+                <span className="absolute inset-0 bg-slate-300 rounded-full peer-checked:bg-blue-600 transition cursor-pointer"></span>
                 <span className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition peer-checked:translate-x-6"></span>
               </label>
             </div>
 
             {settings.daily_reminder && (
-              <div className="ml-4 pl-4 border-l-2 border-orange-200">
-                <label className="block text-sm text-gray-700 mb-2">Reminder Time</label>
+              <div className="ml-4 pl-4 border-l-2 border-blue-200">
+                <label className="block text-sm text-slate-600 mb-2">Reminder Time</label>
                 <input
                   type="time"
                   value={settings.reminder_time}
                   onChange={(e) => updateSetting('reminder_time', e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-gray-900 bg-white"
+                  className="px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-800 bg-white"
                 />
               </div>
             )}
 
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900">Achievement Notifications</p>
-                <p className="text-xs text-gray-600">Celebrate milestones and streaks</p>
+                <p className="font-medium text-slate-800">Achievement Notifications</p>
+                <p className="text-xs text-slate-500">Celebrate milestones and streaks</p>
               </div>
               <label className="relative inline-block w-12 h-6">
                 <input
@@ -216,15 +216,15 @@ export default function SettingsPage() {
                   onChange={(e) => updateSetting('achievement_notifications', e.target.checked)}
                   className="sr-only peer"
                 />
-                <span className="absolute inset-0 bg-gray-300 rounded-full peer-checked:bg-primary transition cursor-pointer"></span>
+                <span className="absolute inset-0 bg-slate-300 rounded-full peer-checked:bg-blue-600 transition cursor-pointer"></span>
                 <span className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition peer-checked:translate-x-6"></span>
               </label>
             </div>
 
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900">Weekly Summary</p>
-                <p className="text-xs text-gray-600">Receive weekly progress reports</p>
+                <p className="font-medium text-slate-800">Weekly Summary</p>
+                <p className="text-xs text-slate-500">Receive weekly progress reports</p>
               </div>
               <label className="relative inline-block w-12 h-6">
                 <input
@@ -233,7 +233,7 @@ export default function SettingsPage() {
                   onChange={(e) => updateSetting('weekly_summary', e.target.checked)}
                   className="sr-only peer"
                 />
-                <span className="absolute inset-0 bg-gray-300 rounded-full peer-checked:bg-primary transition cursor-pointer"></span>
+                <span className="absolute inset-0 bg-slate-300 rounded-full peer-checked:bg-blue-600 transition cursor-pointer"></span>
                 <span className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition peer-checked:translate-x-6"></span>
               </label>
             </div>
@@ -241,19 +241,19 @@ export default function SettingsPage() {
         </Card>
 
         {/* Privacy Section */}
-        <Card variant="elevated" className="p-6">
+        <Card variant="elevated" className="p-6 bg-white border border-slate-100">
           <div className="flex items-center mb-4">
-            <Lock className="w-5 h-5 text-primary mr-2" />
-            <h2 className="text-lg font-bold text-gray-900">Privacy</h2>
+            <Lock className="w-5 h-5 text-blue-600 mr-2" />
+            <h2 className="text-lg font-bold text-slate-800">Privacy</h2>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="block font-medium text-gray-900 mb-2">Profile Visibility</label>
+              <label className="block font-medium text-slate-800 mb-2">Profile Visibility</label>
               <select
                 value={settings.profile_visibility}
                 onChange={(e) => updateSetting('profile_visibility', e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-gray-900 bg-white"
+                className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-800 bg-white"
               >
                 <option value="private">Private</option>
                 <option value="friends">Friends Only</option>
@@ -263,8 +263,8 @@ export default function SettingsPage() {
 
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900">Show Progress</p>
-                <p className="text-xs text-gray-600">Display your progress to others</p>
+                <p className="font-medium text-slate-800">Show Progress</p>
+                <p className="text-xs text-slate-500">Display your progress to others</p>
               </div>
               <label className="relative inline-block w-12 h-6">
                 <input
@@ -273,15 +273,15 @@ export default function SettingsPage() {
                   onChange={(e) => updateSetting('show_progress', e.target.checked)}
                   className="sr-only peer"
                 />
-                <span className="absolute inset-0 bg-gray-300 rounded-full peer-checked:bg-primary transition cursor-pointer"></span>
+                <span className="absolute inset-0 bg-slate-300 rounded-full peer-checked:bg-blue-600 transition cursor-pointer"></span>
                 <span className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition peer-checked:translate-x-6"></span>
               </label>
             </div>
 
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900">Anonymous Mode</p>
-                <p className="text-xs text-gray-600">Hide your name and use anonymous avatar</p>
+                <p className="font-medium text-slate-800">Anonymous Mode</p>
+                <p className="text-xs text-slate-500">Hide your name and use anonymous avatar</p>
               </div>
               <label className="relative inline-block w-12 h-6">
                 <input
@@ -290,7 +290,7 @@ export default function SettingsPage() {
                   onChange={(e) => updateSetting('anonymous_mode', e.target.checked)}
                   className="sr-only peer"
                 />
-                <span className="absolute inset-0 bg-gray-300 rounded-full peer-checked:bg-primary transition cursor-pointer"></span>
+                <span className="absolute inset-0 bg-slate-300 rounded-full peer-checked:bg-blue-600 transition cursor-pointer"></span>
                 <span className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition peer-checked:translate-x-6"></span>
               </label>
             </div>
@@ -298,19 +298,19 @@ export default function SettingsPage() {
         </Card>
 
         {/* Appearance Section */}
-        <Card variant="elevated" className="p-6">
+        <Card variant="elevated" className="p-6 bg-white border border-slate-100">
           <div className="flex items-center mb-4">
-            <Palette className="w-5 h-5 text-primary mr-2" />
-            <h2 className="text-lg font-bold text-gray-900">Appearance</h2>
+            <Palette className="w-5 h-5 text-blue-600 mr-2" />
+            <h2 className="text-lg font-bold text-slate-800">Appearance</h2>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="block font-medium text-gray-900 mb-2">Theme</label>
+              <label className="block font-medium text-slate-800 mb-2">Theme</label>
               <select
                 value={settings.theme}
                 onChange={(e) => updateSetting('theme', e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-gray-900 bg-white"
+                className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-800 bg-white"
               >
                 <option value="light">Light</option>
                 <option value="dark">Dark (Coming Soon)</option>
@@ -319,11 +319,11 @@ export default function SettingsPage() {
             </div>
 
             <div>
-              <label className="block font-medium text-gray-900 mb-2">Units</label>
+              <label className="block font-medium text-slate-800 mb-2">Units</label>
               <select
                 value={settings.units}
                 onChange={(e) => updateSetting('units', e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-gray-900 bg-white"
+                className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-800 bg-white"
               >
                 <option value="metric">Metric (kg, cm)</option>
                 <option value="imperial">Imperial (lbs, inches)</option>
@@ -333,17 +333,17 @@ export default function SettingsPage() {
         </Card>
 
         {/* Email Preferences */}
-        <Card variant="elevated" className="p-6">
+        <Card variant="elevated" className="p-6 bg-white border border-slate-100">
           <div className="flex items-center mb-4">
-            <Mail className="w-5 h-5 text-primary mr-2" />
-            <h2 className="text-lg font-bold text-gray-900">Email Preferences</h2>
+            <Mail className="w-5 h-5 text-blue-600 mr-2" />
+            <h2 className="text-lg font-bold text-slate-800">Email Preferences</h2>
           </div>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900">Marketing Emails</p>
-                <p className="text-xs text-gray-600">Receive updates and special offers</p>
+                <p className="font-medium text-slate-800">Marketing Emails</p>
+                <p className="text-xs text-slate-500">Receive updates and special offers</p>
               </div>
               <label className="relative inline-block w-12 h-6">
                 <input
@@ -352,15 +352,15 @@ export default function SettingsPage() {
                   onChange={(e) => updateSetting('marketing_emails', e.target.checked)}
                   className="sr-only peer"
                 />
-                <span className="absolute inset-0 bg-gray-300 rounded-full peer-checked:bg-primary transition cursor-pointer"></span>
+                <span className="absolute inset-0 bg-slate-300 rounded-full peer-checked:bg-blue-600 transition cursor-pointer"></span>
                 <span className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition peer-checked:translate-x-6"></span>
               </label>
             </div>
 
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900">Newsletter</p>
-                <p className="text-xs text-gray-600">Monthly tips and insights</p>
+                <p className="font-medium text-slate-800">Newsletter</p>
+                <p className="text-xs text-slate-500">Monthly tips and insights</p>
               </div>
               <label className="relative inline-block w-12 h-6">
                 <input
@@ -369,7 +369,7 @@ export default function SettingsPage() {
                   onChange={(e) => updateSetting('newsletter', e.target.checked)}
                   className="sr-only peer"
                 />
-                <span className="absolute inset-0 bg-gray-300 rounded-full peer-checked:bg-primary transition cursor-pointer"></span>
+                <span className="absolute inset-0 bg-slate-300 rounded-full peer-checked:bg-blue-600 transition cursor-pointer"></span>
                 <span className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition peer-checked:translate-x-6"></span>
               </label>
             </div>
@@ -377,22 +377,22 @@ export default function SettingsPage() {
         </Card>
 
         {/* Legal Links */}
-        <Card variant="elevated" className="p-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Legal & Support</h2>
+        <Card variant="elevated" className="p-6 bg-white border border-slate-100">
+          <h2 className="text-lg font-bold text-slate-800 mb-4">Legal & Support</h2>
           <div className="space-y-3">
             <Link
               href="/terms"
-              className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition"
+              className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg transition"
             >
-              <span className="text-gray-900">Terms of Service</span>
-              <ExternalLink className="w-4 h-4 text-gray-400" />
+              <span className="text-slate-800">Terms of Service</span>
+              <ExternalLink className="w-4 h-4 text-slate-400" />
             </Link>
             <Link
               href="/privacy"
-              className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition"
+              className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg transition"
             >
-              <span className="text-gray-900">Privacy Policy</span>
-              <ExternalLink className="w-4 h-4 text-gray-400" />
+              <span className="text-slate-800">Privacy Policy</span>
+              <ExternalLink className="w-4 h-4 text-slate-400" />
             </Link>
           </div>
         </Card>
@@ -401,7 +401,7 @@ export default function SettingsPage() {
         <Button
           onClick={saveSettings}
           disabled={saving}
-          className="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-primary-dark transition flex items-center justify-center"
+          className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition flex items-center justify-center"
         >
           {saving ? (
             'Saving...'
@@ -414,9 +414,9 @@ export default function SettingsPage() {
         </Button>
 
         {/* Danger Zone */}
-        <Card variant="elevated" className="p-6 border-2 border-red-200">
+        <Card variant="elevated" className="p-6 border-2 border-red-200 bg-white">
           <h2 className="text-lg font-bold text-red-600 mb-2">Danger Zone</h2>
-          <p className="text-sm text-gray-600 mb-4">
+          <p className="text-sm text-slate-500 mb-4">
             Once you delete your account, there is no going back. Please be certain.
           </p>
           <Button
@@ -431,4 +431,3 @@ export default function SettingsPage() {
     </div>
   )
 }
-

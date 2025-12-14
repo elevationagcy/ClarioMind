@@ -1,11 +1,13 @@
-# Reframe - Sobriety App
+# ClarioMind - Transform Your Drinking Habits
 
-The world's most comprehensive alcohol reduction platform built with Next.js 15, TypeScript, and Supabase.
+Science-backed alcohol reduction app for professionals. Built with Next.js 15, TypeScript, and Supabase.
 
 ## Features
 
 - ✨ Neuroscience-based behavior change program
-- 📝 Personalized onboarding flow (demographics, goals, drinking patterns)
+- 📝 Quiz-first onboarding with dependency assessment
+- 💳 Stripe payment integration (one-time purchase)
+- 📅 Calendly consultation upsell
 - 📚 Daily lessons and exercises with progress tracking
 - 🔥 Streak tracking and gamification
 - 🧘 Mindfulness tools and meditations
@@ -18,9 +20,9 @@ The world's most comprehensive alcohol reduction platform built with Next.js 15,
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS (Mobile-first)
 - **Database & Auth:** Supabase with Row Level Security
+- **Payments:** Stripe
 - **State Management:** React Hooks
-- **Form Handling:** React Hook Form + Zod validation
-- **Animations:** Framer Motion
+- **Animations:** Lottie, Framer Motion
 - **Icons:** Lucide React
 
 ## Getting Started
@@ -30,9 +32,20 @@ The world's most comprehensive alcohol reduction platform built with Next.js 15,
    npm install
    ```
 
-2. **Set up Supabase:**
-   - All migrations have been applied via MCP
-   - Environment variables are already configured in `.env.local`
+2. **Set up environment variables:**
+   Create a `.env.local` file with:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+   
+   STRIPE_SECRET_KEY=sk_...
+   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_...
+   STRIPE_WEBHOOK_SECRET=whsec_...
+   STRIPE_PRICE_ID=price_...
+   
+   NEXT_PUBLIC_CALENDLY_URL=your-calendly-link
+   ```
 
 3. **Run the development server:**
    ```bash
@@ -44,26 +57,29 @@ The world's most comprehensive alcohol reduction platform built with Next.js 15,
 
 ## Application Flow
 
-1. **Welcome Screen** → Landing page with gradient background
-2. **Auth** → Register or Login with Supabase Auth
-3. **Intro Flow** → 5-step introduction to Reframe
-4. **Onboarding:**
-   - Demographics (sex, age, relationship, environment)
-   - Goals (quit/cut back intentions, reasons)
-   - Drinking Patterns (drinks per week, spending, triggers)
-   - Summary (personalized savings & health improvements)
-   - Plan Overview
-5. **Tutorial** → 3-step app walkthrough
-6. **Dashboard** → Main app with:
-   - Daily tasks and lessons
-   - Streak tracking
-   - 5-tab navigation (Daily Task, Toolkit, Community, Discover, Me)
+### New User Flow (Quiz-First)
+1. **Landing Page** → Beautiful marketing page with ClarioMind content
+2. **Quiz** → 12-question dependency assessment (no signup required)
+3. **Results** → Show dependency score + collect email
+4. **Checkout** → Stripe payment (one-time $49)
+5. **Upsell** → Free consultation offer with Calendly booking
+6. **Register** → Create account
+7. **Onboarding** → Demographics, goals, patterns
+8. **Dashboard** → Main app
+
+### Existing User Flow
+1. **Login** → Authenticate
+2. **Dashboard** → Access app features
 
 ## Project Structure
 
 ```
 /app
   /welcome          - Landing page
+  /quiz             - Quiz-first flow
+    /results        - Quiz results + email collection
+    /checkout       - Stripe payment
+    /upsell         - Consultation upsell
   /auth             - Login & registration
   /onboarding       - Multi-step onboarding flow
     /intro          - Pre-onboarding intro
@@ -79,14 +95,18 @@ The world's most comprehensive alcohol reduction platform built with Next.js 15,
     /discover       - Courses and challenges
     /community      - Community features
     /profile        - User profile
+  /api
+    /stripe         - Stripe checkout and webhooks
 
 /components
   /ui               - Reusable components (Button, Input, Card, etc.)
   /layout           - Bottom navigation
+  /onboarding       - Onboarding progress component
 
 /lib
   /supabase         - Client, server, and middleware config
-  /utils            - Helper functions (calculations, cn)
+  /stripe           - Stripe client config
+  /utils            - Helper functions (calculations, quiz-scoring, cn)
   /constants        - App constants (onboarding options)
 
 /types              - TypeScript type definitions
@@ -97,13 +117,28 @@ The world's most comprehensive alcohol reduction platform built with Next.js 15,
 - **user_profiles** - User demographic information
 - **user_goals** - User sobriety goals and intentions
 - **drinking_patterns** - Drinking habits and triggers
+- **quiz_responses** - Quiz answers and scores
+- **payments** - Stripe payment records
 - **lessons** - Content library
 - **user_progress** - Progress tracking and streaks
-- **quizzes** - Quiz questions (future feature)
 
 All tables have Row Level Security (RLS) enabled.
 
 ## Key Features Implemented
+
+### Quiz Flow
+- 12-question dependency assessment
+- Scoring algorithm with 4 risk levels
+- Email collection before paywall
+
+### Stripe Integration
+- One-time payment checkout
+- Webhook handling for payment confirmation
+- User provisioning after purchase
+
+### Upsell System
+- Free consultation offer
+- Calendly integration for booking
 
 ### Authentication
 - Supabase Auth with email/password
@@ -112,6 +147,7 @@ All tables have Row Level Security (RLS) enabled.
 
 ### Onboarding
 - Multi-step forms with validation
+- Global progress tracking
 - Data persistence to Supabase
 - Personalized calculations (savings, calories, REM cycles)
 
@@ -127,24 +163,18 @@ All tables have Row Level Security (RLS) enabled.
 - Safe area insets for iOS
 - Smooth animations and transitions
 
-## Environment Variables
+## Stripe Setup
 
-The following environment variables are configured:
+1. Create a product in Stripe Dashboard
+2. Create a price for one-time payment
+3. Set up webhook endpoint: `/api/stripe/webhook`
+4. Add environment variables
 
-```
-NEXT_PUBLIC_SUPABASE_URL=https://rqdzccfjkppxbcorwwuv.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-anon-key>
-```
+## Calendly Setup
 
-## Sample Data
-
-The database includes 6 sample lessons:
-1. Alcohol, Dopamine, and the Hedonic Set Point (3 min reading)
-2. Urge Surfing Exercise (2 min exercise)
-3. Log Your Stress (1 min reflection)
-4. Understanding Alcohol's Impact on Sleep (4 min reading)
-5. Mindful Breathing Meditation (5 min exercise)
-6. The Power of Self-Compassion (4 min reading)
+1. Create a ClarioMind team account
+2. Set up consultation event type
+3. Add the booking URL to environment variables
 
 ## Development
 
@@ -158,4 +188,3 @@ To add new features:
 ## License
 
 Private - All rights reserved
-

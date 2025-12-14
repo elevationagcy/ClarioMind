@@ -57,7 +57,7 @@ export function BottomNav() {
   const navItems = showAdmin ? [...baseNavItems, adminNavItem] : baseNavItems
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 pb-safe">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 pb-safe">
       <div className="flex items-center justify-around h-16">
         {navItems.map((item) => {
           const Icon = item.icon
@@ -69,11 +69,11 @@ export function BottomNav() {
               href={item.href}
               className={cn(
                 'flex flex-col items-center justify-center flex-1 h-full transition-colors',
-                isActive ? 'text-primary' : 'text-gray-400 hover:text-gray-600'
+                isActive ? 'text-blue-600' : 'text-slate-400 hover:text-slate-600'
               )}
             >
-              <Icon className="w-6 h-6 mb-1" />
-              <span className="text-xs font-medium">{item.name}</span>
+              <Icon className={cn('w-6 h-6 mb-1', isActive && 'text-blue-600')} />
+              <span className={cn('text-xs font-medium', isActive && 'text-blue-600')}>{item.name}</span>
             </Link>
           )
         })}
@@ -81,4 +81,3 @@ export function BottomNav() {
     </nav>
   )
 }
-
