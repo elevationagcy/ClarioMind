@@ -13,7 +13,8 @@ import {
   LineChart,
   Sparkles,
   Lock,
-  Zap
+  Zap,
+  Calendar
 } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
 
@@ -92,6 +93,11 @@ function CheckoutPageContent() {
       icon: Sparkles,
       title: 'Personalized Plan',
       description: 'Tailored to your triggers'
+    },
+    {
+      icon: Calendar,
+      title: 'Weekly Check-ins',
+      description: 'Structured accountability'
     }
   ]
 
@@ -124,10 +130,10 @@ function CheckoutPageContent() {
         {/* Pricing Card */}
         <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden mb-8">
           {/* Header */}
-          <div className="bg-blue-600 p-6 text-center text-white">
+          <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-center text-white">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 mb-3">
               <Zap className="w-4 h-4" />
-              <span className="text-sm font-medium">Limited Time Offer</span>
+              <span className="text-sm font-medium">Most Popular</span>
             </div>
             <h1 className="text-2xl font-bold mb-1">Unlock ClarioMind</h1>
             <p className="text-blue-100">Start your recovery journey today</p>
@@ -136,11 +142,11 @@ function CheckoutPageContent() {
           <div className="p-6 sm:p-8">
             {/* Price */}
             <div className="text-center mb-8">
-              <div className="flex items-baseline justify-center gap-2 mb-2">
-                <span className="text-5xl font-bold text-slate-800">$49</span>
-                <span className="text-slate-500 text-lg">/lifetime</span>
+              <div className="flex items-baseline justify-center gap-1 mb-2">
+                <span className="text-5xl font-bold text-slate-800">$29.99</span>
+                <span className="text-slate-500 text-lg">/month</span>
               </div>
-              <p className="text-sm text-slate-400">One-time payment. No subscriptions.</p>
+              <p className="text-sm text-slate-500">Billed monthly. Cancel anytime.</p>
             </div>
 
             {/* Features */}
@@ -212,7 +218,7 @@ function CheckoutPageContent() {
           </p>
           <div className="flex items-center justify-center gap-6">
             {[
-              { value: '80%', label: 'See improvement' },
+              { value: '98%', label: 'See improvement' },
               { value: '10k+', label: 'Active users' },
               { value: '4.9★', label: 'User rating' },
             ].map((stat, index) => (

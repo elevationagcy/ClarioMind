@@ -29,20 +29,61 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [checkingPayment, setCheckingPayment] = useState(true)
+  const [hasPayment, setHasPayment] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
 
   useEffect(() => {
-    const storedEmail = localStorage.getItem('quizEmail')
-    if (storedEmail) {
+    const checkPaymentStatus = async () => {
+      const storedEmail = localStorage.getItem('quizEmail')
+      
+      if (!storedEmail) {
+        // No email stored, redirect to quiz
+        router.push('/quiz')
+        return
+      }
+
       setEmail(storedEmail)
+
+      // Check if payment exists for this email
+      const { data: paymentData, error: paymentError } = await supabase
+        .from('payments')
+        .select('id, status')
+        .eq('email', storedEmail)
+        .eq('status', 'completed')
+        .limit(1)
+
+      if (paymentError) {
+        console.error('Error checking payment:', paymentError)
+      }
+
+      if (paymentData && paymentData.length > 0) {
+        setHasPayment(true)
+      } else {
+        // No payment found, redirect to checkout
+        router.push('/quiz/checkout')
+        return
+      }
+
+      setCheckingPayment(false)
     }
-  }, [])
+
+    checkPaymentStatus()
+  }, [router, supabase])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
+
+    // Double-check payment exists
+    if (!hasPayment) {
+      setError('Please complete payment first')
+      setLoading(false)
+      router.push('/quiz/checkout')
+      return
+    }
 
     if (password !== confirmPassword) {
       setError('Passwords do not match')
@@ -72,31 +113,40 @@ export default function RegisterPage() {
       if (signUpError) throw signUpError
 
       // The trigger creates the profile automatically
-      // Now we just need to check if this email has a payment and update has_paid
+      // Now we need to copy ALL subscription data from payments to user_profiles
       if (data.user) {
-        // Check for existing payment with this email
+        // Check for existing payment with this email - get ALL subscription fields
         const { data: paymentData } = await supabase
           .from('payments')
-          .select('id')
+          .select('id, subscription_status, stripe_subscription_id, stripe_customer_id, subscription_ends_at')
           .eq('email', email)
           .eq('status', 'completed')
+          .order('created_at', { ascending: false })
           .limit(1)
 
-        // If payment exists, update the profile (trigger creates with has_paid=false)
+        // If payment exists, update the profile with ALL subscription data
         if (paymentData && paymentData.length > 0) {
           // Wait a moment for the trigger to complete
           await new Promise(resolve => setTimeout(resolve, 500))
           
+          const payment = paymentData[0]
+          
+          // Update profile with all subscription data
           await supabase
             .from('user_profiles')
-            .update({ has_paid: true })
+            .update({ 
+              has_paid: true,
+              subscription_status: payment.subscription_status || 'active',
+              stripe_customer_id: payment.stripe_customer_id,
+              subscription_ends_at: payment.subscription_ends_at,
+            })
             .eq('user_id', data.user.id)
 
           // Link payment to user
           await supabase
             .from('payments')
             .update({ user_id: data.user.id })
-            .eq('id', paymentData[0].id)
+            .eq('id', payment.id)
         }
       }
 
@@ -107,6 +157,18 @@ export default function RegisterPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  // Show loading while checking payment
+  if (checkingPayment) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 text-blue-600 animate-spin mx-auto mb-4" />
+          <p className="text-slate-500">Verifying payment...</p>
+        </div>
+      </div>
+    )
   }
 
   if (success) {
@@ -141,7 +203,7 @@ export default function RegisterPage() {
       <header className="bg-white border-b border-slate-100">
         <div className="max-w-md mx-auto px-4 py-4 flex items-center justify-between">
           <Link 
-            href="/welcome"
+            href="/quiz/upsell"
             className="flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -159,6 +221,12 @@ export default function RegisterPage() {
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-slate-800 mb-2">Create Your Account</h1>
             <p className="text-slate-500">Start your recovery journey today</p>
+          </div>
+
+          {/* Payment Verified Badge */}
+          <div className="bg-green-50 border border-green-100 rounded-xl p-3 mb-6 flex items-center gap-3">
+            <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+            <span className="text-sm text-green-700">Payment verified for {email}</span>
           </div>
 
           {/* Register Form */}
@@ -180,22 +248,20 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              {/* Email */}
+              {/* Email - Read Only */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">Email</label>
                 <div className="relative">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                   <input
                     type="email"
-                    placeholder="you@example.com"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                    readOnly
+                    className="w-full pl-12 pr-4 py-4 bg-slate-100 border border-slate-200 rounded-xl text-slate-600 cursor-not-allowed"
                   />
                 </div>
-                <p className="text-xs text-amber-600 mt-2">
-                  ⚠️ Use the same email you used for payment
+                <p className="text-xs text-slate-500 mt-2">
+                  This is the email you used for payment
                 </p>
               </div>
 

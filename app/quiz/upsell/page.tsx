@@ -9,12 +9,18 @@ import {
   Sparkles, 
   Users, 
   Clock,
-  ArrowRight,
   Loader2,
   Phone,
   Target,
   Zap,
-  Star
+  Star,
+  Shield,
+  MessageCircle,
+  Brain,
+  HeartPulse,
+  BadgeCheck,
+  CalendarCheck,
+  Quote
 } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
 
@@ -37,33 +43,85 @@ function UpsellPageContent() {
     router.push('/auth/register')
   }
 
-  const benefits = [
+  const consultationBenefits = [
     {
       icon: Target,
-      title: 'Personalized Strategy',
-      description: 'Get a custom plan tailored to your unique triggers'
+      title: 'Get Personalized Help Tailored to Your Unique Situation and Goals',
+      description: 'Receive one-on-one guidance that addresses your specific challenges, lifestyle, and recovery objectives.'
     },
     {
-      icon: Clock,
-      title: 'Accelerated Results',
-      description: 'See progress 3x faster with expert guidance'
+      icon: Shield,
+      title: 'Learn How to Navigate Recovery Without Losing Your Professional Identity',
+      description: 'Change your relationship with alcohol while maintaining the life you\'ve built. Learn how to integrate recovery into your existing lifestyle.'
     },
     {
-      icon: Users,
-      title: '1-on-1 Support',
-      description: 'Direct access to recovery specialists'
+      icon: Brain,
+      title: 'Explore the Deep Connections Between Stress, Triggers, and Your Drinking Patterns',
+      description: 'Go beyond surface-level tracking to understand what\'s really driving your dependency.'
     },
     {
       icon: Zap,
-      title: 'Breakthrough Techniques',
-      description: 'Learn advanced strategies not in the app'
+      title: 'Master Techniques to Interrupt Cravings Before They Control Your Decisions',
+      description: 'Learn practical interventions for real-life situations like client dinners, stressful workdays, and social events.'
+    },
+    {
+      icon: Calendar,
+      title: 'Build a Personalized Recovery System That Fits Your Life',
+      description: 'Learn how to create sustainable routines and accountability structures designed around your schedule and goals.'
+    }
+  ]
+
+  const userChallenges = [
+    'They kept falling into old patterns after a couple of months',
+    'They started feeling overwhelmed',
+    'They started hiding their drinking from the app (and themselves) again'
+  ]
+
+  const isForYou = [
+    "You've tried cutting back on your own, but stress, travel, or long workdays keep pulling you back into old patterns.",
+    "You want structured accountability from an expert who understands executives, confidentiality, and the pressure you operate under.",
+    "You're ready for measurable change—better sleep, clearer thinking, improved health, and a relationship with alcohol that no longer controls your life."
+  ]
+
+  const whatYouGet = [
+    'A Free consult with our sobriety experts',
+    'A community of likeminded individuals',
+    'Access to full benefits without additional charges',
+    'No monthly subscriptions',
+    'Weekly check-ins',
+    'Priority emergency meetings'
+  ]
+
+  const howItWorks = [
+    {
+      title: 'Schedule a call with our expert',
+      items: [
+        'Choose a time that fits your schedule.',
+        'Get matched with an expert trained in executive-level addiction recovery who understands high-pressure lifestyles.',
+        'Discuss your goals discreetly and map out the first steps toward managing your alcohol use.'
+      ]
+    },
+    {
+      title: 'Learn how to stay consistent with weekly check-ins',
+      items: [
+        'Progress and highlights',
+        'Set goals for the week',
+        'Adjust your strategy weekly'
+      ]
+    },
+    {
+      title: 'Achieve your sobriety goals',
+      items: [
+        'Build sustainable habits',
+        'Track measurable improvements'
+      ]
     }
   ]
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 flex flex-col">
       {/* Header */}
-      <header className="bg-white border-b border-slate-100">
+      <header className="bg-white border-b border-slate-100 sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-center">
           <Logo size="sm" />
         </div>
@@ -78,93 +136,187 @@ function UpsellPageContent() {
               <CheckCircle2 className="w-6 h-6 text-green-600" />
             </div>
             <div>
-              <h2 className="font-bold text-green-700">Payment Successful!</h2>
-              <p className="text-sm text-green-600">Welcome to ClarioMind. Your journey begins now.</p>
+              <h2 className="font-bold text-green-700 text-lg">Congratulations on taking the first step to recovery!</h2>
             </div>
           </div>
         </div>
 
-        {/* Upsell Card */}
-        <div className={`transition-all duration-700 delay-200 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+        {/* Stats */}
+        <div className={`mb-8 transition-all duration-700 delay-100 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <div className="bg-blue-50 border border-blue-100 rounded-2xl p-5 text-center">
+            <p className="text-blue-800 text-lg">
+              <span className="font-bold text-2xl text-blue-600">98%</span> of our users have reported excellent results with ClarioMind.
+            </p>
+          </div>
+        </div>
+
+        {/* User Challenges */}
+        <div className={`mb-8 transition-all duration-700 delay-200 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <p className="text-slate-700 mb-4 text-center">However, some users reported that:</p>
+          <div className="space-y-3">
+            {userChallenges.map((challenge, index) => (
+              <div key={index} className="bg-slate-100/80 border-l-4 border-slate-400 rounded-r-xl p-4">
+                <p className="text-slate-600 italic flex items-start gap-2">
+                  <Quote className="w-4 h-4 text-slate-400 flex-shrink-0 mt-1" />
+                  {challenge}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Insight */}
+        <div className={`mb-8 transition-all duration-700 delay-300 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <p className="text-slate-700 mb-4 text-center">
+            When we reviewed these patterns, one thing became clear: <span className="font-semibold text-blue-600">recovery sometimes needs more support and more accountability.</span>
+          </p>
+          <p className="text-slate-600 text-center">
+            That's why we added something to support you beyond the app, something built specifically for high-performing professionals who want discreet, structured, continuous guidance.
+          </p>
+        </div>
+
+        {/* Offer Card */}
+        <div className={`transition-all duration-700 delay-400 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="bg-white rounded-3xl border border-slate-100 shadow-lg overflow-hidden mb-8">
             {/* Header */}
-            <div className="bg-blue-600 p-6 text-center text-white">
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-center text-white">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 mb-3">
                 <Sparkles className="w-4 h-4" />
-                <span className="text-sm font-medium">Exclusive Offer</span>
+                <span className="text-sm font-medium">Free Consultation</span>
               </div>
-              <h1 className="text-2xl font-bold mb-1">Accelerate Your Results</h1>
-              <p className="text-blue-100">Book a free strategy call with our experts</p>
+              <h1 className="text-2xl font-bold mb-2">A Free Consultation with our experts</h1>
+              <p className="text-blue-100">(No hidden charges)</p>
             </div>
 
             <div className="p-6 sm:p-8">
-              {/* Value Proposition */}
-              <div className="text-center mb-8">
-                <p className="text-lg text-slate-600 mb-4">
-                  Members who combine the app with expert coaching see results <span className="text-blue-600 font-semibold">3x faster</span>.
-                </p>
-                <div className="flex items-center justify-center gap-2 text-green-600 font-semibold">
-                  <Star className="w-5 h-5 fill-current" />
-                  <span>100% Free • No Obligation • 30 Minutes</span>
+              {/* Consultation Benefits */}
+              <div className="mb-8">
+                <h3 className="font-semibold text-lg text-slate-800 mb-4 text-center">In this Consultation, you will be able to:</h3>
+                <div className="space-y-6">
+                  {consultationBenefits.map((benefit, index) => (
+                    <div key={index} className="flex gap-4">
+                      <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center border border-blue-100 flex-shrink-0">
+                        <benefit.icon className="w-6 h-6 text-blue-600" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-slate-800 mb-1">{benefit.title}</h4>
+                        <p className="text-sm text-slate-500">{benefit.description}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              {/* Benefits Grid */}
-              <div className="grid sm:grid-cols-2 gap-4 mb-8">
-                {benefits.map((benefit, index) => (
-                  <div 
-                    key={index} 
-                    className="bg-slate-50 rounded-2xl border border-slate-100 p-4"
-                  >
-                    <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center mb-3 border border-blue-100">
-                      <benefit.icon className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <h3 className="font-semibold text-sm text-slate-800 mb-1">{benefit.title}</h3>
-                    <p className="text-xs text-slate-500">{benefit.description}</p>
-                  </div>
-                ))}
+              {/* Tagline */}
+              <div className="bg-slate-50 rounded-2xl p-4 mb-6 border border-slate-100 text-center">
+                <p className="text-slate-700 font-medium">
+                  Structured, confidential guidance built for professionals who need clarity, direction, and consistency.
+                </p>
               </div>
 
-              {/* What to Expect */}
-              <div className="bg-slate-50 rounded-2xl p-5 mb-6 border border-slate-100">
-                <h3 className="font-semibold mb-3 flex items-center gap-2 text-slate-800">
-                  <Calendar className="w-5 h-5 text-blue-600" />
-                  What to Expect on the Call
-                </h3>
-                <ul className="space-y-2 text-sm text-slate-600">
-                  {[
-                    'Review your quiz results and current situation',
-                    'Identify your unique triggers and patterns',
-                    'Create a personalized action plan',
-                    'Answer any questions about your journey'
-                  ].map((item, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* CTA Buttons */}
-              <div className="space-y-3">
-                <Button
-                  onClick={handleBookCall}
-                  className="w-full py-6 rounded-xl text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white"
-                >
-                  <Phone className="w-5 h-5 mr-2" />
-                  Book Your Free Call
-                </Button>
-                
-                <button
-                  onClick={handleSkip}
-                  className="w-full py-4 text-slate-500 hover:text-slate-700 transition-colors text-sm font-medium"
-                >
-                  Continue to Account Setup →
-                </button>
-              </div>
+              {/* CTA Button */}
+              <Button
+                onClick={handleBookCall}
+                className="w-full py-6 rounded-xl text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white mb-6"
+              >
+                <Phone className="w-5 h-5 mr-2" />
+                Book a Free Consultation
+              </Button>
             </div>
           </div>
+        </div>
+
+        {/* How It Works */}
+        <div className={`mb-8 transition-all duration-700 delay-500 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8">
+            <h2 className="text-xl font-bold text-slate-800 mb-6 text-center">How it works</h2>
+            <div className="space-y-6">
+              {howItWorks.map((step, index) => (
+                <div key={index} className="relative">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
+                      {index + 1}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-slate-800 mb-2">{step.title}</h3>
+                      <ul className="space-y-2">
+                        {step.items.map((item, itemIndex) => (
+                          <li key={itemIndex} className="flex items-start gap-2 text-sm text-slate-600">
+                            <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                  {index < howItWorks.length - 1 && (
+                    <div className="absolute left-5 top-12 w-0.5 h-8 bg-blue-100" />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* This is for you if */}
+        <div className={`mb-8 transition-all duration-700 delay-600 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8">
+            <h2 className="text-xl font-bold text-slate-800 mb-6 text-center">This is for you if:</h2>
+            <div className="space-y-4">
+              {isForYou.map((item, index) => (
+                <div key={index} className="flex items-start gap-3 p-4 bg-blue-50/50 rounded-xl border border-blue-100">
+                  <BadgeCheck className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <p className="text-slate-700">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* What's holding you back */}
+        <div className={`mb-8 transition-all duration-700 delay-700 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="bg-slate-800 rounded-3xl p-6 sm:p-8 text-white">
+            <h2 className="text-xl font-bold mb-4 text-center">What's holding you back…</h2>
+            <p className="text-slate-300 text-center mb-4">If you're honest with yourself, you already know this:</p>
+            <div className="space-y-2 text-center">
+              <p className="text-slate-200">There's no single shortcut.</p>
+              <p className="text-slate-200 font-semibold text-lg">No app can fully replace human accountability.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* What You Get */}
+        <div className={`mb-8 transition-all duration-700 delay-[800ms] ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-6 sm:p-8 text-white">
+            <h2 className="text-xl font-bold mb-6 text-center">You Get:</h2>
+            <div className="grid gap-3">
+              {whatYouGet.map((item, index) => (
+                <div key={index} className="flex items-center gap-3 bg-white/10 rounded-xl p-3">
+                  <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Final CTA */}
+            <Button
+              onClick={handleBookCall}
+              className="w-full mt-6 py-6 rounded-xl text-lg font-semibold bg-white text-blue-600 hover:bg-blue-50"
+            >
+              <Phone className="w-5 h-5 mr-2" />
+              Book a Free Consultation
+            </Button>
+          </div>
+        </div>
+
+        {/* Skip Option */}
+        <div className="text-center">
+          <button
+            onClick={handleSkip}
+            className="py-4 text-slate-500 hover:text-slate-700 transition-colors text-sm font-medium"
+          >
+            Skip for now and continue to Account Setup →
+          </button>
         </div>
       </main>
     </div>

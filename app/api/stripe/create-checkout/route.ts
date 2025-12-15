@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get the price ID from environment variable
+    // This should be a recurring price ($29.99/month) set up in Stripe
     const priceId = process.env.STRIPE_PRICE_ID
     
     if (!priceId) {
@@ -29,7 +30,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create Stripe checkout session
+    // Create Stripe checkout session for subscription
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       customer_email: email,
@@ -39,7 +40,14 @@ export async function POST(request: NextRequest) {
           quantity: 1,
         },
       ],
-      mode: 'payment',
+      // Use 'subscription' mode for recurring payments
+      mode: 'subscription',
+      subscription_data: {
+        metadata: {
+          email,
+          quizData: JSON.stringify(quizData || {}),
+        },
+      },
       success_url: `${request.headers.get('origin')}/quiz/upsell?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${request.headers.get('origin')}/quiz/checkout?canceled=true`,
       metadata: {
@@ -61,4 +69,3 @@ export async function POST(request: NextRequest) {
     )
   }
 }
-

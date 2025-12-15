@@ -37,10 +37,15 @@ export async function updateSession(request: NextRequest) {
   const publicRoutes = ['/welcome', '/auth/login', '/auth/register', '/privacy', '/terms', '/quiz']
   const apiRoutes = ['/api/stripe']
   const authCallbackRoute = '/auth/callback'
+  const subscriptionExpiredRoute = '/subscription-expired'
+  // Allow these routes for canceled users to manage their subscription
+  const allowedForCanceledUsers = ['/dashboard/settings', '/dashboard/profile']
   const isRootPath = pathname === '/'
   const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route))
   const isApiRoute = apiRoutes.some(route => pathname.startsWith(route))
   const isAuthCallback = pathname.startsWith(authCallbackRoute)
+  const isSubscriptionExpired = pathname.startsWith(subscriptionExpiredRoute)
+  const isAllowedForCanceled = allowedForCanceledUsers.some(route => pathname === route)
 
   // Allow auth callback to process (needed for email confirmation flow)
   if (isAuthCallback) {
@@ -71,18 +76,40 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // If user is signed in, check onboarding status for protected routes
+  // If user is signed in, check onboarding and subscription status
   if (user) {
     const { data: profile } = await supabase
       .from('user_profiles')
-      .select('completed_onboarding')
+      .select('completed_onboarding, has_paid, subscription_status')
       .eq('user_id', user.id)
       .single()
+
+    // Check subscription status - redirect to expired page if subscription is canceled
+    // But allow access to settings and profile pages so user can manage/resubscribe
+    if (profile && 
+        profile.has_paid === false && 
+        profile.subscription_status === 'canceled' &&
+        !isSubscriptionExpired && 
+        !isAllowedForCanceled &&
+        !pathname.startsWith('/onboarding') &&
+        !pathname.startsWith('/tutorial')) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/subscription-expired'
+      return NextResponse.redirect(url)
+    }
+
+    // If user is on subscription-expired page but has active subscription, redirect to dashboard
+    if (profile && profile.has_paid === true && isSubscriptionExpired) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/dashboard'
+      return NextResponse.redirect(url)
+    }
 
     // If no profile exists or onboarding not completed, redirect to intro
     if ((!profile || !profile.completed_onboarding) && 
         !pathname.startsWith('/onboarding') &&
-        !pathname.startsWith('/tutorial')) {
+        !pathname.startsWith('/tutorial') &&
+        !isSubscriptionExpired) {
       const url = request.nextUrl.clone()
       url.pathname = '/onboarding/intro'
       return NextResponse.redirect(url)

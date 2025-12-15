@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, ArrowRight, Loader2, Sparkles } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Loader2, Sparkles, AlertTriangle } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
 import { createClient } from '@/lib/supabase/client'
 import { RELATIONSHIP_STATUSES } from '@/lib/constants/onboarding'
@@ -62,10 +62,12 @@ export default function DemographicsPage() {
     }
   }
 
+  const isUnder18 = age !== '' && parseInt(age) < 18
+
   const canProceed = () => {
     switch (step) {
       case 1: return sex !== ''
-      case 2: return age !== '' && parseInt(age) > 0
+      case 2: return age !== '' && parseInt(age) >= 18
       case 3: return relationshipStatus !== ''
       default: return false
     }
@@ -91,7 +93,7 @@ export default function DemographicsPage() {
 
       <main className="flex-1 flex flex-col justify-center px-4 py-8 max-w-2xl mx-auto w-full">
         {step === 1 && <Step1 sex={sex} setSex={setSex} />}
-        {step === 2 && <Step2 age={age} setAge={setAge} />}
+        {step === 2 && <Step2 age={age} setAge={setAge} isUnder18={isUnder18} />}
         {step === 3 && <Step3 status={relationshipStatus} setStatus={setRelationshipStatus} />}
       </main>
 
@@ -166,7 +168,7 @@ function Step1({ sex, setSex }: { sex: string; setSex: (val: SexType) => void })
   )
 }
 
-function Step2({ age, setAge }: { age: string; setAge: (val: string) => void }) {
+function Step2({ age, setAge, isUnder18 }: { age: string; setAge: (val: string) => void; isUnder18: boolean }) {
   return (
     <div>
       <div className="text-center mb-8">
@@ -187,10 +189,26 @@ function Step2({ age, setAge }: { age: string; setAge: (val: string) => void }) 
         placeholder="Enter your age"
         value={age}
         onChange={(e) => setAge(e.target.value)}
-        min="18"
+        min="1"
         max="120"
-        className="w-full px-6 py-5 bg-white border-2 border-slate-200 rounded-2xl text-slate-800 text-center text-3xl font-bold placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+        className={`w-full px-6 py-5 bg-white border-2 rounded-2xl text-slate-800 text-center text-3xl font-bold placeholder-slate-400 focus:outline-none focus:ring-2 transition-all ${
+          isUnder18 
+            ? 'border-red-300 focus:border-red-500 focus:ring-red-100' 
+            : 'border-slate-200 focus:border-blue-500 focus:ring-blue-100'
+        }`}
       />
+
+      {isUnder18 && (
+        <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="text-red-700 font-medium">You must be 18 or older</p>
+            <p className="text-red-600 text-sm mt-1">
+              ClarioMind is designed for adults aged 18 and above. If you're struggling with alcohol, please speak with a trusted adult or healthcare provider.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

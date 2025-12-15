@@ -71,15 +71,16 @@ export async function POST(request: NextRequest) {
   }
 
   switch (event.type) {
+    // Initial checkout completed (subscription started)
     case 'checkout.session.completed': {
       const session = event.data.object as Stripe.Checkout.Session
       
       console.log('[Webhook] Processing checkout.session.completed')
       console.log('[Webhook] Session ID:', session.id)
       console.log('[Webhook] Customer email:', session.customer_email)
-      console.log('[Webhook] Metadata:', session.metadata)
+      console.log('[Webhook] Subscription ID:', session.subscription)
+      console.log('[Webhook] Mode:', session.mode)
       
-      // Get email from session (Stripe uses customer_email or we pass it in metadata)
       const email = session.customer_email || session.metadata?.email
       const quizData = session.metadata?.quizData 
         ? JSON.parse(session.metadata.quizData) 
@@ -89,8 +90,6 @@ export async function POST(request: NextRequest) {
         console.error('[Webhook] No email found in session')
         break
       }
-
-      console.log('[Webhook] Processing payment for email:', email)
 
       // Check if user already exists with this email
       const { data: existingProfile, error: profileError } = await supabaseAdmin
@@ -103,21 +102,34 @@ export async function POST(request: NextRequest) {
         console.error('[Webhook] Error checking profile:', profileError)
       }
 
-      // Store payment record
+      // Determine if this is a subscription or one-time payment
+      const isSubscription = session.mode === 'subscription'
+      
+      // Store payment/subscription record
+      const paymentData: Record<string, unknown> = {
+        email,
+        user_id: existingProfile?.user_id || null,
+        stripe_session_id: session.id,
+        stripe_customer_id: session.customer as string || null,
+        amount: session.amount_total,
+        currency: session.currency,
+        status: 'completed',
+        quiz_data: quizData,
+        created_at: new Date().toISOString(),
+        payment_type: isSubscription ? 'subscription' : 'one_time',
+      }
+
+      // Add subscription-specific fields
+      if (isSubscription) {
+        paymentData.stripe_subscription_id = session.subscription as string
+        paymentData.subscription_status = 'active' // Will start as trialing if there's a trial
+      } else {
+        paymentData.stripe_payment_intent_id = session.payment_intent as string
+      }
+
       const { data: paymentRecord, error: paymentError } = await supabaseAdmin
         .from('payments')
-        .insert({
-          email,
-          user_id: existingProfile?.user_id || null,
-          stripe_session_id: session.id,
-          stripe_payment_intent_id: session.payment_intent as string,
-          stripe_customer_id: session.customer as string || null,
-          amount: session.amount_total,
-          currency: session.currency,
-          status: 'completed',
-          quiz_data: quizData,
-          created_at: new Date().toISOString(),
-        })
+        .insert(paymentData)
         .select()
         .single()
 
@@ -127,11 +139,16 @@ export async function POST(request: NextRequest) {
         console.log('[Webhook] Payment stored successfully:', paymentRecord?.id)
       }
 
-      // If user already exists, update their payment status
+      // Update user profile if exists - also clear any cancellation state
       if (existingProfile) {
         const { error: updateError } = await supabaseAdmin
           .from('user_profiles')
-          .update({ has_paid: true })
+          .update({ 
+            has_paid: true,
+            subscription_status: isSubscription ? 'active' : null,
+            subscription_ends_at: null, // Clear cancellation end date
+            stripe_customer_id: session.customer as string || null,
+          })
           .eq('user_id', existingProfile.user_id)
 
         if (updateError) {
@@ -139,8 +156,233 @@ export async function POST(request: NextRequest) {
         } else {
           console.log('[Webhook] Updated has_paid for user:', existingProfile.user_id)
         }
-      } else {
-        console.log('[Webhook] No existing user for email:', email, '- Payment stored, will link on registration')
+      }
+
+      // Also update any existing payment records for this user to mark old ones as superseded
+      if (existingProfile && isSubscription) {
+        // Update old payment records to clear canceling status if user re-subscribed
+        await supabaseAdmin
+          .from('payments')
+          .update({ 
+            subscription_status: 'superseded',
+            updated_at: new Date().toISOString(),
+          })
+          .eq('user_id', existingProfile.user_id)
+          .eq('subscription_status', 'canceling')
+          .neq('stripe_subscription_id', session.subscription as string)
+      }
+      
+      break
+    }
+
+    // Subscription status updated (e.g., trial ended, renewed, un-canceled)
+    case 'customer.subscription.updated': {
+      const subscription = event.data.object as Stripe.Subscription
+      
+      // Check if subscription is set to cancel at period end
+      const cancelAtPeriodEnd = (subscription as any).cancel_at_period_end
+      const currentPeriodEnd = (subscription as any).current_period_end
+      
+      // Determine the effective status - if cancel_at_period_end is true, treat as 'canceling'
+      const effectiveStatus = cancelAtPeriodEnd && subscription.status === 'active' 
+        ? 'canceling' 
+        : subscription.status
+      
+      // Calculate subscription_ends_at only if canceling
+      const subscriptionEndsAt = cancelAtPeriodEnd && currentPeriodEnd
+        ? new Date(currentPeriodEnd * 1000).toISOString()
+        : null // Clear the end date if not canceling
+      
+      console.log('[Webhook] Processing customer.subscription.updated')
+      console.log('[Webhook] Subscription ID:', subscription.id)
+      console.log('[Webhook] Stripe Status:', subscription.status)
+      console.log('[Webhook] Cancel at period end:', cancelAtPeriodEnd)
+      console.log('[Webhook] Effective Status:', effectiveStatus)
+      console.log('[Webhook] Subscription ends at:', subscriptionEndsAt)
+
+      // Update subscription status in payments table
+      const { data: paymentData, error: updatePaymentError } = await supabaseAdmin
+        .from('payments')
+        .update({ 
+          subscription_status: effectiveStatus,
+          subscription_ends_at: subscriptionEndsAt, // Clear if not canceling
+          updated_at: new Date().toISOString(),
+        })
+        .eq('stripe_subscription_id', subscription.id)
+        .select('user_id, email')
+        .single()
+
+      if (updatePaymentError) {
+        console.error('[Webhook] Error updating payment subscription status:', updatePaymentError)
+      }
+
+      // Prepare the profile update data
+      const profileUpdate = {
+        subscription_status: effectiveStatus,
+        subscription_ends_at: subscriptionEndsAt,
+        // If subscription is canceled or past_due, mark as not paid
+        // But if it's 'canceling', user still has access until period end
+        has_paid: ['active', 'trialing', 'canceling'].includes(effectiveStatus),
+      }
+
+      // Update user_profiles by stripe_customer_id
+      if (subscription.customer) {
+        const { error: updateProfileError } = await supabaseAdmin
+          .from('user_profiles')
+          .update(profileUpdate)
+          .eq('stripe_customer_id', subscription.customer as string)
+
+        if (updateProfileError) {
+          console.error('[Webhook] Error updating profile by customer_id:', updateProfileError)
+        }
+      }
+
+      // Also try updating by user_id from payment record (backup for reliability)
+      if (paymentData?.user_id) {
+        const { error: updateProfileError2 } = await supabaseAdmin
+          .from('user_profiles')
+          .update(profileUpdate)
+          .eq('user_id', paymentData.user_id)
+
+        if (updateProfileError2) {
+          console.error('[Webhook] Error updating profile by user_id:', updateProfileError2)
+        } else {
+          console.log('[Webhook] Successfully updated profile by user_id:', paymentData.user_id)
+        }
+      }
+      
+      break
+    }
+
+    // Subscription canceled
+    case 'customer.subscription.deleted': {
+      const subscription = event.data.object as Stripe.Subscription
+      
+      console.log('[Webhook] Processing customer.subscription.deleted')
+      console.log('[Webhook] Subscription ID:', subscription.id)
+
+      // Update payment record
+      const { data: paymentData, error: updatePaymentError } = await supabaseAdmin
+        .from('payments')
+        .update({ 
+          subscription_status: 'canceled',
+          updated_at: new Date().toISOString(),
+        })
+        .eq('stripe_subscription_id', subscription.id)
+        .select('user_id, email')
+        .single()
+
+      if (updatePaymentError) {
+        console.error('[Webhook] Error updating payment to canceled:', updatePaymentError)
+      }
+
+      // Update user profile - try both by stripe_customer_id AND user_id for reliability
+      if (subscription.customer) {
+        const { error: updateProfileError1 } = await supabaseAdmin
+          .from('user_profiles')
+          .update({ 
+            subscription_status: 'canceled',
+            has_paid: false,
+          })
+          .eq('stripe_customer_id', subscription.customer as string)
+
+        if (updateProfileError1) {
+          console.error('[Webhook] Error updating profile by customer_id:', updateProfileError1)
+        }
+      }
+
+      // Also try updating by user_id from payment record (backup)
+      if (paymentData?.user_id) {
+        const { error: updateProfileError2 } = await supabaseAdmin
+          .from('user_profiles')
+          .update({ 
+            subscription_status: 'canceled',
+            has_paid: false,
+          })
+          .eq('user_id', paymentData.user_id)
+
+        if (updateProfileError2) {
+          console.error('[Webhook] Error updating profile by user_id:', updateProfileError2)
+        } else {
+          console.log('[Webhook] Successfully updated profile by user_id:', paymentData.user_id)
+        }
+      }
+      
+      break
+    }
+
+    // Monthly payment succeeded
+    case 'invoice.payment_succeeded': {
+      const invoice = event.data.object as Stripe.Invoice
+      // Get subscription ID - it can be string or Subscription object
+      const subscriptionId = typeof invoice.parent?.subscription_details?.subscription === 'string' 
+        ? invoice.parent.subscription_details.subscription 
+        : (invoice.parent?.subscription_details?.subscription as Stripe.Subscription | null)?.id || null
+      
+      console.log('[Webhook] Processing invoice.payment_succeeded')
+      console.log('[Webhook] Invoice ID:', invoice.id)
+      console.log('[Webhook] Subscription:', subscriptionId)
+      
+      // If this is a subscription invoice (not the first one), log successful payment
+      if (subscriptionId && invoice.billing_reason === 'subscription_cycle') {
+        console.log('[Webhook] Recurring payment successful for subscription:', subscriptionId)
+        
+        // Update the payment record with latest payment info
+        const { error } = await supabaseAdmin
+          .from('payments')
+          .update({ 
+            last_payment_at: new Date().toISOString(),
+            subscription_status: 'active',
+          })
+          .eq('stripe_subscription_id', subscriptionId)
+
+        if (error) {
+          console.error('[Webhook] Error updating last payment:', error)
+        }
+      }
+      
+      break
+    }
+
+    // Monthly payment failed
+    case 'invoice.payment_failed': {
+      const invoice = event.data.object as Stripe.Invoice
+      // Get subscription ID - it can be string or Subscription object
+      const subscriptionId = typeof invoice.parent?.subscription_details?.subscription === 'string' 
+        ? invoice.parent.subscription_details.subscription 
+        : (invoice.parent?.subscription_details?.subscription as Stripe.Subscription | null)?.id || null
+      
+      console.log('[Webhook] Processing invoice.payment_failed')
+      console.log('[Webhook] Invoice ID:', invoice.id)
+      console.log('[Webhook] Subscription:', subscriptionId)
+
+      if (subscriptionId) {
+        // Update payment record
+        const { error: updatePaymentError } = await supabaseAdmin
+          .from('payments')
+          .update({ 
+            subscription_status: 'past_due',
+            updated_at: new Date().toISOString(),
+          })
+          .eq('stripe_subscription_id', subscriptionId)
+
+        if (updatePaymentError) {
+          console.error('[Webhook] Error updating payment to past_due:', updatePaymentError)
+        }
+
+        // Update user profile
+        if (invoice.customer) {
+          const { error: updateProfileError } = await supabaseAdmin
+            .from('user_profiles')
+            .update({ 
+              subscription_status: 'past_due',
+            })
+            .eq('stripe_customer_id', invoice.customer as string)
+
+          if (updateProfileError) {
+            console.error('[Webhook] Error updating profile to past_due:', updateProfileError)
+          }
+        }
       }
       
       break
@@ -149,12 +391,6 @@ export async function POST(request: NextRequest) {
     case 'checkout.session.expired': {
       const session = event.data.object as Stripe.Checkout.Session
       console.log('[Webhook] Checkout session expired:', session.id)
-      break
-    }
-
-    case 'payment_intent.payment_failed': {
-      const paymentIntent = event.data.object as Stripe.PaymentIntent
-      console.log('[Webhook] Payment failed:', paymentIntent.id)
       break
     }
 

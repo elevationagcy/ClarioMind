@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, Bell, Lock, Palette, Mail, Trash2, Save, ExternalLink } from 'lucide-react'
+import { ConfirmModal, AlertModal } from '@/components/ui/modal'
+import { ArrowLeft, Bell, Lock, Palette, Mail, Trash2, Save, ExternalLink, CreditCard, AlertTriangle, CheckCircle2, Clock, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 
 interface UserSettings {
@@ -25,16 +26,54 @@ interface UserSettings {
   newsletter: boolean
 }
 
+interface SubscriptionInfo {
+  id: string
+  payment_type: 'one_time' | 'subscription'
+  subscription_status: string | null
+  stripe_subscription_id: string | null
+  amount: number
+  currency: string
+  created_at: string
+  subscription_ends_at: string | null
+}
+
 export default function SettingsPage() {
   const router = useRouter()
   const [settings, setSettings] = useState<UserSettings | null>(null)
+  const [subscription, setSubscription] = useState<SubscriptionInfo | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [cancelingSubscription, setCancelingSubscription] = useState(false)
+  const [resumingSubscription, setResumingSubscription] = useState(false)
+  const [resubscribing, setResubscribing] = useState(false)
   const [userEmail, setUserEmail] = useState('')
+  const [userId, setUserId] = useState('')
+  const [stripeCustomerId, setStripeCustomerId] = useState<string | null>(null)
+
+  // Modal states
+  const [showCancelModal, setShowCancelModal] = useState(false)
+  const [showResumeModal, setShowResumeModal] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false)
+  const [alertModal, setAlertModal] = useState<{
+    isOpen: boolean
+    title: string
+    message: string
+    variant: 'success' | 'error' | 'info'
+  }>({
+    isOpen: false,
+    title: '',
+    message: '',
+    variant: 'info'
+  })
 
   useEffect(() => {
     loadSettings()
   }, [])
+
+  const showAlert = (title: string, message: string, variant: 'success' | 'error' | 'info' = 'info') => {
+    setAlertModal({ isOpen: true, title, message, variant })
+  }
 
   const loadSettings = async () => {
     try {
@@ -43,6 +82,18 @@ export default function SettingsPage() {
 
       if (user) {
         setUserEmail(user.email || '')
+        setUserId(user.id)
+
+        // Load stripe customer id from profile
+        const { data: profileData } = await supabase
+          .from('user_profiles')
+          .select('stripe_customer_id')
+          .eq('user_id', user.id)
+          .single()
+        
+        if (profileData?.stripe_customer_id) {
+          setStripeCustomerId(profileData.stripe_customer_id)
+        }
 
         // Load settings
         const { data, error } = await supabase
@@ -64,6 +115,20 @@ export default function SettingsPage() {
           }
         } else {
           setSettings(data)
+        }
+
+        // Load subscription info
+        const { data: paymentData } = await supabase
+          .from('payments')
+          .select('id, payment_type, subscription_status, stripe_subscription_id, amount, currency, created_at, subscription_ends_at')
+          .eq('user_id', user.id)
+          .eq('status', 'completed')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single()
+
+        if (paymentData) {
+          setSubscription(paymentData)
         }
       }
     } catch (error) {
@@ -105,36 +170,222 @@ export default function SettingsPage() {
         .eq('user_id', settings.user_id)
 
       if (!error) {
-        alert('Settings saved successfully!')
+        showAlert('Success', 'Your settings have been saved successfully.', 'success')
       } else {
-        alert('Failed to save settings. Please try again.')
+        showAlert('Error', 'Failed to save settings. Please try again.', 'error')
       }
     } catch (error) {
       console.error('Error saving settings:', error)
-      alert('An error occurred while saving settings.')
+      showAlert('Error', 'An error occurred while saving settings.', 'error')
     } finally {
       setSaving(false)
     }
   }
 
-  const handleDeleteAccount = async () => {
-    if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+  const handleCancelSubscriptionClick = () => {
+    if (!subscription?.stripe_subscription_id) {
+      showAlert('Error', 'No active subscription found.', 'error')
       return
     }
+    setShowCancelModal(true)
+  }
 
-    if (!confirm('This will permanently delete all your data, including progress, lessons, and personal information. Continue?')) {
-      return
+  const handleCancelSubscriptionConfirm = async () => {
+    setShowCancelModal(false)
+    
+    if (!subscription?.stripe_subscription_id) return
+
+    setCancelingSubscription(true)
+    try {
+      const response = await fetch('/api/stripe/cancel-subscription', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          subscriptionId: subscription.stripe_subscription_id,
+          userId: userId,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        setSubscription({
+          ...subscription,
+          subscription_status: 'canceling',
+          subscription_ends_at: data.currentPeriodEnd || subscription.subscription_ends_at,
+        })
+        const endDateText = data.currentPeriodEnd 
+          ? formatDate(data.currentPeriodEnd) 
+          : 'the end of your billing period'
+        showAlert(
+          'Subscription Canceled',
+          `Your subscription has been canceled. You will retain access until ${endDateText}.`,
+          'success'
+        )
+      } else {
+        showAlert('Error', data.error || 'Failed to cancel subscription.', 'error')
+      }
+    } catch (error) {
+      console.error('Error canceling subscription:', error)
+      showAlert('Error', 'Failed to cancel subscription. Please try again or contact support.', 'error')
+    } finally {
+      setCancelingSubscription(false)
     }
+  }
 
+  const handleResumeSubscriptionClick = () => {
+    setShowResumeModal(true)
+  }
+
+  const handleResubscribeClick = async () => {
+    setResubscribing(true)
+    try {
+      const response = await fetch('/api/stripe/resubscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: userId,
+          email: userEmail,
+          customerId: stripeCustomerId,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        showAlert('Error', data.error || 'Failed to create checkout session.', 'error')
+      }
+    } catch (error) {
+      console.error('Resubscribe error:', error)
+      showAlert('Error', 'Failed to start resubscription. Please try again.', 'error')
+    } finally {
+      setResubscribing(false)
+    }
+  }
+
+  const handleResumeSubscriptionConfirm = async () => {
+    setShowResumeModal(false)
+    
+    if (!subscription?.stripe_subscription_id) return
+
+    setResumingSubscription(true)
+    try {
+      const response = await fetch('/api/stripe/resume-subscription', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          subscriptionId: subscription.stripe_subscription_id,
+          userId: userId,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        setSubscription({
+          ...subscription,
+          subscription_status: 'active',
+          subscription_ends_at: null,
+        })
+        showAlert(
+          'Subscription Resumed',
+          'Your subscription has been resumed. You will continue to be billed monthly.',
+          'success'
+        )
+      } else {
+        showAlert('Error', data.error || 'Failed to resume subscription.', 'error')
+      }
+    } catch (error) {
+      console.error('Error resuming subscription:', error)
+      showAlert('Error', 'Failed to resume subscription. Please try again or contact support.', 'error')
+    } finally {
+      setResumingSubscription(false)
+    }
+  }
+
+  const handleDeleteAccountClick = () => {
+    setShowDeleteModal(true)
+  }
+
+  const handleDeleteAccountFirstConfirm = () => {
+    setShowDeleteModal(false)
+    setShowDeleteConfirmModal(true)
+  }
+
+  const handleDeleteAccountFinalConfirm = async () => {
+    setShowDeleteConfirmModal(false)
+    
     try {
       const supabase = createClient()
-      // Note: Actual account deletion would require backend implementation
-      // For now, we'll just sign out
       await supabase.auth.signOut()
       router.push('/welcome')
     } catch (error) {
       console.error('Error deleting account:', error)
-      alert('Failed to delete account. Please contact support.')
+      showAlert('Error', 'Failed to delete account. Please contact support.', 'error')
+    }
+  }
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  }
+
+  const getNextBillingDate = (startDate: string) => {
+    const start = new Date(startDate)
+    const now = new Date()
+    const monthsSinceStart = Math.floor((now.getTime() - start.getTime()) / (30 * 24 * 60 * 60 * 1000))
+    const nextBilling = new Date(start)
+    nextBilling.setMonth(nextBilling.getMonth() + monthsSinceStart + 1)
+    return nextBilling.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  }
+
+  const getSubscriptionStatusBadge = (status: string | null) => {
+    switch (status) {
+      case 'active':
+        return (
+          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+            <CheckCircle2 className="w-3 h-3" />
+            Active
+          </span>
+        )
+      case 'trialing':
+        return (
+          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+            <Clock className="w-3 h-3" />
+            Trial
+          </span>
+        )
+      case 'canceling':
+        return (
+          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
+            <AlertTriangle className="w-3 h-3" />
+            Canceling
+          </span>
+        )
+      case 'canceled':
+        return (
+          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700">
+            Canceled
+          </span>
+        )
+      case 'past_due':
+        return (
+          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
+            <AlertTriangle className="w-3 h-3" />
+            Past Due
+          </span>
+        )
+      default:
+        return null
     }
   }
 
@@ -156,6 +407,59 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 pb-24">
+      {/* Modals */}
+      <ConfirmModal
+        isOpen={showCancelModal}
+        onClose={() => setShowCancelModal(false)}
+        onConfirm={handleCancelSubscriptionConfirm}
+        title="Cancel Subscription?"
+        message="Are you sure you want to cancel your subscription? You will retain access until the end of your current billing period."
+        confirmText="Yes, Cancel"
+        cancelText="Keep Subscription"
+        variant="warning"
+      />
+
+      <ConfirmModal
+        isOpen={showResumeModal}
+        onClose={() => setShowResumeModal(false)}
+        onConfirm={handleResumeSubscriptionConfirm}
+        title="Resume Subscription?"
+        message="Would you like to resume your subscription? Your billing will continue as normal and you won't lose access."
+        confirmText="Yes, Resume"
+        cancelText="Keep Canceled"
+        variant="default"
+      />
+
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDeleteAccountFirstConfirm}
+        title="Delete Account?"
+        message="Are you sure you want to delete your account? This action cannot be undone."
+        confirmText="Continue"
+        cancelText="Cancel"
+        variant="danger"
+      />
+
+      <ConfirmModal
+        isOpen={showDeleteConfirmModal}
+        onClose={() => setShowDeleteConfirmModal(false)}
+        onConfirm={handleDeleteAccountFinalConfirm}
+        title="Final Confirmation"
+        message="This will permanently delete all your data, including progress, lessons, and personal information. Are you absolutely sure?"
+        confirmText="Delete Forever"
+        cancelText="Cancel"
+        variant="danger"
+      />
+
+      <AlertModal
+        isOpen={alertModal.isOpen}
+        onClose={() => setAlertModal({ ...alertModal, isOpen: false })}
+        title={alertModal.title}
+        message={alertModal.message}
+        variant={alertModal.variant}
+      />
+
       {/* Header */}
       <div className="bg-white border-b border-slate-100 p-6 sticky top-0 z-10">
         <button onClick={() => router.back()} className="text-slate-800 mb-4">
@@ -167,6 +471,145 @@ export default function SettingsPage() {
 
       {/* Content */}
       <div className="p-6 space-y-4">
+        {/* Subscription Section */}
+        <Card variant="elevated" className="p-6 bg-white border border-slate-100">
+          <div className="flex items-center mb-4">
+            <CreditCard className="w-5 h-5 text-blue-600 mr-2" />
+            <h2 className="text-lg font-bold text-slate-800">Subscription</h2>
+          </div>
+
+          {subscription ? (
+            <div className="space-y-4">
+              {/* Subscription Status */}
+              <div className="flex items-center justify-between">
+                <span className="text-slate-600">Status</span>
+                {getSubscriptionStatusBadge(subscription.subscription_status)}
+              </div>
+
+              {/* Plan Type */}
+              <div className="flex items-center justify-between">
+                <span className="text-slate-600">Plan</span>
+                <span className="font-medium text-slate-800">
+                  {subscription.payment_type === 'subscription' ? 'Monthly' : 'Lifetime'}
+                </span>
+              </div>
+
+              {/* Price */}
+              <div className="flex items-center justify-between">
+                <span className="text-slate-600">Price</span>
+                <span className="font-medium text-slate-800">
+                  ${(subscription.amount / 100).toFixed(2)}/{subscription.payment_type === 'subscription' ? 'month' : 'one-time'}
+                </span>
+              </div>
+
+              {/* Member Since */}
+              <div className="flex items-center justify-between">
+                <span className="text-slate-600">Member Since</span>
+                <span className="font-medium text-slate-800">
+                  {formatDate(subscription.created_at)}
+                </span>
+              </div>
+
+              {/* Next Billing Date (only for subscriptions) */}
+              {subscription.payment_type === 'subscription' && subscription.subscription_status === 'active' && (
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-600">Next Billing Date</span>
+                  <span className="font-medium text-slate-800">
+                    {getNextBillingDate(subscription.created_at)}
+                  </span>
+                </div>
+              )}
+
+              {/* Cancellation Notice with Resume Option */}
+              {subscription.subscription_status === 'canceling' && (
+                <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg space-y-3">
+                  <p className="text-sm text-amber-700">
+                    Your subscription has been canceled. You will retain full access until{' '}
+                    <span className="font-semibold">
+                      {subscription.subscription_ends_at 
+                        ? formatDate(subscription.subscription_ends_at)
+                        : 'the end of your billing period'}
+                    </span>.
+                  </p>
+                  <Button
+                    onClick={handleResumeSubscriptionClick}
+                    disabled={resumingSubscription}
+                    className="w-full bg-green-600 hover:bg-green-700 text-white"
+                  >
+                    {resumingSubscription ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                        Resuming...
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircle2 className="w-4 h-4 mr-2" />
+                        Resume Subscription
+                      </>
+                    )}
+                  </Button>
+                </div>
+              )}
+
+              {/* Fully Canceled - Resubscribe Option */}
+              {subscription.subscription_status === 'canceled' && (
+                <div className="p-4 bg-red-50 border border-red-200 rounded-lg space-y-3">
+                  <p className="text-sm text-red-700">
+                    Your subscription has expired. Resubscribe to regain access to all features.
+                  </p>
+                  <Button
+                    onClick={handleResubscribeClick}
+                    disabled={resubscribing}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    {resubscribing ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                        Loading...
+                      </>
+                    ) : (
+                      <>
+                        <CreditCard className="w-4 h-4 mr-2" />
+                        Resubscribe - $29.99/mo
+                      </>
+                    )}
+                  </Button>
+                </div>
+              )}
+
+              {/* Cancel Button (only for active subscriptions) */}
+              {subscription.payment_type === 'subscription' && 
+               subscription.stripe_subscription_id && 
+               ['active', 'trialing'].includes(subscription.subscription_status || '') && (
+                <Button
+                  onClick={handleCancelSubscriptionClick}
+                  disabled={cancelingSubscription}
+                  variant="outline"
+                  className="w-full mt-2 border-slate-200 text-slate-600 hover:bg-slate-50"
+                >
+                  {cancelingSubscription ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                      Canceling...
+                    </>
+                  ) : (
+                    'Cancel Subscription'
+                  )}
+                </Button>
+              )}
+            </div>
+          ) : (
+            <div className="text-center py-4">
+              <p className="text-slate-500 mb-3">No active subscription found</p>
+              <Link href="/quiz/checkout">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                  Subscribe Now
+                </Button>
+              </Link>
+            </div>
+          )}
+        </Card>
+
         {/* Notifications Section */}
         <Card variant="elevated" className="p-6 bg-white border border-slate-100">
           <div className="flex items-center mb-4">
@@ -420,7 +863,7 @@ export default function SettingsPage() {
             Once you delete your account, there is no going back. Please be certain.
           </p>
           <Button
-            onClick={handleDeleteAccount}
+            onClick={handleDeleteAccountClick}
             className="w-full bg-red-600 text-white py-3 rounded-xl font-semibold hover:bg-red-700 transition flex items-center justify-center"
           >
             <Trash2 className="w-5 h-5 mr-2" />

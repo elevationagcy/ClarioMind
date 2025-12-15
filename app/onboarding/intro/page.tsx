@@ -64,16 +64,16 @@ export default function IntroPage() {
                 className="flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
-              </button>
+          </button>
             ) : (
               <div className="w-8" />
-            )}
+        )}
             <Logo size="sm" />
             <div className="w-8" />
-          </div>
-          
+      </div>
+
           <OnboardingProgress currentPage="intro" currentStep={step} />
-        </div>
+      </div>
       </header>
 
       {/* Content */}
@@ -86,9 +86,9 @@ export default function IntroPage() {
       {/* Footer */}
       <footer className="bg-white border-t border-slate-100 sticky bottom-0">
         <div className="max-w-2xl mx-auto px-4 py-4">
-          <Button
-            onClick={handleNext}
-            size="lg"
+        <Button
+          onClick={handleNext}
+          size="lg"
             disabled={(step === 2 && !referralSource) || loading}
             className={`w-full py-6 rounded-xl text-lg font-semibold ${
               (step === 2 && !referralSource) || loading
@@ -112,8 +112,8 @@ export default function IntroPage() {
                 <ArrowRight className="ml-2 w-5 h-5" />
               </>
             )}
-          </Button>
-        </div>
+        </Button>
+      </div>
       </footer>
     </div>
   )
@@ -131,7 +131,7 @@ function Step1() {
         ClarioMind Works.
         <span className="block text-blue-600">Period.</span>
       </h1>
-
+      
       <div className="my-8 relative h-48 flex items-center justify-center">
         <DotLottieReact
           src="https://lottie.host/f38cb803-24f4-498a-b24f-587078bfdfd2/BBZKJ20M6D.lottie"
@@ -161,11 +161,11 @@ function Step2({ referralSource, setReferralSource }: { referralSource: string; 
     <div>
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-slate-800 mb-3">
-          How did you hear about us?
-        </h2>
+        How did you hear about us?
+      </h2>
         <p className="text-slate-500">
           We're curious to know what brought you here today!
-        </p>
+      </p>
       </div>
 
       <div className="space-y-3">
