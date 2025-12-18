@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe/client'
 import { createClient } from '@supabase/supabase-js'
+import { createClient as createServerClient } from '@/lib/supabase/server'
 
 // Initialize Supabase client with service role
 const getSupabaseAdmin = () => {
@@ -29,6 +30,34 @@ export async function POST(request: NextRequest) {
         { error: 'Subscription ID and User ID are required' },
         { status: 400 }
       )
+    }
+
+    // SECURITY: Verify the authenticated user matches the userId
+    const supabase = await createServerClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    
+    if (!user || user.id !== userId) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    // SECURITY: Verify the subscription belongs to this user
+    const supabaseAdmin = getSupabaseAdmin()
+    if (supabaseAdmin) {
+      const { data: payment } = await supabaseAdmin
+        .from('payments')
+        .select('user_id')
+        .eq('stripe_subscription_id', subscriptionId)
+        .single()
+      
+      if (!payment || payment.user_id !== userId) {
+        return NextResponse.json(
+          { error: 'Subscription not found or does not belong to user' },
+          { status: 403 }
+        )
+      }
     }
 
     // Cancel the subscription at period end (user keeps access until end of billing period)

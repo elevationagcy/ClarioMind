@@ -83,12 +83,12 @@ export default function DemographicsPage() {
               className="flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
-            </button>
+        </button>
             <Logo size="sm" />
             <div className="w-8" />
           </div>
           <OnboardingProgress currentPage="demographics" currentStep={step} />
-        </div>
+      </div>
       </header>
 
       <main className="flex-1 flex flex-col justify-center px-4 py-8 max-w-2xl mx-auto w-full">
@@ -99,10 +99,10 @@ export default function DemographicsPage() {
 
       <footer className="bg-white border-t border-slate-100 sticky bottom-0">
         <div className="max-w-2xl mx-auto px-4 py-4">
-          <Button
-            onClick={handleNext}
-            size="lg"
-            disabled={!canProceed() || loading}
+        <Button
+          onClick={handleNext}
+          size="lg"
+          disabled={!canProceed() || loading}
             className={`w-full py-6 rounded-xl text-lg font-semibold ${
               !canProceed() || loading
                 ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
@@ -120,8 +120,8 @@ export default function DemographicsPage() {
                 <ArrowRight className="ml-2 w-5 h-5" />
               </>
             )}
-          </Button>
-        </div>
+        </Button>
+      </div>
       </footer>
     </div>
   )
@@ -143,25 +143,25 @@ function Step1({ sex, setSex }: { sex: string; setSex: (val: SexType) => void })
         </div>
         <h2 className="text-2xl font-bold text-slate-800 mb-3">
           Sex and hormones impact how our body responds to alcohol.
-        </h2>
+      </h2>
         <p className="text-slate-500">
-          This helps us provide science-backed insights tailored to your biology.
-        </p>
+        This helps us provide science-backed insights tailored to your biology.
+      </p>
       </div>
 
       <div className="space-y-3">
         {options.map((option) => (
-          <button
+        <button
             key={option.value}
             onClick={() => setSex(option.value)}
             className={`w-full p-4 rounded-2xl text-left font-medium transition-all border-2 ${
               sex === option.value
                 ? 'bg-blue-50 border-blue-500 text-blue-700'
                 : 'bg-white border-slate-100 text-slate-700 hover:border-blue-200'
-            }`}
-          >
+          }`}
+        >
             {option.label}
-          </button>
+        </button>
         ))}
       </div>
     </div>
@@ -177,11 +177,11 @@ function Step2({ age, setAge, isUnder18 }: { age: string; setAge: (val: string) 
           <span className="text-sm text-blue-700 font-medium">Building your profile</span>
         </div>
         <h2 className="text-2xl font-bold text-slate-800 mb-3">
-          What is your age?
-        </h2>
+        What is your age?
+      </h2>
         <p className="text-slate-500">
-          Age-specific insights help us recommend the most effective strategies for you.
-        </p>
+        Age-specific insights help us recommend the most effective strategies for you.
+      </p>
       </div>
 
       <input
@@ -222,11 +222,11 @@ function Step3({ status, setStatus }: { status: string; setStatus: (val: string)
           <span className="text-sm text-blue-700 font-medium">Understanding your support system</span>
         </div>
         <h2 className="text-2xl font-bold text-slate-800 mb-3">
-          What is your relationship status?
-        </h2>
+        What is your relationship status?
+      </h2>
         <p className="text-slate-500">
           Your relationships play a key role in your journey.
-        </p>
+      </p>
       </div>
 
       <div className="space-y-3">

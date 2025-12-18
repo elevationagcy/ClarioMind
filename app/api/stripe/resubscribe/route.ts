@@ -1,17 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe/client'
-import { createClient } from '@supabase/supabase-js'
-
-// Initialize Supabase client with service role
-const getSupabaseAdmin = () => {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key = process.env.SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY
-  
-  if (!url || !key) {
-    return null
-  }
-  return createClient(url, key)
-}
+import { createClient as createServerClient } from '@/lib/supabase/server'
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,6 +17,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: 'User ID and email are required' },
         { status: 400 }
+      )
+    }
+
+    // SECURITY: Verify the authenticated user matches the userId
+    const supabase = await createServerClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    
+    if (!user || user.id !== userId) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    // Verify the email matches the authenticated user
+    if (user.email !== email) {
+      return NextResponse.json(
+        { error: 'Email mismatch' },
+        { status: 403 }
       )
     }
 
@@ -89,6 +97,7 @@ export async function POST(request: NextRequest) {
     )
   }
 }
+
 
 
 

@@ -71,7 +71,7 @@ function LoginPageContent() {
           >
             <ArrowLeft className="w-5 h-5" />
             <span className="text-sm font-medium hidden sm:inline">Back</span>
-          </Link>
+        </Link>
           <Logo size="sm" />
           <div className="w-8" />
         </div>
@@ -80,11 +80,11 @@ function LoginPageContent() {
       {/* Main Content */}
       <main className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-md">
-          {/* Header */}
+        {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-slate-800 mb-2">Welcome Back</h1>
             <p className="text-slate-500">Sign in to continue your journey</p>
-          </div>
+        </div>
 
           {/* Success Message */}
           {showConfirmationSuccess && (
@@ -108,11 +108,11 @@ function LoginPageContent() {
                 <div className="relative">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                   <input
-                    type="email"
-                    placeholder="you@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
+            type="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
                     className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
                   />
                 </div>
@@ -125,10 +125,10 @@ function LoginPageContent() {
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                   <input
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
                     className="w-full pl-12 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
                   />
                   <button
@@ -150,11 +150,11 @@ function LoginPageContent() {
               )}
 
               {/* Submit Button */}
-              <Button
-                type="submit"
-                disabled={loading}
+          <Button 
+            type="submit" 
+            disabled={loading}
                 className="w-full py-5 rounded-xl text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white"
-              >
+          >
                 {loading ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin mr-2" />
@@ -163,18 +163,18 @@ function LoginPageContent() {
                 ) : (
                   'Sign In'
                 )}
-              </Button>
-            </form>
+          </Button>
+        </form>
 
             {/* Register Link */}
             <div className="mt-6 text-center">
               <p className="text-sm text-slate-500">
-                Don't have an account?{' '}
+          Don't have an account?{' '}
                 <Link href="/auth/register" className="text-blue-600 hover:text-blue-700 font-medium">
                   Create one
-                </Link>
-              </p>
-            </div>
+          </Link>
+        </p>
+      </div>
           </div>
         </div>
       </main>

@@ -435,8 +435,8 @@ export default function WelcomePage() {
               <Link href="/terms" className="hover:text-slate-800 transition-colors">Terms of Service</Link>
               <span>© 2024 ClarioMind. All rights reserved.</span>
             </div>
-          </div>
         </div>
+      </div>
       </footer>
     </div>
   )

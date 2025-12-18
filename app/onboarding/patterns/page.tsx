@@ -81,12 +81,12 @@ export default function PatternsPage() {
               className="flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
-            </button>
+        </button>
             <Logo size="sm" />
             <div className="w-8" />
-          </div>
+      </div>
           <OnboardingProgress currentPage="patterns" currentStep={step} />
-        </div>
+      </div>
       </header>
 
       <main className="flex-1 flex flex-col justify-center px-4 py-8 max-w-2xl mx-auto w-full">
@@ -96,10 +96,10 @@ export default function PatternsPage() {
 
       <footer className="bg-white border-t border-slate-100 sticky bottom-0">
         <div className="max-w-2xl mx-auto px-4 py-4">
-          <Button
-            onClick={handleNext}
-            size="lg"
-            disabled={!canProceed() || loading}
+        <Button
+          onClick={handleNext}
+          size="lg"
+          disabled={!canProceed() || loading}
             className={`w-full py-6 rounded-xl text-lg font-semibold ${
               !canProceed() || loading
                 ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
@@ -117,8 +117,8 @@ export default function PatternsPage() {
                 <ArrowRight className="ml-2 w-5 h-5" />
               </>
             )}
-          </Button>
-        </div>
+        </Button>
+      </div>
       </footer>
     </div>
   )
@@ -138,11 +138,11 @@ function Step2({ drinks, setDrinks, spend, setSpend }: {
           <span className="text-sm text-blue-700 font-medium">Let's look at your baseline</span>
         </div>
         <h2 className="text-2xl font-bold text-slate-800 mb-3">
-          What does a typical week look like for you?
-        </h2>
+        What does a typical week look like for you?
+      </h2>
         <p className="text-slate-500 text-sm">
-          We'll use this to show you potential savings and health benefits!
-        </p>
+        We'll use this to show you potential savings and health benefits!
+      </p>
       </div>
 
       <div className="space-y-8">
@@ -190,10 +190,10 @@ function Step6({ frequency, setFrequency }: { frequency: string; setFrequency: (
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-4">
           <Sparkles className="w-4 h-4 text-blue-600" />
           <span className="text-sm text-blue-700 font-medium">Assessing the impact</span>
-        </div>
+      </div>
         <h2 className="text-2xl font-bold text-slate-800 mb-3">
           How often does alcohol interfere with your life?
-        </h2>
+      </h2>
         <p className="text-slate-500 text-sm">
           Recognizing the impact is a sign of strength.
         </p>

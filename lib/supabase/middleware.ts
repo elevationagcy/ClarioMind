@@ -105,19 +105,20 @@ export async function updateSession(request: NextRequest) {
       return NextResponse.redirect(url)
     }
 
-    // If no profile exists or onboarding not completed, redirect to intro
+    // If no profile exists or onboarding not completed, redirect to install-app first
     if ((!profile || !profile.completed_onboarding) && 
         !pathname.startsWith('/onboarding') &&
         !pathname.startsWith('/tutorial') &&
+        !pathname.startsWith('/install-app') &&
         !isSubscriptionExpired) {
       const url = request.nextUrl.clone()
-      url.pathname = '/onboarding/intro'
+      url.pathname = '/install-app'
       return NextResponse.redirect(url)
     }
 
-    // If onboarding completed and trying to access onboarding, redirect to dashboard
+    // If onboarding completed and trying to access onboarding or install-app, redirect to dashboard
     if (profile && profile.completed_onboarding && 
-        (pathname.startsWith('/onboarding') || pathname.startsWith('/tutorial'))) {
+        (pathname.startsWith('/onboarding') || pathname.startsWith('/tutorial') || pathname.startsWith('/install-app'))) {
       const url = request.nextUrl.clone()
       url.pathname = '/dashboard'
       return NextResponse.redirect(url)

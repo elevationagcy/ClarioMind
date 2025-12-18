@@ -208,7 +208,7 @@ export default function RegisterPage() {
           >
             <ArrowLeft className="w-5 h-5" />
             <span className="text-sm font-medium hidden sm:inline">Back</span>
-          </Link>
+        </Link>
           <Logo size="sm" />
           <div className="w-8" />
         </div>
@@ -217,7 +217,7 @@ export default function RegisterPage() {
       {/* Main Content */}
       <main className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-md">
-          {/* Header */}
+        {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-slate-800 mb-2">Create Your Account</h1>
             <p className="text-slate-500">Start your recovery journey today</p>
@@ -227,9 +227,9 @@ export default function RegisterPage() {
           <div className="bg-green-50 border border-green-100 rounded-xl p-3 mb-6 flex items-center gap-3">
             <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
             <span className="text-sm text-green-700">Payment verified for {email}</span>
-          </div>
+        </div>
 
-          {/* Register Form */}
+        {/* Register Form */}
           <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8">
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Name */}
@@ -238,11 +238,11 @@ export default function RegisterPage() {
                 <div className="relative">
                   <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                   <input
-                    type="text"
-                    placeholder="John Doe"
+            type="text"
+            placeholder="John Doe"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    required
+            required
                     className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
                   />
                 </div>
@@ -254,8 +254,8 @@ export default function RegisterPage() {
                 <div className="relative">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                   <input
-                    type="email"
-                    value={email}
+            type="email"
+            value={email}
                     readOnly
                     className="w-full pl-12 pr-4 py-4 bg-slate-100 border border-slate-200 rounded-xl text-slate-600 cursor-not-allowed"
                   />
@@ -272,10 +272,10 @@ export default function RegisterPage() {
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                   <input
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
                     className="w-full pl-12 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
                   />
                   <button
@@ -295,10 +295,10 @@ export default function RegisterPage() {
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                   <input
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="••••••••"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
+            placeholder="••••••••"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
                     className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
                   />
                 </div>
@@ -313,11 +313,11 @@ export default function RegisterPage() {
               )}
 
               {/* Submit Button */}
-              <Button
-                type="submit"
-                disabled={loading}
+          <Button 
+            type="submit" 
+            disabled={loading}
                 className="w-full py-5 rounded-xl text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white"
-              >
+          >
                 {loading ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin mr-2" />
@@ -326,24 +326,24 @@ export default function RegisterPage() {
                 ) : (
                   'Create Account'
                 )}
-              </Button>
+          </Button>
 
               {/* Security Note */}
               <div className="flex items-center justify-center gap-2 text-xs text-slate-400">
                 <Shield className="w-3 h-3" />
                 <span>Your data is encrypted and secure</span>
               </div>
-            </form>
+        </form>
 
             {/* Login Link */}
             <div className="mt-6 text-center">
               <p className="text-sm text-slate-500">
-                Already have an account?{' '}
+          Already have an account?{' '}
                 <Link href="/auth/login" className="text-blue-600 hover:text-blue-700 font-medium">
                   Sign in
-                </Link>
-              </p>
-            </div>
+          </Link>
+        </p>
+      </div>
           </div>
         </div>
       </main>

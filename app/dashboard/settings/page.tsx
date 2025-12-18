@@ -35,6 +35,8 @@ interface SubscriptionInfo {
   currency: string
   created_at: string
   subscription_ends_at: string | null
+  billing_interval_count: number | null
+  next_billing_date: string | null
 }
 
 export default function SettingsPage() {
@@ -120,7 +122,7 @@ export default function SettingsPage() {
         // Load subscription info
         const { data: paymentData } = await supabase
           .from('payments')
-          .select('id, payment_type, subscription_status, stripe_subscription_id, amount, currency, created_at, subscription_ends_at')
+          .select('id, payment_type, subscription_status, stripe_subscription_id, amount, currency, created_at, subscription_ends_at, billing_interval_count, next_billing_date')
           .eq('user_id', user.id)
           .eq('status', 'completed')
           .order('created_at', { ascending: false })
@@ -289,9 +291,10 @@ export default function SettingsPage() {
           subscription_status: 'active',
           subscription_ends_at: null,
         })
+        const billingText = getBillingPeriodText(subscription.billing_interval_count)
         showAlert(
           'Subscription Resumed',
-          'Your subscription has been resumed. You will continue to be billed monthly.',
+          `Your subscription has been resumed. You will continue to be billed every ${billingText}.`,
           'success'
         )
       } else {
@@ -335,17 +338,34 @@ export default function SettingsPage() {
     })
   }
 
-  const getNextBillingDate = (startDate: string) => {
-    const start = new Date(startDate)
-    const now = new Date()
-    const monthsSinceStart = Math.floor((now.getTime() - start.getTime()) / (30 * 24 * 60 * 60 * 1000))
-    const nextBilling = new Date(start)
-    nextBilling.setMonth(nextBilling.getMonth() + monthsSinceStart + 1)
-    return nextBilling.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
+  const getPlanName = (intervalCount: number | null) => {
+    switch (intervalCount) {
+      case 1:
+        return '1-Month Plan'
+      case 3:
+        return '3-Month Plan'
+      case 6:
+        return '6-Month Plan'
+      case 12:
+        return 'Annual Plan'
+      default:
+        return 'Monthly Plan'
+    }
+  }
+
+  const getBillingPeriodText = (intervalCount: number | null) => {
+    switch (intervalCount) {
+      case 1:
+        return 'month'
+      case 3:
+        return '3 months'
+      case 6:
+        return '6 months'
+      case 12:
+        return 'year'
+      default:
+        return 'month'
+    }
   }
 
   const getSubscriptionStatusBadge = (status: string | null) => {
@@ -490,7 +510,9 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between">
                 <span className="text-slate-600">Plan</span>
                 <span className="font-medium text-slate-800">
-                  {subscription.payment_type === 'subscription' ? 'Monthly' : 'Lifetime'}
+                  {subscription.payment_type === 'subscription' 
+                    ? getPlanName(subscription.billing_interval_count) 
+                    : 'Lifetime'}
                 </span>
               </div>
 
@@ -498,7 +520,9 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between">
                 <span className="text-slate-600">Price</span>
                 <span className="font-medium text-slate-800">
-                  ${(subscription.amount / 100).toFixed(2)}/{subscription.payment_type === 'subscription' ? 'month' : 'one-time'}
+                  ${(subscription.amount / 100).toFixed(2)}/{subscription.payment_type === 'subscription' 
+                    ? getBillingPeriodText(subscription.billing_interval_count) 
+                    : 'one-time'}
                 </span>
               </div>
 
@@ -510,12 +534,12 @@ export default function SettingsPage() {
                 </span>
               </div>
 
-              {/* Next Billing Date (only for subscriptions) */}
-              {subscription.payment_type === 'subscription' && subscription.subscription_status === 'active' && (
+              {/* Next Billing Date (only for active subscriptions) */}
+              {subscription.payment_type === 'subscription' && subscription.subscription_status === 'active' && subscription.next_billing_date && (
                 <div className="flex items-center justify-between">
                   <span className="text-slate-600">Next Billing Date</span>
                   <span className="font-medium text-slate-800">
-                    {getNextBillingDate(subscription.created_at)}
+                    {formatDate(subscription.next_billing_date)}
                   </span>
                 </div>
               )}

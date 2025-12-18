@@ -89,12 +89,12 @@ export default function GoalsPage() {
               className="flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
-            </button>
+        </button>
             <Logo size="sm" />
             <div className="w-8" />
-          </div>
+      </div>
           <OnboardingProgress currentPage="goals" currentStep={step} />
-        </div>
+      </div>
       </header>
 
       <main className="flex-1 flex flex-col justify-center px-4 py-8 max-w-2xl mx-auto w-full">
@@ -105,10 +105,10 @@ export default function GoalsPage() {
 
       <footer className="bg-white border-t border-slate-100 sticky bottom-0">
         <div className="max-w-2xl mx-auto px-4 py-4">
-          <Button
-            onClick={handleNext}
-            size="lg"
-            disabled={!canProceed() || loading}
+        <Button
+          onClick={handleNext}
+          size="lg"
+          disabled={!canProceed() || loading}
             className={`w-full py-6 rounded-xl text-lg font-semibold ${
               !canProceed() || loading
                 ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
@@ -126,8 +126,8 @@ export default function GoalsPage() {
                 <ArrowRight className="ml-2 w-5 h-5" />
               </>
             )}
-          </Button>
-        </div>
+        </Button>
+      </div>
       </footer>
     </div>
   )
@@ -139,7 +139,7 @@ function Step2({ triedBefore, setTriedBefore }: { triedBefore: boolean | null; s
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold text-slate-800 mb-3">
           Have you tried to cut back or quit drinking in the past?
-        </h2>
+      </h2>
         <p className="text-slate-500">
           If you've tried before, you're already showing incredible determination.
         </p>
@@ -150,17 +150,17 @@ function Step2({ triedBefore, setTriedBefore }: { triedBefore: boolean | null; s
           { value: true, label: 'Yes' },
           { value: false, label: 'No' }
         ].map((option) => (
-          <button
+        <button
             key={String(option.value)}
             onClick={() => setTriedBefore(option.value)}
             className={`w-full p-4 rounded-2xl text-left font-medium transition-all border-2 ${
               triedBefore === option.value
                 ? 'bg-blue-50 border-blue-500 text-blue-700'
                 : 'bg-white border-slate-100 text-slate-700 hover:border-blue-200'
-            }`}
-          >
+          }`}
+        >
             {option.label}
-          </button>
+        </button>
         ))}
       </div>
     </div>
@@ -176,20 +176,20 @@ function Step3({ reasons, toggleReason }: { reasons: string[]; toggleReason: (re
           <span className="text-sm text-blue-700 font-medium">Your "why" is powerful</span>
         </div>
         <h2 className="text-2xl font-bold text-slate-800 mb-3">
-          Why do you want to change your drinking habits?
-        </h2>
+        Why do you want to change your drinking habits?
+      </h2>
         <p className="text-slate-500 text-sm">
-          Select all that apply — we'll remind you of these reasons when you need it most
-        </p>
+        Select all that apply — we'll remind you of these reasons when you need it most
+      </p>
       </div>
 
       <div className="space-y-3 max-h-[50vh] overflow-y-auto pr-2">
         {CHANGE_REASONS.map((reason) => {
           const isSelected = reasons.includes(reason)
           return (
-            <button
-              key={reason}
-              onClick={() => toggleReason(reason)}
+          <button
+            key={reason}
+            onClick={() => toggleReason(reason)}
               className={`w-full p-4 rounded-2xl text-left font-medium transition-all border-2 flex items-center gap-3 ${
                 isSelected
                   ? 'bg-blue-50 border-blue-500 text-blue-700'
@@ -201,8 +201,8 @@ function Step3({ reasons, toggleReason }: { reasons: string[]; toggleReason: (re
               }`}>
                 {isSelected && <Check className="w-4 h-4 text-white" />}
               </div>
-              {reason}
-            </button>
+            {reason}
+          </button>
           )
         })}
       </div>
@@ -226,26 +226,26 @@ function Step4({ goal, setGoal }: { goal: string; setGoal: (val: AlcoholGoalType
           <span className="text-sm text-blue-700 font-medium">Define your path forward</span>
         </div>
         <h2 className="text-2xl font-bold text-slate-800 mb-3">
-          How do you want to change your relationship with alcohol?
-        </h2>
+        How do you want to change your relationship with alcohol?
+      </h2>
         <p className="text-slate-500 text-sm">
           You can always adjust your goal as you progress.
-        </p>
+      </p>
       </div>
 
       <div className="space-y-3">
         {options.map((option) => (
-          <button
+        <button
             key={option.value}
             onClick={() => setGoal(option.value)}
             className={`w-full p-4 rounded-2xl text-left font-medium transition-all border-2 ${
               goal === option.value
                 ? 'bg-blue-50 border-blue-500 text-blue-700'
                 : 'bg-white border-slate-100 text-slate-700 hover:border-blue-200'
-            }`}
-          >
+          }`}
+        >
             {option.label}
-          </button>
+        </button>
         ))}
       </div>
     </div>

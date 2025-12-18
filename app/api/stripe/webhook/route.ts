@@ -105,6 +105,25 @@ export async function POST(request: NextRequest) {
       // Determine if this is a subscription or one-time payment
       const isSubscription = session.mode === 'subscription'
       
+      // Get subscription details including billing interval
+      let billingIntervalCount = 1 // Default to 1 month
+      let currentPeriodEnd: string | null = null
+      
+      if (isSubscription && session.subscription) {
+        try {
+          const stripeSubscription = await stripe!.subscriptions.retrieve(session.subscription as string)
+          const priceData = stripeSubscription.items.data[0]?.price
+          billingIntervalCount = priceData?.recurring?.interval_count || 1
+          currentPeriodEnd = stripeSubscription.current_period_end 
+            ? new Date(stripeSubscription.current_period_end * 1000).toISOString()
+            : null
+          console.log('[Webhook] Billing interval count:', billingIntervalCount)
+          console.log('[Webhook] Current period end:', currentPeriodEnd)
+        } catch (err) {
+          console.error('[Webhook] Error fetching subscription details:', err)
+        }
+      }
+      
       // Store payment/subscription record
       const paymentData: Record<string, unknown> = {
         email,
@@ -123,6 +142,8 @@ export async function POST(request: NextRequest) {
       if (isSubscription) {
         paymentData.stripe_subscription_id = session.subscription as string
         paymentData.subscription_status = 'active' // Will start as trialing if there's a trial
+        paymentData.billing_interval_count = billingIntervalCount
+        paymentData.next_billing_date = currentPeriodEnd
       } else {
         paymentData.stripe_payment_intent_id = session.payment_intent as string
       }
@@ -323,16 +344,28 @@ export async function POST(request: NextRequest) {
       console.log('[Webhook] Invoice ID:', invoice.id)
       console.log('[Webhook] Subscription:', subscriptionId)
       
-      // If this is a subscription invoice (not the first one), log successful payment
+      // If this is a subscription invoice (not the first one), update payment info
       if (subscriptionId && invoice.billing_reason === 'subscription_cycle') {
         console.log('[Webhook] Recurring payment successful for subscription:', subscriptionId)
         
-        // Update the payment record with latest payment info
+        // Fetch the subscription to get the next billing date
+        let nextBillingDate: string | null = null
+        try {
+          const stripeSubscription = await stripe!.subscriptions.retrieve(subscriptionId)
+          if (stripeSubscription.current_period_end) {
+            nextBillingDate = new Date(stripeSubscription.current_period_end * 1000).toISOString()
+          }
+        } catch (err) {
+          console.error('[Webhook] Error fetching subscription for next_billing_date:', err)
+        }
+        
+        // Update the payment record with latest payment info and next billing date
         const { error } = await supabaseAdmin
           .from('payments')
           .update({ 
             last_payment_at: new Date().toISOString(),
             subscription_status: 'active',
+            next_billing_date: nextBillingDate,
           })
           .eq('stripe_subscription_id', subscriptionId)
 
