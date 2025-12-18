@@ -45,19 +45,24 @@ export async function POST(request: NextRequest) {
 
     // SECURITY: Verify the subscription belongs to this user
     const supabaseAdmin = getSupabaseAdmin()
-    if (supabaseAdmin) {
-      const { data: payment } = await supabaseAdmin
-        .from('payments')
-        .select('user_id')
-        .eq('stripe_subscription_id', subscriptionId)
-        .single()
-      
-      if (!payment || payment.user_id !== userId) {
-        return NextResponse.json(
-          { error: 'Subscription not found or does not belong to user' },
-          { status: 403 }
-        )
-      }
+    if (!supabaseAdmin) {
+      return NextResponse.json(
+        { error: 'Database not configured' },
+        { status: 500 }
+      )
+    }
+
+    const { data: payment } = await supabaseAdmin
+      .from('payments')
+      .select('user_id')
+      .eq('stripe_subscription_id', subscriptionId)
+      .single()
+    
+    if (!payment || payment.user_id !== userId) {
+      return NextResponse.json(
+        { error: 'Subscription not found or does not belong to user' },
+        { status: 403 }
+      )
     }
 
     // Resume the subscription by setting cancel_at_period_end to false
@@ -68,28 +73,25 @@ export async function POST(request: NextRequest) {
     console.log('[Resume] Subscription resumed:', subscription.id)
     console.log('[Resume] Cancel at period end:', (subscription as any).cancel_at_period_end)
 
-    // Update database
-    const supabaseAdmin = getSupabaseAdmin()
-    if (supabaseAdmin) {
-      // Update payments table
-      await supabaseAdmin
-        .from('payments')
-        .update({ 
-          subscription_status: 'active',
-          subscription_ends_at: null, // Clear the end date
-          updated_at: new Date().toISOString(),
-        })
-        .eq('stripe_subscription_id', subscriptionId)
+    // Update database (reusing supabaseAdmin from security check)
+    // Update payments table
+    await supabaseAdmin
+      .from('payments')
+      .update({ 
+        subscription_status: 'active',
+        subscription_ends_at: null, // Clear the end date
+        updated_at: new Date().toISOString(),
+      })
+      .eq('stripe_subscription_id', subscriptionId)
 
-      // Update user_profiles
-      await supabaseAdmin
-        .from('user_profiles')
-        .update({ 
-          subscription_status: 'active',
-          subscription_ends_at: null,
-        })
-        .eq('user_id', userId)
-    }
+    // Update user_profiles
+    await supabaseAdmin
+      .from('user_profiles')
+      .update({ 
+        subscription_status: 'active',
+        subscription_ends_at: null,
+      })
+      .eq('user_id', userId)
 
     return NextResponse.json({ 
       success: true,

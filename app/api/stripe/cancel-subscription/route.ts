@@ -45,19 +45,24 @@ export async function POST(request: NextRequest) {
 
     // SECURITY: Verify the subscription belongs to this user
     const supabaseAdmin = getSupabaseAdmin()
-    if (supabaseAdmin) {
-      const { data: payment } = await supabaseAdmin
-        .from('payments')
-        .select('user_id')
-        .eq('stripe_subscription_id', subscriptionId)
-        .single()
-      
-      if (!payment || payment.user_id !== userId) {
-        return NextResponse.json(
-          { error: 'Subscription not found or does not belong to user' },
-          { status: 403 }
-        )
-      }
+    if (!supabaseAdmin) {
+      return NextResponse.json(
+        { error: 'Database not configured' },
+        { status: 500 }
+      )
+    }
+
+    const { data: payment } = await supabaseAdmin
+      .from('payments')
+      .select('user_id')
+      .eq('stripe_subscription_id', subscriptionId)
+      .single()
+    
+    if (!payment || payment.user_id !== userId) {
+      return NextResponse.json(
+        { error: 'Subscription not found or does not belong to user' },
+        { status: 403 }
+      )
     }
 
     // Cancel the subscription at period end (user keeps access until end of billing period)
@@ -70,28 +75,25 @@ export async function POST(request: NextRequest) {
     const currentPeriodEnd = (subscription as any).current_period_end
     const subscriptionEndsAt = currentPeriodEnd ? new Date(currentPeriodEnd * 1000).toISOString() : null
 
-    // Update database
-    const supabaseAdmin = getSupabaseAdmin()
-    if (supabaseAdmin) {
-      // Update payments table
-      await supabaseAdmin
-        .from('payments')
-        .update({ 
-          subscription_status: 'canceling',
-          subscription_ends_at: subscriptionEndsAt,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('stripe_subscription_id', subscriptionId)
+    // Update database (reusing supabaseAdmin from security check)
+    // Update payments table
+    await supabaseAdmin
+      .from('payments')
+      .update({ 
+        subscription_status: 'canceling',
+        subscription_ends_at: subscriptionEndsAt,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('stripe_subscription_id', subscriptionId)
 
-      // Update user_profiles
-      await supabaseAdmin
-        .from('user_profiles')
-        .update({ 
-          subscription_status: 'canceling',
-          subscription_ends_at: subscriptionEndsAt,
-        })
-        .eq('user_id', userId)
-    }
+    // Update user_profiles
+    await supabaseAdmin
+      .from('user_profiles')
+      .update({ 
+        subscription_status: 'canceling',
+        subscription_ends_at: subscriptionEndsAt,
+      })
+      .eq('user_id', userId)
     
     return NextResponse.json({ 
       success: true,
