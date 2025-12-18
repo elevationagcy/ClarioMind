@@ -114,8 +114,9 @@ export async function POST(request: NextRequest) {
           const stripeSubscription = await stripe!.subscriptions.retrieve(session.subscription as string)
           const priceData = stripeSubscription.items.data[0]?.price
           billingIntervalCount = priceData?.recurring?.interval_count || 1
-          currentPeriodEnd = stripeSubscription.current_period_end 
-            ? new Date(stripeSubscription.current_period_end * 1000).toISOString()
+          const periodEnd = (stripeSubscription as any).current_period_end
+          currentPeriodEnd = periodEnd 
+            ? new Date(periodEnd * 1000).toISOString()
             : null
           console.log('[Webhook] Billing interval count:', billingIntervalCount)
           console.log('[Webhook] Current period end:', currentPeriodEnd)
@@ -352,8 +353,9 @@ export async function POST(request: NextRequest) {
         let nextBillingDate: string | null = null
         try {
           const stripeSubscription = await stripe!.subscriptions.retrieve(subscriptionId)
-          if (stripeSubscription.current_period_end) {
-            nextBillingDate = new Date(stripeSubscription.current_period_end * 1000).toISOString()
+          const periodEnd = (stripeSubscription as any).current_period_end
+          if (periodEnd) {
+            nextBillingDate = new Date(periodEnd * 1000).toISOString()
           }
         } catch (err) {
           console.error('[Webhook] Error fetching subscription for next_billing_date:', err)
