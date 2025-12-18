@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { email, quizData } = await request.json()
+    const { email, quizData, planId, priceId: clientPriceId } = await request.json()
 
     if (!email) {
       return NextResponse.json(
@@ -19,14 +19,20 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get the price ID from environment variable
-    // This should be a recurring price ($29.99/month) set up in Stripe
-    const priceId = process.env.STRIPE_PRICE_ID
+    // Map plan IDs to their price IDs (server-side validation)
+    const priceMapping: Record<string, string | undefined> = {
+      '1-month': process.env.STRIPE_PRICE_1_MONTH,
+      '3-month': process.env.STRIPE_PRICE_3_MONTH,
+      '6-month': process.env.STRIPE_PRICE_6_MONTH,
+    }
+
+    // Use server-side price ID for security, fallback to default
+    const priceId = planId ? priceMapping[planId] : process.env.STRIPE_PRICE_ID
     
     if (!priceId) {
       return NextResponse.json(
-        { error: 'Stripe price not configured' },
-        { status: 500 }
+        { error: 'Invalid plan selected or price not configured' },
+        { status: 400 }
       )
     }
 
@@ -45,6 +51,7 @@ export async function POST(request: NextRequest) {
       subscription_data: {
         metadata: {
           email,
+          planId: planId || 'default',
           quizData: JSON.stringify(quizData || {}),
         },
       },
@@ -52,6 +59,7 @@ export async function POST(request: NextRequest) {
       cancel_url: `${request.headers.get('origin')}/quiz/checkout?canceled=true`,
       metadata: {
         email,
+        planId: planId || 'default',
         quizData: JSON.stringify(quizData || {}),
       },
       allow_promotion_codes: true,

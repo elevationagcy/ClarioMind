@@ -14,9 +14,57 @@ import {
   Sparkles,
   Lock,
   Zap,
-  Calendar
+  Calendar,
+  Check
 } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
+
+interface Plan {
+  id: string
+  name: string
+  duration: string
+  pricePerDay: string
+  totalPrice: string
+  billingPeriod: string
+  badge?: string
+  savings?: string
+  recommended?: boolean
+  priceId: string
+}
+
+const plans: Plan[] = [
+  {
+    id: '3-month',
+    name: '3-month plan',
+    duration: 'every 3 months',
+    pricePerDay: '0.67',
+    totalPrice: '59.99',
+    billingPeriod: 'USD 59.99',
+    savings: '33%',
+    priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_3_MONTH || '',
+  },
+  {
+    id: '1-month',
+    name: '1-month plan',
+    duration: 'every month',
+    pricePerDay: '1.00',
+    totalPrice: '29.99',
+    billingPeriod: 'USD 29.99',
+    badge: 'Top Choice for Beginners',
+    priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_1_MONTH || '',
+  },
+  {
+    id: '6-month',
+    name: '6-month plan',
+    duration: 'every 6 months',
+    pricePerDay: '0.50',
+    totalPrice: '89.99',
+    billingPeriod: 'USD 89.99',
+    savings: '50%',
+    recommended: true,
+    priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_6_MONTH || '',
+  },
+]
 
 function CheckoutPageContent() {
   const router = useRouter()
@@ -24,6 +72,7 @@ function CheckoutPageContent() {
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState<string | null>(null)
   const [error, setError] = useState('')
+  const [selectedPlan, setSelectedPlan] = useState<string>('6-month')
 
   useEffect(() => {
     const storedEmail = localStorage.getItem('quizEmail')
@@ -41,6 +90,9 @@ function CheckoutPageContent() {
   const handleCheckout = async () => {
     if (!email) return
 
+    const plan = plans.find(p => p.id === selectedPlan)
+    if (!plan) return
+
     setLoading(true)
     setError('')
 
@@ -55,6 +107,8 @@ function CheckoutPageContent() {
         body: JSON.stringify({
           email,
           quizData: quizAnswers ? JSON.parse(quizAnswers) : {},
+          planId: plan.id,
+          priceId: plan.priceId,
         }),
       })
 
@@ -109,11 +163,13 @@ function CheckoutPageContent() {
     )
   }
 
+  const currentPlan = plans.find(p => p.id === selectedPlan)
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 flex flex-col">
       {/* Header */}
       <header className="bg-white border-b border-slate-100">
-        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
           <button 
             onClick={() => router.push('/quiz/results')}
             className="flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors"
@@ -126,27 +182,101 @@ function CheckoutPageContent() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 px-4 py-8 max-w-2xl mx-auto w-full">
-        {/* Pricing Card */}
-        <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden mb-8">
-          {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-center text-white">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 mb-3">
-              <Zap className="w-4 h-4" />
-              <span className="text-sm font-medium">Most Popular</span>
-            </div>
-            <h1 className="text-2xl font-bold mb-1">Unlock ClarioMind</h1>
-            <p className="text-blue-100">Start your recovery journey today</p>
-          </div>
+      <main className="flex-1 px-4 py-8 max-w-3xl mx-auto w-full">
+        {/* Title Section */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Choose Your Plan</h1>
+          <p className="text-slate-500">Start your transformation journey today</p>
+        </div>
 
-          <div className="p-6 sm:p-8">
-            {/* Price */}
-            <div className="text-center mb-8">
-              <div className="flex items-baseline justify-center gap-1 mb-2">
-                <span className="text-5xl font-bold text-slate-800">$29.99</span>
-                <span className="text-slate-500 text-lg">/month</span>
+        {/* Plan Selection Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          {plans.map((plan) => (
+            <div
+              key={plan.id}
+              onClick={() => setSelectedPlan(plan.id)}
+              className={`relative cursor-pointer rounded-2xl border-2 transition-all duration-200 bg-white overflow-visible ${
+                selectedPlan === plan.id
+                  ? 'border-blue-500 shadow-lg shadow-blue-100'
+                  : 'border-slate-200 hover:border-slate-300'
+              }`}
+            >
+              {/* Badge */}
+              {plan.badge && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+                  <div className="bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded-full whitespace-nowrap">
+                    {plan.badge}
+                  </div>
+                </div>
+              )}
+
+              <div className={`p-5 ${plan.badge ? 'pt-6' : ''}`}>
+                {/* Radio Button */}
+                <div className="flex items-start gap-3">
+                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                    selectedPlan === plan.id
+                      ? 'border-blue-500 bg-blue-500'
+                      : 'border-slate-300'
+                  }`}>
+                    {selectedPlan === plan.id && (
+                      <div className="w-2 h-2 bg-white rounded-full" />
+                    )}
+                  </div>
+                  
+                  <div className="flex-1">
+                    {/* Plan Name */}
+                    <h3 className="font-semibold text-slate-800 text-lg">{plan.name}</h3>
+                    <p className="text-slate-400 text-sm">{plan.duration}</p>
+                    <p className="text-slate-500 text-sm mt-1">{plan.billingPeriod}</p>
+                  </div>
+
+                  {/* Per Day Price */}
+                  <div className="text-right">
+                    {plan.savings && (
+                      <div className="inline-block bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded-full mb-1">
+                        Save {plan.savings}
+                      </div>
+                    )}
+                    <div className="flex items-baseline gap-0.5 justify-end">
+                      <span className="text-sm text-slate-500">USD</span>
+                      <span className={`text-2xl sm:text-3xl font-bold ${
+                        selectedPlan === plan.id ? 'text-blue-600' : 'text-red-500'
+                      }`}>
+                        {plan.pricePerDay}
+                      </span>
+                    </div>
+                    <p className="text-slate-400 text-sm">per day</p>
+                  </div>
+                </div>
+
+                {/* Recommended Badge */}
+                {plan.recommended && selectedPlan === plan.id && (
+                  <div className="mt-4 flex justify-center">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-full">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                      <span className="text-xs font-medium text-amber-700">Recommended for your profile</span>
+                    </div>
+                  </div>
+                )}
               </div>
-              <p className="text-sm text-slate-500">Billed monthly. Cancel anytime.</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Features & Checkout Card */}
+        <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden mb-8">
+          <div className="p-6 sm:p-8">
+            {/* Selected Plan Summary */}
+            <div className="text-center mb-6 pb-6 border-b border-slate-100">
+              <p className="text-sm text-slate-500 mb-1">Your selected plan</p>
+              <div className="flex items-baseline justify-center gap-2">
+                <span className="text-4xl font-bold text-slate-800">${currentPlan?.totalPrice}</span>
+                <span className="text-slate-500">/{currentPlan?.duration.replace('every ', '')}</span>
+              </div>
+              <p className="text-sm text-green-600 mt-2 flex items-center justify-center gap-1">
+                <Check className="w-4 h-4" />
+                Only ${currentPlan?.pricePerDay}/day
+              </p>
             </div>
 
             {/* Features */}
