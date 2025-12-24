@@ -319,7 +319,7 @@ export default function SettingsPage() {
 
   const handleDeleteAccountFinalConfirm = async () => {
     setShowDeleteConfirmModal(false)
-    
+
     try {
       const supabase = createClient()
       await supabase.auth.signOut()

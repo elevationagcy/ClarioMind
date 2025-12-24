@@ -114,12 +114,12 @@ export default function PlanPage() {
               className="flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
-            </button>
+        </button>
             <Logo size="sm" />
             <div className="w-8" />
           </div>
           <OnboardingProgress currentPage="plan" currentStep={1} />
-        </div>
+      </div>
       </header>
 
       <main className="flex-1 px-4 py-8 max-w-2xl mx-auto w-full overflow-y-auto">
@@ -132,8 +132,8 @@ export default function PlanPage() {
           <div className="flex items-center gap-2 mb-4">
             <Star className="w-5 h-5 text-blue-600" />
             <h2 className="text-xl font-bold text-slate-800">
-              With our customized plan, we'll help you:
-            </h2>
+            With our customized plan, we'll help you:
+          </h2>
           </div>
           <p className="text-slate-500 text-sm mb-4">(Based on your goals)</p>
 
@@ -171,11 +171,11 @@ export default function PlanPage() {
             {features.map((feature, index) => (
               <div key={index} className="flex items-start">
                 <div className="w-8 h-8 rounded-xl bg-green-50 border border-green-100 flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
-                  <Check className="w-4 h-4 text-green-600" />
-                </div>
+                <Check className="w-4 h-4 text-green-600" />
+              </div>
                 <p className="text-slate-600">
                   {feature}
-                </p>
+              </p>
               </div>
             ))}
           </div>
@@ -184,12 +184,12 @@ export default function PlanPage() {
 
       <footer className="bg-white border-t border-slate-100 sticky bottom-0">
         <div className="max-w-2xl mx-auto px-4 py-4">
-          <Button
-            onClick={handleContinue}
-            size="lg"
-            disabled={loading}
+        <Button
+          onClick={handleContinue}
+          size="lg"
+          disabled={loading}
             className="w-full py-6 rounded-xl text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white"
-          >
+        >
             {loading ? (
               <>
                 <Loader2 className="w-5 h-5 animate-spin mr-2" />
@@ -201,8 +201,8 @@ export default function PlanPage() {
                 <ArrowRight className="ml-2 w-5 h-5" />
               </>
             )}
-          </Button>
-        </div>
+        </Button>
+      </div>
       </footer>
     </div>
   )
