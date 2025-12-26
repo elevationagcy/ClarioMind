@@ -2,43 +2,30 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Button } from '@/components/ui/button'
 import { 
   CheckCircle2, 
   Calendar, 
   Sparkles, 
-  Users, 
-  Clock,
   Loader2,
-  Phone,
   Target,
   Zap,
-  Star,
   Shield,
-  MessageCircle,
   Brain,
-  HeartPulse,
   BadgeCheck,
-  CalendarCheck,
   Quote
 } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
-import { CalendlyModal } from '@/components/ui/calendly-modal'
+import { CalendlyEmbed } from '@/components/ui/calendly-embed'
 
 function UpsellPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [showContent, setShowContent] = useState(false)
-  const [showCalendly, setShowCalendly] = useState(false)
 
   useEffect(() => {
     const timer = setTimeout(() => setShowContent(true), 500)
     return () => clearTimeout(timer)
   }, [])
-
-  const handleBookCall = () => {
-    setShowCalendly(true)
-  }
 
   const handleSkip = () => {
     router.push('/auth/register')
@@ -215,14 +202,6 @@ function UpsellPageContent() {
                 </p>
               </div>
 
-              {/* CTA Button */}
-              <Button
-                onClick={handleBookCall}
-                className="w-full py-6 rounded-xl text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white mb-6"
-              >
-                <Phone className="w-5 h-5 mr-2" />
-                Book a Free Consultation
-              </Button>
             </div>
           </div>
         </div>
@@ -299,14 +278,17 @@ function UpsellPageContent() {
               ))}
             </div>
 
-            {/* Final CTA */}
-            <Button
-              onClick={handleBookCall}
-              className="w-full mt-6 py-6 rounded-xl text-lg font-semibold bg-white text-blue-600 hover:bg-blue-50"
-            >
-              <Phone className="w-5 h-5 mr-2" />
-              Book a Free Consultation
-            </Button>
+          </div>
+        </div>
+
+        {/* Embedded Calendly */}
+        <div id="calendly-section" className={`mb-8 transition-all duration-700 delay-[900ms] ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="bg-white rounded-3xl border border-slate-100 shadow-lg">
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-5 text-center text-white rounded-t-3xl">
+              <h2 className="text-xl font-bold">Book Your Free Consultation</h2>
+              <p className="text-blue-100 text-sm mt-1">Select a time that works for you</p>
+            </div>
+            <CalendlyEmbed />
           </div>
         </div>
 
@@ -320,13 +302,6 @@ function UpsellPageContent() {
           </button>
         </div>
       </main>
-
-      {/* Calendly Modal */}
-      <CalendlyModal 
-        isOpen={showCalendly} 
-        onClose={() => setShowCalendly(false)}
-        title="Book Your Free Consultation"
-      />
     </div>
   )
 }
