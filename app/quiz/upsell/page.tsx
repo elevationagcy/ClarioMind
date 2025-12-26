@@ -23,11 +23,13 @@ import {
   Quote
 } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
+import { CalendlyModal } from '@/components/ui/calendly-modal'
 
 function UpsellPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [showContent, setShowContent] = useState(false)
+  const [showCalendly, setShowCalendly] = useState(false)
 
   useEffect(() => {
     const timer = setTimeout(() => setShowContent(true), 500)
@@ -35,8 +37,7 @@ function UpsellPageContent() {
   }, [])
 
   const handleBookCall = () => {
-    const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || 'https://calendly.com/lukamindjek/new-meeting'
-    window.open(calendlyUrl, '_blank')
+    setShowCalendly(true)
   }
 
   const handleSkip = () => {
@@ -319,6 +320,13 @@ function UpsellPageContent() {
           </button>
         </div>
       </main>
+
+      {/* Calendly Modal */}
+      <CalendlyModal 
+        isOpen={showCalendly} 
+        onClose={() => setShowCalendly(false)}
+        title="Book Your Free Consultation"
+      />
     </div>
   )
 }
