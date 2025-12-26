@@ -28,13 +28,23 @@ function LoginPageContent() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [showConfirmationSuccess, setShowConfirmationSuccess] = useState(false)
+  const [resendingEmail, setResendingEmail] = useState(false)
+  const [resendSuccess, setResendSuccess] = useState(false)
+  const [emailNotConfirmed, setEmailNotConfirmed] = useState(false)
 
   useEffect(() => {
     if (searchParams.get('confirmed') === 'true') {
       setShowConfirmationSuccess(true)
     }
-    if (searchParams.get('error') === 'confirmation_failed') {
-      setError('Email confirmation failed. Please try again or request a new confirmation email.')
+    const errorType = searchParams.get('error')
+    const errorMessage = searchParams.get('message')
+    const errorReason = searchParams.get('reason')
+    
+    if (errorType === 'link_expired') {
+      setEmailNotConfirmed(true) // Show resend button
+      setError(errorMessage || 'This verification link has expired. Please enter your email below and click "Resend confirmation email" to receive a new link.')
+    } else if (errorType === 'confirmation_failed') {
+      setError(errorReason || errorMessage || 'Email confirmation failed. Please try again or request a new confirmation email.')
     }
   }, [searchParams])
 
@@ -54,9 +64,55 @@ function LoginPageContent() {
       router.push('/dashboard')
     } catch (err: any) {
       console.error('Login error:', err)
-      setError(err.message || 'Failed to sign in. Please check your credentials.')
+      
+      // Check if email is not confirmed
+      const isEmailNotConfirmed = err.message?.toLowerCase().includes('email not confirmed') || 
+                                  err.message?.toLowerCase().includes('email_not_confirmed') ||
+                                  err.status === 400 && err.message?.toLowerCase().includes('confirm')
+      
+      if (isEmailNotConfirmed) {
+        setEmailNotConfirmed(true)
+        setError('Please verify your email address before signing in. Check your inbox for the confirmation email.')
+      } else {
+        setEmailNotConfirmed(false)
+        setError(err.message || 'Failed to sign in. Please check your credentials.')
+      }
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleResendConfirmation = async () => {
+    if (!email) {
+      setError('Please enter your email address first')
+      return
+    }
+
+    setResendingEmail(true)
+    setError('')
+    setResendSuccess(false)
+    setEmailNotConfirmed(false)
+
+    try {
+      const { error: resendError } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      })
+
+      if (resendError) throw resendError
+
+      setResendSuccess(true)
+      setError('')
+      setEmailNotConfirmed(false)
+    } catch (err: any) {
+      console.error('Resend error:', err)
+      setError(err.message || 'Failed to resend confirmation email. Please try again.')
+      setResendSuccess(false)
+    } finally {
+      setResendingEmail(false)
     }
   }
 
@@ -111,7 +167,11 @@ function LoginPageContent() {
             type="email"
             placeholder="you@example.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value)
+              if (emailNotConfirmed) setEmailNotConfirmed(false)
+              if (error) setError('')
+            }}
             required
                     className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
                   />
@@ -143,9 +203,49 @@ function LoginPageContent() {
 
               {/* Error Message */}
               {error && (
-                <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-100 rounded-xl text-red-600 text-sm">
-                  <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                  <span>{error}</span>
+                <div className="flex flex-col gap-3 p-4 bg-red-50 border border-red-100 rounded-xl text-red-600 text-sm">
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                    <span className="flex-1">{error}</span>
+                  </div>
+                  {(emailNotConfirmed || searchParams.get('error') === 'link_expired') && (
+                    <div className="flex flex-col gap-2 pl-7">
+                      {email ? (
+                        <>
+                          <button
+                            type="button"
+                            onClick={handleResendConfirmation}
+                            disabled={resendingEmail}
+                            className="text-left text-sm text-red-700 hover:text-red-800 underline font-medium disabled:opacity-50"
+                          >
+                            {resendingEmail ? (
+                              <>
+                                <Loader2 className="w-4 h-4 inline-block animate-spin mr-1" />
+                                Sending confirmation email...
+                              </>
+                            ) : (
+                              '📧 Resend confirmation email'
+                            )}
+                          </button>
+                          <p className="text-xs text-red-500">
+                            Didn't receive the email? Check your spam folder or click above to resend.
+                          </p>
+                        </>
+                      ) : (
+                        <p className="text-xs text-red-500">
+                          Enter your email address above, then click "Resend confirmation email" to receive a new verification link.
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Resend Success Message */}
+              {resendSuccess && (
+                <div className="flex items-start gap-2 p-3 bg-green-50 border border-green-100 rounded-xl text-green-600 text-sm">
+                  <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                  <span>Confirmation email sent! Please check your inbox.</span>
                 </div>
               )}
 
