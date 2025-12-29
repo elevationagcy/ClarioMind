@@ -28,27 +28,26 @@ function UpsellPageContent() {
   }, [])
 
   // Track Facebook Purchase event when user arrives from successful payment
-  const sessionId = searchParams.get('session_id')
-  
-  // Only track if we have a session_id (user just completed payment)
-  if (sessionId && typeof window !== 'undefined' && (window as any).fb) {
-    // Fetch session details to get purchase amount
-    fetch(`/api/stripe/get-session?session_id=${sessionId}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.amount_total) {
-          // Convert from cents to dollars
-          // Convert from cents to dollars and fire Purchase event
-          // Fire Facebook Purchase event - inline calculation to avoid TypeScript issues
-          (window as any).fbq('track', 'Purchase', {
-            value: Number((data.amount_total || 0) / 100),
-            currency: data.currency?.toUpperCase() || 'USD'
-          })
-        }
-      })
-      .catch(err => console.error('[FB Pixel] Error tracking purchase:', err))
-  }
-}, [searchParams])
+  useEffect(() => {
+    const sessionId = searchParams.get('session_id')
+    
+    // Only track if we have a session_id (user just completed payment)
+    if (sessionId && typeof window !== 'undefined' && (window as any).fbq) {
+      // Fetch session details to get purchase amount
+      fetch(`/api/stripe/get-session?session_id=${sessionId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.amount_total) {
+            // Fire Facebook Purchase event
+            (window as any).fbq('track', 'Purchase', {
+              value: Number((data.amount_total || 0) / 100),
+              currency: data.currency?.toUpperCase() || 'USD'
+            })
+          }
+        })
+        .catch(err => console.error('[FB Pixel] Error tracking purchase:', err))
+    }
+  }, [searchParams])
 
   const handleSkip = () => {
     router.push('/auth/register')
