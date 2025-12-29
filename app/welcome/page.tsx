@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Logo, LogoIcon } from '@/components/ui/logo'
@@ -25,6 +26,8 @@ import {
 export default function WelcomePage() {
   const [scrolled, setScrolled] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+    const searchParams = useSearchParams();
+    const purchaseAmount = searchParams.get('amount') || '0.00';
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50)
@@ -38,8 +41,7 @@ export default function WelcomePage() {
           if (typeof window !== 'undefined' && (window as any).fbq) {
                   // Track Purchase event - fires when user reaches welcome page after payment
                   (window as any).fbq('track', 'Purchase', {
-                            value: 0.00,
-                            currency: 'USD'
+        value: parseFloat(purchaseAmount),                            currency: 'USD'
                                     });
                 }
         }, []);
