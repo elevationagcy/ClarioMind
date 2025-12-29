@@ -39,8 +39,7 @@ function UpsellPageContent() {
         .then(data => {
           if (data.amount_total) {
             // Convert from cents to dollars
-            const amountInDollars = (data.amount_total / 100).toFixed(2)
-            
+            const amountInDollars: string = (data.amount_total / 100).toFixed(2)            
             // Fire Facebook Purchase event
             (window as any).fbq('track', 'Purchase', {
               value: parseFloat(amountInDollars),
