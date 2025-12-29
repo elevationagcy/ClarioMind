@@ -44,7 +44,6 @@ function UpsellPageContent() {
               (window as any).fbq('track', 'Purchase', {
                 value: Number((data.amount_total || 0) / 100),
                 currency: data.currency?.toUpperCase() || 'USD'
-            
               }
             }
         .catch(err => console.error('[FB Pixel] Error tracking purchase:', err))
