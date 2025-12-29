@@ -46,6 +46,7 @@ function UpsellPageContent() {
                 currency: data.currency?.toUpperCase() || 'USD'
             
               }
+            }
         .catch(err => console.error('[FB Pixel] Error tracking purchase:', err))
     }
   }, [searchParams])
