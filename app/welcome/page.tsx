@@ -32,6 +32,18 @@ export default function WelcomePage() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+    // Track Facebook Purchase event
+    useEffect(() => {
+          // Check if fbq is available (Meta Pixel loaded)
+          if (typeof window !== 'undefined' && (window as any).fbq) {
+                  // Track Purchase event - fires when user reaches welcome page after payment
+                  (window as any).fbq('track', 'Purchase', {
+                            value: 0.00,
+                            currency: 'USD'
+                                    });
+                }
+        }, []);
+
   const faqs = [
     {
       question: "Who is ClarioMind for?",
