@@ -113,7 +113,7 @@ function UpsellPageContent() {
       <div className="container mx-auto px-4 py-8">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <Logo variant="white" size="md" />
+          <Logo  size="md" />
         </div>
 
         {/* Main Content */}
