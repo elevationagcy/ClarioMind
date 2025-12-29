@@ -453,6 +453,7 @@ export  function WelcomePageContent() {
       </div>
       </footer>
     </div>
+    }
   
   
   export default function WelcomePage() {
