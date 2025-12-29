@@ -39,15 +39,13 @@ function UpsellPageContent() {
         .then(data => {
           if (data.amount_total) {
             // Convert from cents to dollars
-            const amountInDollars: string = (data.amount_total / 100).toFixed(2)            
-            // Fire Facebook Purchase event
+            // Convert from cents to dollars and fire Purchase event
+            const purchaseValue = parseFloat(((data.amount_total || 0) / 100).toFixed(2))            // Fire Facebook Purchase event
             (window as any).fbq('track', 'Purchase', {
-              value: parseFloat(amountInDollars),
-              currency: data.currency?.toUpperCase() || 'USD'
+              value: purchaseValue,              currency: data.currency?.toUpperCase() || 'USD'
             })
             
-            console.log('[FB Pixel] Purchase event tracked:', amountInDollars, data.currency)
-          }
+            console.log('[FB Pixel] Purchase event tracked:', purchaseValue, data.currency)          }
         })
         .catch(err => console.error('[FB Pixel] Error tracking purchase:', err))
     }
