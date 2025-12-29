@@ -27,6 +27,33 @@ function UpsellPageContent() {
     return () => clearTimeout(timer)
   }, [])
 
+    // Track Facebook Purchase event when user arrives from successful payment
+  useEffect(() => {
+    const sessionId = searchParams.get('session_id')
+    
+    // Only track if we have a session_id (user just completed payment)
+    if (sessionId && typeof window !== 'undefined' && (window as any).fbq) {
+      // Fetch session details to get purchase amount
+      fetch(`/api/stripe/get-session?session_id=${sessionId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.amount_total) {
+            // Convert from cents to dollars
+            const amountInDollars = (data.amount_total / 100).toFixed(2)
+            
+            // Fire Facebook Purchase event
+            (window as any).fbq('track', 'Purchase', {
+              value: parseFloat(amountInDollars),
+              currency: data.currency?.toUpperCase() || 'USD'
+            })
+            
+            console.log('[FB Pixel] Purchase event tracked:', amountInDollars, data.currency)
+          }
+        })
+        .catch(err => console.error('[FB Pixel] Error tracking purchase:', err))
+    }
+  }, [searchParams])
+
   const handleSkip = () => {
     router.push('/auth/register')
   }
