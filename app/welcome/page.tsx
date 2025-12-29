@@ -40,10 +40,10 @@ export  function WelcomePageContent() {
           // Check if fbq is available (Meta Pixel loaded)
           if (typeof window !== 'undefined' && (window as any).fbq) {
                   // Track Purchase event - fires when user reaches welcome page after payment
-                  (window as any).fbq('track', 'Purchase', {
-        value: parseFloat(purchaseAmount),                            currency: 'USD'
-                                    });
-                }
+        (window as any).fbq('track', 'Purchase', {
+          value: parseFloat(purchaseAmount),
+          currency: 'USD'
+        })                }
         }, []);
 
   const faqs = [
