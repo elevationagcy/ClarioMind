@@ -31,7 +31,7 @@ function UpsellPageContent() {
     const sessionId = searchParams.get('session_id')
     
     // Only track if we have a session_id (user just completed payment)
-    if (sessionId && typeof window !== 'undefined' && (window as any).fbq) {
+    if (sessionId && typeof window !== 'undefined' && (window as any).fb) {
       // Fetch session details to get purchase amount
       fetch(`/api/stripe/get-session?session_id=${sessionId}`)
         .then(res => res.json())
