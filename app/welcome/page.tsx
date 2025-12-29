@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -23,7 +23,7 @@ import {
   Brain
 } from 'lucide-react'
 
-export default function WelcomePage() {
+export  function WelcomePageContent() {
   const [scrolled, setScrolled] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
     const searchParams = useSearchParams();
@@ -453,5 +453,13 @@ export default function WelcomePage() {
       </div>
       </footer>
     </div>
+  
+  
+  export default function WelcomePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gradient-to-b from-clario-600 to-clario-700" />}>
+      <WelcomePageContent />
+    </Suspense>
   )
+})
 }
