@@ -43,10 +43,9 @@ export  function WelcomePageContent() {
         (window as any).fbq('track', 'Purchase', {
           value: parseFloat(purchaseAmount),
           currency: 'USD'
-        })                }
-        }, []);
-
-  const faqs = [
+                })
+      }, [purchaseAmount])
+  {const faqs = [
     {
       question: "Who is ClarioMind for?",
       answer: "ClarioMind is for high functioning individuals who want to change their relationship with alcohol on their own terms."
