@@ -40,13 +40,11 @@ function UpsellPageContent() {
           if (data.amount_total) {
             // Convert from cents to dollars
             // Convert from cents to dollars and fire Purchase event
-            const purchaseValue = parseFloat(((data.amount_total || 0) / 100).toFixed(2))            // Fire Facebook Purchase event
-            (window as any).fbq('track', 'Purchase', {
-              value: purchaseValue,              currency: data.currency?.toUpperCase() || 'USD'
-            })
-            
-            console.log('[FB Pixel] Purchase event tracked:', purchaseValue, data.currency)          }
-        })
+              // Fire Facebook Purchase event - inline calculation to avoid TypeScript issues
+              (window as any).fbq('track', 'Purchase', {
+                value: Number((data.amount_total || 0) / 100),
+                currency: data.currency?.toUpperCase() || 'USD'
+              })                    })
         .catch(err => console.error('[FB Pixel] Error tracking purchase:', err))
     }
   }, [searchParams])
