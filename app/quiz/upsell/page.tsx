@@ -28,7 +28,6 @@ function UpsellPageContent() {
   }, [])
 
     // Track Facebook Purchase event when user arrives from successful payment
-  useEffect(() => {
     const sessionId = searchParams.get('session_id')
     
     // Only track if we have a session_id (user just completed payment)
