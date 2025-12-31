@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ClarioMind - Transform Your Drinking Habits</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#2563EB", // Royal Blue from the original design
+              "primary-dark": "#1d4ed8",
+              "background-light": "#F8FAFC",
+              "background-dark": "#0F172A",
+              "surface-light": "#FFFFFF",
+              "surface-dark": "#1E293B",
+              "text-light": "#1E293B",
+              "text-dark": "#F1F5F9",
+              "text-muted-light": "#64748B",
+              "text-muted-dark": "#94A3B8",
+              "accent-light": "#DBEAFE",
+              "accent-dark": "#1E3A8A",
+            },
+            fontFamily: {
+              display: ['"Plus Jakarta Sans"', 'sans-serif'],
+              body: ['"Inter"', 'sans-serif'],
+            },
+            borderRadius: {
+              DEFAULT: "0.75rem", // 12px
+              xl: "1rem",
+              "2xl": "1.5rem",
+              "3xl": "2rem",
+            },
+            backgroundImage: {
+              // Removed original hero pattern to replace with an illustration
+            }
+          },
+        },
+      };
+    </script>
+<style>html {
+    scroll-behavior: smooth
+    }
+.text-gradient {
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(to right, #2563EB, #60A5FA)
+    }
+.no-scrollbar::-webkit-scrollbar {
+    display: none
+    }
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none
+    }.illustration-hero {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAXsY-lxEN68cFnYv1XmMTLLH9MSI-0wOGPW3F0Ts-DWM2WBjaW5NourxvkmmUXPPHACSCE9FxufN72BSnUEpUxPV8aBUcdAf0NELnZGJxucZp_AfOOhjyg5dTi7taakC62QtXikGZXSOT9jKnzSWA7Y2WxfyzOzxnT0SvbHeJOxEePNi1hjRi9Dr8pCKJE4JmvXRbe7BkCjDFnySOsnRvzwqpW4JbWhpm7tz1dmUyQqL5Zed4NAw1bhw9e0bwpHhuJUFJKU0IhVR3B);background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat
+    }
+.illustration-lightbulb {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAETgvHH9YcYtapFQ1Sv0xD8aDEZn1c2_19BGNDFX6pgQaZSB5kDt2heoPCHMDVYPA1uijpegZLsQc2FmWAIlncZesL1OyOlCDQRZHlDrjgduMEhuNoeKJEU3sV4aEK3NmcmvaTi3r5jB9DH-8uUwMQX21fG6BsZ4RrKD89xItO-f9dWXLkhO9bvs_f017w_QAoPzx_-s0wl2PFgnO1fBiajQPkG5CAxWEzWRQAqHUkRQav4jZ32b2DFqz7F4-5gfLWbaMjViMy6UQy);background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat
+    }
+.illustration-path {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAlWwhDboCrqFbQLanRsntbatu6ezUjwJiCOdR5gbA5goM2cm-AI1dG_utOW4jx_vC6XxNKC8ZWHO_H9ZdKKREX08IU1CaPtVZqGgwFtC3j5OJShBEvs-87qsEt9q5lbVjyzRTs3VAH4x-9IYrtSf-0IQO9EzpZzpUQzLWf52rES3v5-K0JT44zRPHuoxlWTe5HCO7pUwMr9ZJOo0XjdsyVXIC3EWAzYA6KHZj7zycIV_51QQQ54x3Fs5PjZBUzLGV3Adyqqe9SFUZF);background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat
+    }
+.illustration-schedule {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBe2t2aok9y9BiyhhSbI5lKTKjTXkyHDvtfw03c9uf2vCiPtp_eD4DpU76VMgVtcF_64baTD72EAdgOj26_UfeFD8ZjdSeoFtrtwtIuohMlnxtSPJzLxkvr4UISoFB7yGDKsglcAKp_Y2-isNpWh2zqiNC3PEnICm4FAweM9EsEQTDffaQQ7WeGOx3aVWCRTgEOwsll3KTL82BrKnERnClLQ2gtrDLIzi-wPrtsVchmA7niT887p5eieAvjh_yYtuGHGxiv4Jrr3533);background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat
+    }
+.illustration-groups {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAucnYKK_MbQm4yn8PVY6fmd6D-YdxZran4uia1mxG8y9NUFachZbWUHEdv4kICLnRbF7Hluks0Hlz9bn0MuPNCDyF36U7Xoh8ZXJ5F0Hqx4x4fbvS5hbQ7LilTdNRMDpyhArXfeqew5dHyMA-Ls9Aty1_VZojuspyShun5UDo_xLGHXtpP6wKjYBX99H982Bdn7Ykagc9QOchSqNi40A4T3gn9mdc1_Frwen-gMM4VjgQcPADtAct3g1QToUlLx2rTsG09xm9EG6RS);background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat
+    }
+.illustration-insights {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCMmY2_VOqT4InnlsAuoSz4x62TPZOkbxW26ya78HpwOAJvD0t3ozDFkBUHrev8HoH1s1-Ez619SoJVnRWz884hspcE2ywCgWO8uKjngKgR63FX2gbCvNSrfaZNeIzoEeT9bbcxUKvK6xYerLJT9GdYkmZvQBvGcgQdJuK6hH5HXWxKUk31XIR2q0yw6_xHbZYmlDwVJUHFqmK7457jK1qd3iDdoBpdyFqFn_tcs7TXpKr3v7Y9t0sY4t1RHEVnZdZeqc45Xv62Px_C);background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat
+    }</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark font-body transition-colors duration-300">
+<nav class="fixed w-full z-50 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-20">
+<div class="flex-shrink-0 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">science</span>
+<span class="font-display font-bold text-2xl text-text-light dark:text-text-dark">ClarioMind</span>
+</div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-sm font-medium text-text-muted-light dark:text-text-muted-dark hover:text-primary dark:hover:text-primary transition-colors" href="#how-it-works">How it Works</a>
+<a class="text-sm font-medium text-text-muted-light dark:text-text-muted-dark hover:text-primary dark:hover:text-primary transition-colors" href="#features">Features</a>
+<a class="text-sm font-medium text-text-muted-light dark:text-text-muted-dark hover:text-primary dark:hover:text-primary transition-colors" href="#faq">FAQ</a>
+<div class="h-6 w-px bg-gray-200 dark:bg-gray-700"></div>
+<a class="text-sm font-medium text-primary hover:text-primary-dark" href="#">Log in</a>
+<a class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40" href="#">Take the Quiz</a>
+</div>
+<div class="md:hidden flex items-center">
+<button class="text-text-light dark:text-text-dark p-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<section class="relative min-h-[85vh] flex items-center pt-20 overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 illustration-hero"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/40 dark:from-background-dark dark:via-background-dark/95 dark:to-background-dark/40"></div>
+</div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+<div class="max-w-3xl">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 text-primary text-xs font-semibold mb-6 animate-fade-in-up">
+<span class="material-symbols-outlined text-sm">verified</span>
+            Neuroscience-backed. Evidence-based.
+        </div>
+<h1 class="text-5xl md:text-7xl font-display font-bold tracking-tight mb-6 text-text-light dark:text-text-dark leading-[1.1]">
+            Build Healthier <br/>
+<span class="text-primary">Drinking Habits.</span>
+</h1>
+<p class="mt-6 text-xl text-text-muted-light dark:text-text-muted-dark leading-relaxed max-w-xl">
+            Use neuroscience to reframe your relationship with alcohol. Unlock your healthiest, happiest self without rigid rules or judgment.
+        </p>
+<div class="mt-10 flex flex-col sm:flex-row items-center gap-4">
+<a class="w-full sm:w-auto px-8 py-4 bg-primary hover:bg-primary-dark text-white rounded-full font-semibold text-lg shadow-xl shadow-primary/30 transition-all hover:-translate-y-1 flex items-center justify-center gap-2" href="#">
+                Start Your Journey
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+<div class="flex items-center gap-4 px-4">
+<div class="flex -space-x-2">
+<img alt="User" class="w-8 h-8 rounded-full border-2 border-white dark:border-background-dark" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1-taOqjPNtacAjOTfCyhhq7CEkSiz67G7fry1B1lj8V3GBJ-xOUK-40gpZgXxzbIzXqu44XYdLoPDL0P0o2BIf7h0jVgD6JOtCFSlMrnISGXDB2VvaGrQ28J52hlgodRwv0rC8hXjIRw99dI_3vi7nBq70cHe6y2FlCUsMt2uSLaYxF4RANylrXxvlYagkE4fzh4eJqk44A1D_z7AK5fMm6-aPLcIZuTa5l91HgkAevKq46oiKhWYC90xCK9gmDtjrJ2bznclSMlx"/>
+<img alt="User" class="w-8 h-8 rounded-full border-2 border-white dark:border-background-dark" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjjhJboYBmsnSru86wozTU8h557cKg01pwwziJZ5d_HYpoI6tfmFLnjwwRqg3zjcdMNIW0P9nS_q0fWLirX0V7DlaX91Pt4kHtyuL9HKRIVi5Glhauqj_eK4BAgL2QC2Ik_4e3915zCotOWzrSMxQdj1TTgvlP9zZs9HODF7bxlggp3hgCACBipYljKv9C2N_Wzvgd5BsJ2WMxp9xGrk4fZmy8KLqhBpgoHKnZHbX2UwfFdZd4TIjeImnpnKI581MnLPd_iyLfK45O"/>
+<img alt="User" class="w-8 h-8 rounded-full border-2 border-white dark:border-background-dark" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAs0tCnvOMuHQPqqd75MRFGEbCRc3qfvLofFn6pwJq3yP9fHm8oCBFv0LlxasDwcXwuf61w42IQNjMpakV75fijmJn6dTmNJPcE7R4kU28oUh1rpfVv3HtF5TZEMNdz0HEt0Oesq1CpWL0FFc_MU2flqvohjh3ZQiaxlIib9BX76Vo-f7IZDNCUNKP9f-v4mhz8mm0x4AFGKR-dQBFCBtWj01FXPqtgOq1xpDzRiHtXlskgOXnyqXVWXv5JTafLCemfcsK5R1NR4yK4"/>
+</div>
+<div class="text-sm">
+<span class="font-bold text-text-light dark:text-text-dark block">10k+ Trusted Users</span>
+<div class="flex text-yellow-400 text-xs">
+<span class="material-symbols-outlined text-[14px] fill-current">star</span>
+<span class="material-symbols-outlined text-[14px] fill-current">star</span>
+<span class="material-symbols-outlined text-[14px] fill-current">star</span>
+<span class="material-symbols-outlined text-[14px] fill-current">star</span>
+<span class="material-symbols-outlined text-[14px] fill-current">star</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-12 flex gap-6 text-text-muted-light dark:text-text-muted-dark items-center">
+<span class="text-sm font-medium uppercase tracking-wider opacity-60">Featured in</span>
+<div class="h-8 opacity-50 grayscale hover:grayscale-0 transition-all">
+<span class="font-display font-bold text-xl mr-4">Forbes</span>
+<span class="font-display font-bold text-xl mr-4">TechCrunch</span>
+<span class="font-display font-bold text-xl">PsyPost</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-12 bg-white dark:bg-surface-dark border-y border-gray-100 dark:border-gray-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+<div class="p-4">
+<div class="text-5xl font-display font-bold text-primary mb-2">80%</div>
+<div class="text-text-muted-light dark:text-text-muted-dark font-medium">See reduced alcohol use within 2 months</div>
+</div>
+<div class="p-4 border-l-0 md:border-l border-gray-100 dark:border-gray-800">
+<div class="text-5xl font-display font-bold text-primary mb-2">52k</div>
+<div class="text-text-muted-light dark:text-text-muted-dark font-medium">Professionals currently enrolled</div>
+</div>
+<div class="p-4 border-l-0 md:border-l border-gray-100 dark:border-gray-800">
+<div class="text-5xl font-display font-bold text-primary mb-2">1M+</div>
+<div class="text-text-muted-light dark:text-text-muted-dark font-medium">Drinks eliminated in the last year</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 bg-background-light dark:bg-background-dark">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="bg-white dark:bg-surface-dark rounded-3xl p-8 md:p-12 shadow-xl shadow-blue-900/5 border border-gray-100 dark:border-gray-700 relative overflow-hidden flex flex-col md:flex-row items-center gap-10">
+<div class="absolute top-0 right-0 w-64 h-64 bg-blue-50 dark:bg-blue-900/20 rounded-full -mr-20 -mt-20 pointer-events-none" style="border-radius: 40% 60% 70% 30% / 40% 50% 50% 60%;"></div>
+<div class="absolute bottom-0 left-0 w-40 h-40 bg-purple-50 dark:bg-purple-900/20 rounded-full -ml-10 -mb-10 pointer-events-none" style="border-radius: 60% 40% 30% 70% / 60% 40% 60% 40%;"></div>
+<div class="flex-1 relative z-10">
+<div class="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider rounded-md mb-4">Assessment</div>
+<h2 class="text-3xl font-display font-bold text-text-light dark:text-text-dark mb-4">
+            Find out where you stand.
+        </h2>
+<p class="text-text-muted-light dark:text-text-muted-dark text-lg mb-6">
+            Professionals can develop subtle patterns that associate with alcohol. Take our 2-minute clinical assessment to get your personalized dependency score.
+        </p>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-sm font-medium text-text-muted-light">Confidential</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-sm font-medium text-text-muted-light">Free</span>
+</div>
+</div>
+</div>
+<div class="w-full md:w-auto relative z-10 bg-background-light dark:bg-background-dark p-6 rounded-2xl border border-gray-200 dark:border-gray-700 min-w-[300px]">
+<div class="text-center mb-6">
+<h3 class="font-bold text-lg text-text-light dark:text-text-dark">Select your gender</h3>
+<p class="text-xs text-text-muted-light">To start the assessment</p>
+</div>
+<div class="grid grid-cols-2 gap-3 mb-4">
+<button class="py-3 px-4 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-primary transition-all font-medium text-sm">Female</button>
+<button class="py-3 px-4 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-primary transition-all font-medium text-sm">Male</button>
+</div>
+<button class="w-full py-3 px-4 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-primary transition-all font-medium text-sm">Other / Prefer not to say</button>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 bg-white dark:bg-surface-dark" id="features">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-20">
+<h2 class="text-3xl md:text-5xl font-display font-bold text-text-light dark:text-text-dark mb-6">
+            We do science, not <span class="text-primary">stigma</span>.
+        </h2>
+<p class="text-lg text-text-muted-light dark:text-text-muted-dark max-w-2xl mx-auto">
+            Developed with hundreds of medical and mental health experts, ClarioMind is a revolutionary alcohol habit-change app built for the modern professional.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+<div class="bg-background-light dark:bg-background-dark rounded-3xl p-8 lg:p-12 flex flex-col justify-between group hover:shadow-lg transition-all duration-300">
+<div>
+<div class="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mb-8 text-primary group-hover:scale-110 transition-transform duration-300 illustration-lightbulb">
+</div>
+<h3 class="text-2xl font-bold text-text-light dark:text-text-dark mb-4">Evidence-Based Reduction</h3>
+<p class="text-text-muted-light dark:text-text-muted-dark leading-relaxed mb-8">
+                Our exclusive program is developed by leading experts in the fields of mental health and medicine. No fluff, just science.
+            </p>
+</div>
+<div class="relative h-48 bg-white dark:bg-surface-dark rounded-2xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm overflow-hidden">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 illustration-path" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBC3aa9kNLaRfsA3cUlfiNJmtGA83zgaDIrhJCt-k-SyzTA2VAExJT3Kc0O18FfDGdHLAkSVh-AHY_SaWRQgRrZatedOvr-_LlzbJwSwE7BKKgZjFzIw3R1pDuGSNZHeia1ZsTpj6TlKuvApjuIM6fkMB7__8W2e5l_ZYpQgaaTm3lM-iCCuVAUHdNq4mqKw6MWEgYs7oy1_6jn-Y3cWa08Z9C_Qv7-a8eHSSyu-7hMZAWRB98GEuRoKDPxOXGLdzSUkFuoZmG-Qe9n'); background-size: contain;"></div>
+<div class="h-2 w-20 bg-gray-100 dark:bg-gray-700 rounded"></div>
+</div>
+<div class="space-y-2">
+<div class="h-2 w-full bg-gray-50 dark:bg-gray-800 rounded"></div>
+<div class="h-2 w-5/6 bg-gray-50 dark:bg-gray-800 rounded"></div>
+<div class="h-2 w-4/6 bg-gray-50 dark:bg-gray-800 rounded"></div>
+</div>
+<div class="absolute bottom-4 right-4 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">Neuroscience</div>
+</div>
+</div>
+<div class="bg-background-light dark:bg-background-dark rounded-3xl p-8 lg:p-12 flex flex-col justify-between group hover:shadow-lg transition-all duration-300">
+<div>
+<div class="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mb-8 text-primary group-hover:scale-110 transition-transform duration-300 illustration-path">
+</div>
+<h3 class="text-2xl font-bold text-text-light dark:text-text-dark mb-4">Personalized Control</h3>
+<p class="text-text-muted-light dark:text-text-muted-dark leading-relaxed mb-8">
+                The only platform that utilizes neuroscience to tailor the experience to your unique triggers and lifestyle.
+            </p>
+</div>
+<div class="relative h-48 bg-white dark:bg-surface-dark rounded-2xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm flex items-center justify-center">
+<div class="w-full h-full flex items-end justify-between px-4 gap-2">
+<div class="w-full bg-blue-100 dark:bg-blue-900/20 rounded-t-lg h-[80%] relative z-10" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDdJboytwtDXweb0L2sBkxvAuGdvql5ml6tGSswwLMBsYCrjYIIsgz56iPWO_m4_jlcNuWaKrg_hldwCS40dgG0onmroHIWc6xqvp1Z2chYke2whuGlo1Za3dsS9CF_-yWjTN2NffZEGWXXmWyBg3yEuu7wx-zkmdJ4SE8y7XED_hmRPLkvQulMmpYPvQJHuibJsYzJnHYTqMdjo5xtA9qDcXiTL4iFh5FIkQCqdIsQ1KqilGTgDTRP09QfADzPc4q1OzbANkfV7nwK'); background-size: contain; background-position: center bottom; background-repeat: no-repeat;"></div>
+<div class="w-full bg-blue-200 dark:bg-blue-900/40 rounded-t-lg h-[60%] relative z-10" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuABSeU_lY-GpLt5JqceHagdoSymrlbTRfdlWNH4ebaIl6TjNtGvAdwsqDt1Wu0VdlmEQ_KMblnCPuKPYB7Idhj4BNZMsa1QSPIHhKSK6xphxli1fz9eli3Bn7TSzHLlN3FjqPoFK4PsRUZUxACaMn3SUyLS6GmVgRHvoqzdpENAYIqAPocm4iriTUrs_izuCKm80uV-3fyWmCDIthzydpzqDmq2JasSXbvkLGxvDZ4u5rUbHyTaeIk1LGZKy8ukKXhGMFW8fOOr3YVY'); background-size: contain; background-position: center bottom; background-repeat: no-repeat;"></div>
+<div class="w-full bg-blue-300 dark:bg-blue-900/60 rounded-t-lg h-[40%] relative z-10" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBIngXOf6wnSijbpA-gwwMQDv-8OXX0cjLvh03pAn44HVtLXJQXDp3Yy-MBB7uElcMaSFNbB8LYO7j_aeluqg791AMMm_YVS4Tjv158U0HZAmp5WE5DMKqvwHhFAyE9_HylemmjupGR9UQ25OOcry_IqTTbMpCwdtXe27RPpJX41cBkazXfn5MXMHDQySvL1MS6hMZVtdh9N_Afp8xoIVBXgjIs5DyPaJ84J7hbfVgj9ePV0xkssGkYxW0NihJkhxOhuhveb1m0Dnkw'); background-size: contain; background-position: center bottom; background-repeat: no-repeat;"></div>
+<div class="w-full bg-primary rounded-t-lg h-[20%] relative group z-10" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCNBqhZjQDZNy8QZ0AfyiAkU3vOVY8Hj2CZx22kQ2Bax1uZD67T_J7CkMJjvRTmzt8AFqK550iaTClgHtbztU_1p7ZDYY4qRy9H3OWv1eiEhBULTYhSWZTsK9VNS_uMI2NgTEVFryyTvtD8vVtxL5udaPE8xYzMwiZjvdbfGf2Be-PoUdN_NFLWQYuC4XhMkG5QcKMUk6AY2V5ZGkbDO2-wctRG_XFaWCi6CfFvrNbjQPF5d-fY5624S7-ktdN2gIuH8MIB8pN8l3hC'); background-size: contain; background-position: center bottom; background-repeat: no-repeat;">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-surface-dark text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">Goal</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 bg-background-light dark:bg-background-dark" id="how-it-works">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid md:grid-cols-2 gap-16 items-center">
+<div class="order-2 md:order-1 relative">
+<div class="relative mx-auto border-gray-800 dark:border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-xl">
+<div class="w-[148px] h-[18px] bg-gray-800 top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute"></div>
+<div class="h-[32px] w-[3px] bg-gray-800 absolute -left-[17px] top-[72px] rounded-l-lg"></div>
+<div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[17px] top-[124px] rounded-l-lg"></div>
+<div class="h-[64px] w-[3px] bg-gray-800 absolute -right-[17px] top-[142px] rounded-r-lg"></div>
+<div class="rounded-[2rem] overflow-hidden w-full h-full bg-white dark:bg-gray-900 relative">
+<div class="p-6 pt-12 h-full flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<div class="text-sm font-bold text-gray-900 dark:text-white">Today</div>
+<div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB5tBkPAOz0pn7qX_Aj4nLt5E_A4Zv-h84HMMyocb4J8k_4h-VyjA5WNnO0IVrgJOjw9as4av8WTYTXOHG719p65aCfcT3W2A6YHjtYZThuTtkPOeF6EtgEOKQhj4u-gFoLjDVoXN5-UqE7ISxhOVumWFX1AOxE4dI75qBmcL1x36YuKZPUmXmagSOrIwopdU_zL0zXP-JPAwG72jET1fxghZJj9YHuUFkVKSFKyeQfcPhaW4S_myXthXRhwG6mw5g0Kk3CwUoWBjR0'); background-size: contain;"></div>
+</div>
+<div class="w-full aspect-square rounded-full border-8 border-blue-50 dark:border-gray-800 relative flex items-center justify-center mb-8">
+<svg class="absolute inset-0 w-full h-full -rotate-90 text-primary" fill="none" viewBox="0 0 100 100">
+<circle class="transition-all duration-1000 ease-out" cx="50" cy="50" r="46" stroke="currentColor" stroke-dasharray="289" stroke-dashoffset="70" stroke-width="8"></circle>
+</svg>
+<div class="text-center">
+<div class="text-3xl font-bold text-gray-900 dark:text-white">12</div>
+<div class="text-[10px] text-gray-500 uppercase tracking-wide">Days Sober</div>
+</div>
+</div>
+<div class="space-y-3">
+<div class="p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900/30">
+<div class="text-xs text-primary font-bold mb-1">Daily Lesson</div>
+<div class="text-sm font-medium text-gray-900 dark:text-white">The Science of Cravings</div>
+</div>
+<div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-800">
+<div class="flex justify-between items-center">
+<div class="text-sm font-medium text-gray-900 dark:text-white">Drink Log</div>
+<span class="material-symbols-outlined text-gray-400 text-sm">add</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute top-20 -right-12 md:-right-20 bg-white dark:bg-surface-dark p-4 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 animate-bounce delay-700">
+<div class="flex items-center gap-3">
+<div class="bg-green-100 text-green-600 rounded-full p-1"><span class="material-symbols-outlined text-sm">check</span></div>
+<div class="text-sm font-bold text-text-light dark:text-text-dark">Craving defeated!</div>
+</div>
+</div>
+<div class="absolute bottom-40 -left-12 md:-left-20 bg-white dark:bg-surface-dark p-4 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 animate-bounce delay-1000">
+<div class="flex items-center gap-3">
+<div class="bg-blue-100 text-primary rounded-full p-1"><span class="material-symbols-outlined text-sm">trending_down</span></div>
+<div class="text-sm font-bold text-text-light dark:text-text-dark">-20% Consumption</div>
+</div>
+</div>
+</div>
+<div class="order-1 md:order-2">
+<h2 class="text-4xl font-display font-bold text-text-light dark:text-text-dark mb-6">
+                How ClarioMind Works
+            </h2>
+<p class="text-lg text-text-muted-light dark:text-text-muted-dark mb-12">
+                Three simple steps to regain your power, backed by cognitive behavioral therapy.
+            </p>
+<div class="space-y-10">
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-primary font-bold text-lg">
+                    01
+                </div>
+<div>
+<h3 class="text-xl font-bold text-text-light dark:text-text-dark mb-2">We get to know you</h3>
+<p class="text-text-muted-light dark:text-text-muted-dark leading-relaxed">
+                        Tell us about your triggers, your goals, and what's been holding you back through our comprehensive assessment.
+                    </p>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-primary font-bold text-lg">
+                    02
+                </div>
+<div>
+<h3 class="text-xl font-bold text-text-light dark:text-text-dark mb-2">Daily 5-minute Lessons</h3>
+<p class="text-text-muted-light dark:text-text-muted-dark leading-relaxed">
+                        Short, practical lessons about the neuroscience of habits tailored to your profile. Learn *why* you drink, not just that you shouldn't.
+                    </p>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-primary font-bold text-lg">
+                    03
+                </div>
+<div>
+<h3 class="text-xl font-bold text-text-light dark:text-text-dark mb-2">Track &amp; Transform</h3>
+<p class="text-text-muted-light dark:text-text-muted-dark leading-relaxed">
+                        See your progress in real-time. Celebrate the wins. Watch your life change as data proves your transformation.
+                    </p>
+</div>
+</div>
+</div>
+<div class="mt-12">
+<a class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary hover:bg-primary-dark transition-colors" href="#">
+                    See How It Works
+<span class="material-symbols-outlined ml-2 text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 bg-surface-light dark:bg-surface-dark">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<h2 class="text-3xl md:text-4xl font-display font-bold text-text-light dark:text-text-dark mb-4">
+                What You'll Get Inside
+            </h2>
+<p class="text-text-muted-light dark:text-text-muted-dark">A comprehensive toolkit for your journey.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-6">
+<div class="p-8 bg-background-light dark:bg-background-dark rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1">
+<div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-primary flex items-center justify-center mb-4 illustration-schedule">
+</div>
+<h3 class="text-lg font-bold text-text-light dark:text-text-dark mb-2">Daily Micro-Lessons</h3>
+<p class="text-sm text-text-muted-light dark:text-text-muted-dark leading-relaxed">Understand how alcohol affects your brain and why changing creates lasting transformation.</p>
+</div>
+<div class="p-8 bg-background-light dark:bg-background-dark rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1">
+<div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-primary flex items-center justify-center mb-4 illustration-groups">
+</div>
+<h3 class="text-lg font-bold text-text-light dark:text-text-dark mb-2">24/7 Anonymous Community</h3>
+<p class="text-sm text-text-muted-light dark:text-text-muted-dark leading-relaxed">Connect with thousands on the same path. Celebrate wins, get support during tough moments.</p>
+</div>
+<div class="p-8 bg-background-light dark:bg-background-dark rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1">
+<div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-primary flex items-center justify-center mb-4 illustration-insights">
+</div>
+<h3 class="text-lg font-bold text-text-light dark:text-text-dark mb-2">Smart Tracking</h3>
+<p class="text-sm text-text-muted-light dark:text-text-muted-dark leading-relaxed">Monitor your progress in real-time. Log drinks without resetting your start date because slips happen.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 bg-blue-600 dark:bg-blue-900 relative overflow-hidden text-white">
+<div class="absolute inset-0 z-0 opacity-20" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDumJ6Wt-e5RaxRTXyvqowyTE1jpoSHSFWIaDMGTUsMddQinbNbU6B07zma89X4Dmyy0vRhfC9X1zUW6gEuO4JDecJdFGq_ptPehQKwOOI9mjOYwMgLP0F6dvbS400YrC8CV1GU2cH6j0wlwID_cGYL1UA1sGQRwmPEqpEMVoTQWjWUPob2T9AVxSSYXzVPSieUIUzqx9wq8hGmxwsTQRuft_uGvJ3vV8_udzLMJKTVJmDFeqTKw0XPHGGL6YTAe4qFTkFYtKfWUnvI'); background-size: cover; background-position: center;"></div>
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+<h2 class="text-3xl md:text-5xl font-display font-bold mb-4">
+            Your "Why" is Your Power
+        </h2>
+<p class="text-blue-100 mb-12 text-lg">What brought you here?</p>
+<div class="bg-white/10 backdrop-blur-sm p-8 md:p-12 rounded-3xl border border-white/20 relative">
+<span class="material-symbols-outlined text-6xl text-white/20 absolute top-6 left-6">format_quote</span>
+<p class="text-xl md:text-2xl leading-relaxed relative z-10 italic font-light">
+                "Maybe it's the 3 PM crash. Or the fog during meetings. The way you've started needing alcohol to function. Or maybe it's something you're moving towards — a sharper focus, genuine energy, showing up as the person you know you can be."
+            </p>
+<div class="mt-8 flex justify-center">
+<div class="h-1 w-20 bg-white/40 rounded-full"></div>
+</div>
+</div>
+<div class="mt-12">
+<a class="inline-flex items-center justify-center px-8 py-4 bg-white text-primary hover:bg-gray-50 rounded-full font-bold text-lg shadow-xl transition-all hover:-translate-y-1" href="#">
+                Start Your Journey To Recovery
+                <span class="material-symbols-outlined ml-2">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+<section class="py-24 bg-white dark:bg-background-dark" id="faq">
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-3xl md:text-4xl font-display font-bold text-text-light dark:text-text-dark text-center mb-12">
+                Frequently Asked Questions
+            </h2>
+<div class="space-y-4">
+<details class="group bg-background-light dark:bg-surface-dark rounded-xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+<summary class="flex justify-between items-center font-medium cursor-pointer p-6 text-text-light dark:text-text-dark hover:text-primary transition-colors">
+                        Who is ClarioMind for?
+                        <span class="transition group-open:rotate-180">
+<span class="material-symbols-outlined text-primary">expand_more</span>
+</span>
+</summary>
+<div class="text-text-muted-light dark:text-text-muted-dark p-6 pt-0 leading-relaxed border-t border-gray-100 dark:border-gray-700/50 mt-2">
+                        ClarioMind is designed for high-functioning professionals who want to change their relationship with alcohol. Whether you want to cut back or quit entirely, our tools adapt to your goals.
+                    </div>
+</details>
+<details class="group bg-background-light dark:bg-surface-dark rounded-xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+<summary class="flex justify-between items-center font-medium cursor-pointer p-6 text-text-light dark:text-text-dark hover:text-primary transition-colors">
+                        How is ClarioMind different from other sobriety apps?
+                        <span class="transition group-open:rotate-180">
+<span class="material-symbols-outlined text-primary">expand_more</span>
+</span>
+</summary>
+<div class="text-text-muted-light dark:text-text-muted-dark p-6 pt-0 leading-relaxed border-t border-gray-100 dark:border-gray-700/50 mt-2">
+                        Unlike traditional AA or willpower-based methods, we use neuroscience and cognitive behavioral therapy (CBT) techniques. We don't demand labels like "alcoholic" and we focus on the underlying habits.
+                    </div>
+</details>
+<details class="group bg-background-light dark:bg-surface-dark rounded-xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+<summary class="flex justify-between items-center font-medium cursor-pointer p-6 text-text-light dark:text-text-dark hover:text-primary transition-colors">
+                        What if I'm not sure I'm a "high-functioning alcoholic"?
+                        <span class="transition group-open:rotate-180">
+<span class="material-symbols-outlined text-primary">expand_more</span>
+</span>
+</summary>
+<div class="text-text-muted-light dark:text-text-muted-dark p-6 pt-0 leading-relaxed border-t border-gray-100 dark:border-gray-700/50 mt-2">
+                        You don't need a label to benefit. If alcohol is affecting your sleep, focus, or mood, or if you find yourself negotiating rules around drinking, ClarioMind can help you regain clarity.
+                    </div>
+</details>
+<details class="group bg-background-light dark:bg-surface-dark rounded-xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+<summary class="flex justify-between items-center font-medium cursor-pointer p-6 text-text-light dark:text-text-dark hover:text-primary transition-colors">
+                        How is my data protected?
+                        <span class="transition group-open:rotate-180">
+<span class="material-symbols-outlined text-primary">expand_more</span>
+</span>
+</summary>
+<div class="text-text-muted-light dark:text-text-muted-dark p-6 pt-0 leading-relaxed border-t border-gray-100 dark:border-gray-700/50 mt-2">
+                        Your privacy is our top priority. All data is encrypted and anonymized. We never share your personal information with employers or third parties.
+                    </div>
+</details>
+</div>
+</div>
+</section>
+<section class="py-24 bg-background-light dark:bg-surface-dark relative overflow-hidden">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="bg-primary rounded-[3rem] p-10 md:p-20 text-center relative overflow-hidden shadow-2xl shadow-blue-900/20">
+<div class="absolute top-0 left-0 w-96 h-96 bg-white opacity-10 rounded-full -translate-x-1/3 -translate-y-1/3 blur-3xl" style="border-radius: 40% 60% 70% 30% / 40% 50% 50% 60%;"></div>
+<div class="absolute bottom-0 right-0 w-96 h-96 bg-purple-500 opacity-20 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl" style="border-radius: 60% 40% 30% 70% / 60% 40% 60% 40%;"></div>
+<div class="relative z-10">
+<h2 class="text-4xl md:text-6xl font-display font-bold text-white mb-6">
+                Ready to transform <br/>your life?
+            </h2>
+<p class="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
+                Join thousands of professionals who've already started their journey with ClarioMind.
+            </p>
+<a class="inline-flex items-center justify-center px-10 py-5 bg-white text-primary hover:bg-gray-50 rounded-full font-bold text-lg shadow-lg transition-all hover:-translate-y-1 gap-2" href="#">
+                Start Your Journey To Recovery
+                <span class="material-symbols-outlined">arrow_forward</span>
+</a>
+<p class="mt-6 text-sm text-blue-200 opacity-80">No credit card required for initial assessment.</p>
+</div>
+</div>
+</div>
+</section>
+<footer class="bg-surface-light dark:bg-surface-dark border-t border-gray-100 dark:border-gray-800 pt-20 pb-10">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-16">
+<div class="col-span-2 lg:col-span-2">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary text-2xl">science</span>
+<span class="font-display font-bold text-xl text-text-light dark:text-text-dark">ClarioMind</span>
+</div>
+<p class="text-text-muted-light dark:text-text-muted-dark text-sm leading-relaxed max-w-xs mb-6">
+                The science-backed app for professionals looking to change their relationship with alcohol.
+            </p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:bg-primary hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">public</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:bg-primary hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">mail</span>
+</a>
+</div>
+</div>
+<div>
+<h4 class="font-bold text-text-light dark:text-text-dark mb-4">Product</h4>
+<ul class="space-y-3 text-sm text-text-muted-light dark:text-text-muted-dark">
+<li><a class="hover:text-primary transition-colors" href="#">Features</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Pricing</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Methodology</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Success Stories</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-text-light dark:text-text-dark mb-4">Company</h4>
+<ul class="space-y-3 text-sm text-text-muted-light dark:text-text-muted-dark">
+<li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Blog</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Press</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-text-light dark:text-text-dark mb-4">Support</h4>
+<ul class="space-y-3 text-sm text-text-muted-light dark:text-text-muted-dark">
+<li><a class="hover:text-primary transition-colors" href="#">Help Center</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Community Guidelines</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+</ul>
+</div>
+</div>
+<div class="pt-8 border-t border-gray-100 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-text-muted-light dark:text-text-muted-dark">
+<div>© 2024 ClarioMind Inc. All rights reserved.</div>
+<div class="flex gap-6">
+<a class="hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms</a>
+<a class="hover:text-primary transition-colors" href="#">Cookies</a>
+</div>
+</div>
+</div>
+</footer>
+</body></html>
