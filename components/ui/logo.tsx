@@ -22,7 +22,7 @@ export function Logo({ size = 'md', className }: LogoProps) {
         src="/assets/clariomind.png"
         alt="ClarioMind"
         fill
-        className="object-contain object-left"
+        className="object-contain object-center"
         priority
       />
     </div>
@@ -36,7 +36,7 @@ export function LogoIcon({ size = 'md', className }: LogoProps) {
         src="/assets/clariomind.png"
         alt="ClarioMind"
         fill
-        className="object-contain object-left"
+        className="object-contain object-center"
         priority
       />
     </div>
