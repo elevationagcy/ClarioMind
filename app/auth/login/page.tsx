@@ -75,7 +75,7 @@ function LoginPageContent() {
         setError('Please verify your email address before signing in. Check your inbox for the confirmation email.')
       } else {
         setEmailNotConfirmed(false)
-        setError(err.message || 'Failed to sign in. Please check your credentials.')
+      setError(err.message || 'Failed to sign in. Please check your credentials.')
       }
     } finally {
       setLoading(false)

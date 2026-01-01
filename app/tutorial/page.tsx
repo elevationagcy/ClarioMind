@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { Logo } from '@/components/ui/logo'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { X, BookOpen, Edit, Brain, Mountain, Calendar, ChevronDown } from 'lucide-react'
@@ -47,7 +48,10 @@ export default function TutorialPage() {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 flex flex-col">
       {/* Header */}
       <div className="p-6 flex items-center justify-between">
-        <h1 className="text-gray-900 font-semibold">Welcome to ClarioMind</h1>
+        <div className="flex items-center gap-2">
+          <span className="text-gray-500 text-sm font-medium">Welcome to</span>
+          <Logo size="sm" />
+        </div>
         <button onClick={handleSkip} className="text-gray-900">
           <X className="w-6 h-6" />
         </button>
@@ -88,9 +92,9 @@ function Step1({ userName }: { userName: string }) {
       </h2>
 
       {/* ClarioMind works card */}
-      <div className="bg-primary rounded-2xl p-8 mb-6 text-center text-white">
-        <h3 className="text-2xl font-bold mb-4">
-          ClarioMind<br />
+      <div className="bg-primary rounded-2xl p-8 mb-6 text-center text-white flex flex-col items-center justify-center">
+        <Logo size="lg" className="brightness-0 invert mb-2" />
+        <h3 className="text-2xl font-bold">
           <span className="text-white">works.</span>
         </h3>
       </div>

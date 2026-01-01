@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { Logo } from '@/components/ui/logo'
 import { Card } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -99,8 +100,8 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50">
       {/* Header */}
-      <div className="px-6 pt-4 pb-2">
-        <h1 className="text-2xl font-bold text-slate-800 mb-1">ClarioMind</h1>
+      <div className="px-6 pt-6 pb-2">
+        <Logo size="md" className="mb-2" />
         <p className="text-sm text-slate-500">
           A neuroscience-based program developed by leading experts
         </p>

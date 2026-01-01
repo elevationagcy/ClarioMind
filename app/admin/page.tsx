@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { isAdmin } from '@/lib/auth/check-admin'
+import { Logo } from '@/components/ui/logo'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { BookOpen, Target, MessageSquare, Music, Users, BarChart3 } from 'lucide-react'
@@ -87,9 +88,14 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5] pb-24">
       {/* Header */}
-      <div className="bg-gradient-to-r from-primary to-primary-dark p-6 text-white shadow-lg">
-        <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
-        <p className="text-white/80">Manage your app content and users</p>
+      <div className="bg-gradient-to-r from-primary to-primary-dark p-6 text-white shadow-lg flex items-center justify-between">
+        <div>
+          <Logo size="md" className="brightness-0 invert mb-1" />
+          <p className="text-white/80">Manage your app content and users</p>
+        </div>
+        <div className="bg-white/10 px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm">
+          Admin
+        </div>
       </div>
 
       {/* Content */}

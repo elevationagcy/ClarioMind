@@ -23,7 +23,7 @@ import {
   Brain
 } from 'lucide-react'
 
-export  function WelcomePageContent() {
+function WelcomePageContent() {
   const [scrolled, setScrolled] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
     const searchParams = useSearchParams();
@@ -62,16 +62,16 @@ export  function WelcomePageContent() {
           ? 'bg-white/90 backdrop-blur-md shadow-sm border-b border-slate-100' 
           : 'bg-transparent'
       }`}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <Logo size="md" />
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <Link href="/auth/login">
-              <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-800 hidden sm:inline-flex">
+              <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-800 text-xs sm:text-sm px-3 sm:px-4">
                 Log in
               </Button>
             </Link>
             <Link href="/quiz">
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5">
+              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-3 sm:px-5 text-xs sm:text-sm">
                 Take Quiz
               </Button>
             </Link>
@@ -80,7 +80,7 @@ export  function WelcomePageContent() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center pt-20 pb-16">
+      <section className="relative min-h-[90vh] sm:min-h-screen flex items-center justify-center pt-16 sm:pt-20 pb-12 sm:pb-16">
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-8">
@@ -89,40 +89,40 @@ export  function WelcomePageContent() {
       </div>
 
           {/* Main Headline */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-slate-800 mb-6 leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-800 mb-4 sm:mb-6 leading-tight">
             Transform Your
-            <span className="block text-blue-600 mt-2">
+            <span className="block text-blue-600 mt-1 sm:mt-2">
               Drinking Habits
             </span>
-            <span className="block text-slate-400 text-3xl sm:text-4xl md:text-5xl mt-2">— for Good.</span>
+            <span className="block text-slate-400 text-2xl sm:text-3xl md:text-4xl lg:text-5xl mt-1 sm:mt-2">— for Good.</span>
         </h1>
 
-          <p className="text-lg sm:text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-slate-600 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-4 sm:px-0">
             Are you tired of setting rules around drinking that never hold? ClarioMind gives you tools that use neuroscience to help you with your alcohol dependency.
           </p>
 
           {/* CTA Button */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+          <div className="flex flex-col items-center justify-center gap-3 sm:gap-4 mb-12 sm:mb-16 px-4 sm:px-0">
             <Link href="/quiz">
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 py-6 text-lg shadow-lg shadow-blue-200 transition-all hover:shadow-xl hover:shadow-blue-200">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 sm:px-8 py-3.5 sm:py-6 text-sm sm:text-lg shadow-lg shadow-blue-200 transition-all hover:shadow-xl hover:shadow-blue-200">
                 Start Your Journey To Recovery
-                <ArrowRight className="w-5 h-5 ml-2" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
               </Button>
             </Link>
-            <Link href="/auth/login" className="text-slate-500 hover:text-slate-700 transition-colors">
+            <Link href="/auth/login" className="text-slate-500 hover:text-slate-700 transition-colors text-sm sm:text-base">
               Already have an account?
             </Link>
           </div>
 
           {/* Stats Row */}
-          <div className="grid grid-cols-3 gap-4 sm:gap-8 max-w-2xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 md:gap-8 max-w-2xl mx-auto px-4 sm:px-0">
             {[
               { value: '80%', label: 'See Results' },
               { value: '10k+', label: 'Professionals' },
               { value: '4.9★', label: 'Rating' },
             ].map((stat, i) => (
-              <div key={i} className="p-4 sm:p-6 rounded-2xl bg-white border border-slate-100 shadow-sm">
-                <div className="text-2xl sm:text-3xl font-bold text-blue-600">{stat.value}</div>
+              <div key={i} className="p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl bg-white border border-slate-100 shadow-sm">
+                <div className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-600">{stat.value}</div>
                 <div className="text-xs sm:text-sm text-slate-500 mt-1">{stat.label}</div>
               </div>
             ))}
@@ -131,7 +131,7 @@ export  function WelcomePageContent() {
       </section>
 
       {/* Problem Statement */}
-      <section className="relative py-24 sm:py-32">
+      <section className="relative pb-16 sm:pb-24 md:pb-32">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-slate-100">
             <p className="text-lg sm:text-xl text-slate-600 leading-relaxed mb-8">
@@ -152,9 +152,9 @@ export  function WelcomePageContent() {
                 Take this 2-Minute Quiz to See Your Dependency Score
               </h3>
               <Link href="/quiz">
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 sm:px-8 py-3.5 sm:py-6 text-sm sm:text-base">
                   Take the Quiz
-                  <ChevronRight className="ml-2 w-5 h-5" />
+                  <ChevronRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
                 </Button>
               </Link>
             </div>
@@ -163,7 +163,7 @@ export  function WelcomePageContent() {
       </section>
 
       {/* Stats Banner */}
-      <section className="relative py-20 bg-blue-600">
+      <section className="relative py-12 sm:py-16 md:py-20 bg-blue-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center text-white">
           <div className="text-5xl sm:text-7xl font-bold mb-4">80%</div>
           <p className="text-xl sm:text-2xl text-blue-100">
@@ -173,7 +173,7 @@ export  function WelcomePageContent() {
       </section>
 
       {/* What is ClarioMind */}
-      <section className="relative py-24 sm:py-32 bg-white">
+      <section className="relative py-16 sm:py-24 md:py-32 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-5xl font-bold text-slate-800 mb-6">
@@ -184,7 +184,7 @@ export  function WelcomePageContent() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
             {/* Card 1 */}
             <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100">
               <div className="flex items-center gap-4 mb-6">
@@ -215,7 +215,7 @@ export  function WelcomePageContent() {
       </section>
 
       {/* Features Checklist */}
-      <section className="relative py-24 sm:py-32">
+      <section className="relative py-16 sm:py-24 md:py-32">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-slate-100">
             <div className="space-y-6 mb-10">
@@ -233,18 +233,20 @@ export  function WelcomePageContent() {
               ))}
         </div>
 
-            <Link href="/quiz" className="block">
-              <Button size="lg" className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-6 text-lg">
-                Start Your Journey To Recovery Today
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
+            <div className="flex justify-center">
+              <Link href="/quiz">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-8 py-3.5 sm:py-6 text-sm sm:text-lg">
+                  Start Your Journey To Recovery Today
+                  <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
       {/* How Does it Work */}
-      <section className="relative py-24 sm:py-32 bg-white">
+      <section className="relative py-16 sm:py-24 md:py-32 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-5xl font-bold text-slate-800">
@@ -252,7 +254,7 @@ export  function WelcomePageContent() {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {[
               {
                 step: "01",
@@ -287,7 +289,7 @@ export  function WelcomePageContent() {
       </section>
 
       {/* What You'll Get */}
-      <section className="relative py-24 sm:py-32">
+      <section className="relative py-16 sm:py-24 md:py-32">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-5xl font-bold text-slate-800">
@@ -295,7 +297,7 @@ export  function WelcomePageContent() {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
             {[
               {
                 icon: Clock,
@@ -333,7 +335,7 @@ export  function WelcomePageContent() {
       </section>
 
       {/* Your Why Section */}
-      <section className="relative py-24 sm:py-32 bg-blue-50">
+      <section className="relative py-16 sm:py-24 md:py-32 bg-blue-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-10">
             <h2 className="text-3xl sm:text-5xl font-bold text-slate-800 mb-4">
@@ -358,9 +360,9 @@ export  function WelcomePageContent() {
               When your "why" is clear, your journey of sobriety becomes easier to navigate.
             </p>
             <Link href="/quiz">
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-10 py-6 text-lg shadow-lg shadow-blue-200">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 sm:px-10 py-3.5 sm:py-6 text-sm sm:text-lg shadow-lg shadow-blue-200">
                 Start Your Journey To Recovery
-                <ArrowRight className="ml-2 w-5 h-5" />
+                <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
             </Button>
           </Link>
           </div>
@@ -368,7 +370,7 @@ export  function WelcomePageContent() {
       </section>
 
       {/* FAQs */}
-      <section className="relative py-24 sm:py-32 bg-white">
+      <section className="relative py-16 sm:py-24 md:py-32 bg-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-5xl font-bold text-slate-800">
@@ -409,7 +411,7 @@ export  function WelcomePageContent() {
       </section>
 
       {/* Final CTA */}
-      <section className="relative py-24 sm:py-32 bg-blue-600">
+      <section className="relative py-16 sm:py-24 md:py-32 bg-blue-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center text-white">
           <h2 className="text-3xl sm:text-5xl font-bold mb-6">
             Ready to transform your life?
@@ -419,37 +421,36 @@ export  function WelcomePageContent() {
           </p>
           
           <Link href="/quiz">
-            <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 rounded-full px-10 py-6 text-lg shadow-lg">
+            <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 rounded-full px-6 sm:px-10 py-3.5 sm:py-6 text-sm sm:text-lg shadow-lg">
               Start Your Journey To Recovery
-              <ArrowRight className="ml-3 w-5 h-5" />
+              <ArrowRight className="ml-2 sm:ml-3 w-4 h-4 sm:w-5 sm:h-5" />
             </Button>
           </Link>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="relative py-12 bg-slate-50 border-t border-slate-100">
+      <footer className="relative py-8 sm:py-12 bg-slate-50 border-t border-slate-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col items-center justify-center gap-6 sm:gap-8">
             <Logo size="md" />
 
-            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-sm text-slate-500">
+            <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-xs sm:text-sm text-slate-500 text-center">
               <Link href="/privacy" className="hover:text-slate-800 transition-colors">Privacy Policy</Link>
               <Link href="/terms" className="hover:text-slate-800 transition-colors">Terms of Service</Link>
               <span>© 2024 ClarioMind. All rights reserved.</span>
             </div>
-        </div>
+          </div>
       </div>
       </footer>
     </div>
-    }
-  
-  
-  export default function WelcomePage() {
-  return (
-    <Suspense fallback={<div className="min-h-screen bg-gradient-to-b from-clario-600 to-clario-700" />}>
-      <WelcomePageContent />
-    </Suspense>
   )
-})
 }
+
+  export default function WelcomePage() {
+    return (
+      <Suspense fallback={<div className="min-h-screen bg-gradient-to-b from-clario-600 to-clario-700" />}>
+        <WelcomePageContent />
+      </Suspense>
+    )
+  }

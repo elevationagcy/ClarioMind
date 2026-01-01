@@ -42,11 +42,11 @@ export async function GET(request: Request) {
         return NextResponse.redirect(`${origin}/dashboard`)
       } else {
         return NextResponse.redirect(`${origin}/onboarding/intro`)
-      }
+    }
     }
     
     if (error) {
-      console.error('Code exchange error:', error)
+    console.error('Code exchange error:', error)
       // If token expired, redirect with helpful message
       if (error.message?.includes('expired') || error.message?.includes('invalid')) {
         return NextResponse.redirect(`${origin}/auth/login?error=link_expired&message=${encodeURIComponent('This verification link has expired. Please request a new one.')}`)
@@ -74,11 +74,11 @@ export async function GET(request: Request) {
         return NextResponse.redirect(`${origin}/dashboard`)
       } else {
         return NextResponse.redirect(`${origin}/onboarding/intro`)
-      }
+    }
     }
     
     if (error) {
-      console.error('OTP verification error:', error)
+    console.error('OTP verification error:', error)
       if (error.message?.includes('expired') || error.message?.includes('invalid')) {
         return NextResponse.redirect(`${origin}/auth/login?error=link_expired&message=${encodeURIComponent('This verification link has expired. Please request a new one.')}`)
       }
