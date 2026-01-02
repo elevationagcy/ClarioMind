@@ -236,7 +236,7 @@ function WelcomePageContent() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div className="p-4">
               <div className="text-4xl sm:text-5xl font-display font-bold text-primary mb-2">80%</div>
-              <div className="text-text-muted-light font-medium">See reduced alcohol use within 2 months</div>
+              <div className="text-text-muted-light font-medium">reduced alcohol use within 2 months</div>
             </div>
             <div className="p-4 border-l-0 md:border-l border-gray-100">
               <div className="text-4xl sm:text-5xl font-display font-bold text-primary mb-2">52k</div>
@@ -473,14 +473,16 @@ function WelcomePageContent() {
       {/* Banner Image Section */}
       <section className="py-8 sm:py-12 bg-background-light">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-gray-100 relative aspect-video sm:aspect-[16/9]">
-            <Image
-              src="/assets/your-why-is-your-power.jpeg"
-              alt="Your Why is Your Power"
-              fill
-              className="object-cover"
-            />
-          </div>
+          <Link href="/quiz">
+            <div className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-gray-100 relative aspect-video sm:aspect-[16/9] transition-transform duration-300 hover:scale-[1.01] cursor-pointer">
+              <Image
+                src="/assets/your-why-is-your-power.jpeg"
+                alt="Your Why is Your Power"
+                fill
+                className="object-cover"
+              />
+            </div>
+          </Link>
         </div>
       </section>
 
