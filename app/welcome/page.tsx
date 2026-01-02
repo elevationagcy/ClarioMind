@@ -117,23 +117,40 @@ function WelcomePageContent() {
         {/* Mobile menu */}
         {mobileMenuOpen && (
           <div className="md:hidden bg-surface-light border-t border-gray-100">
-            <div className="px-4 py-4 space-y-4">
-              <a className="block text-sm font-medium text-text-muted-light hover:text-primary" href="#how-it-works">
+            <div className="px-4 py-4 space-y-4 text-center">
+              <a 
+                className="block text-sm font-medium text-text-muted-light hover:text-primary py-2" 
+                href="#how-it-works"
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 How it Works
               </a>
-              <a className="block text-sm font-medium text-text-muted-light hover:text-primary" href="#features">
+              <a 
+                className="block text-sm font-medium text-text-muted-light hover:text-primary py-2" 
+                href="#features"
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 Features
               </a>
-              <a className="block text-sm font-medium text-text-muted-light hover:text-primary" href="#faq">
+              <a 
+                className="block text-sm font-medium text-text-muted-light hover:text-primary py-2" 
+                href="#faq"
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 FAQ
               </a>
               <hr className="border-gray-200" />
-              <Link className="block text-sm font-medium text-primary" href="/auth/login">
+              <Link 
+                className="block text-sm font-medium text-primary py-2" 
+                href="/auth/login"
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 Log in
               </Link>
               <Link 
-                className="block w-full text-center bg-primary text-white px-6 py-3 rounded-full text-sm font-semibold" 
+                className="block w-full text-center bg-primary text-white px-6 py-3 rounded-full text-sm font-semibold shadow-lg shadow-primary/25" 
                 href="/quiz"
+                onClick={() => setMobileMenuOpen(false)}
               >
                 Take the Quiz
               </Link>
@@ -164,12 +181,12 @@ function WelcomePageContent() {
               Neuroscience-backed. Evidence-based.
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tight mb-6 text-text-light leading-[1.1]">
-              Build Healthier <br />
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold tracking-tight mb-6 text-text-light leading-[1.1]">
+              Build Healthier <br className="hidden sm:block" />
               <span className="text-primary">Drinking Habits.</span>
             </h1>
 
-            <p className="mt-6 text-xl text-text-muted-light leading-relaxed max-w-xl">
+            <p className="mt-6 text-lg sm:text-xl text-text-muted-light leading-relaxed max-w-xl">
               Use neuroscience to reframe your relationship with alcohol. Unlock your healthiest, happiest self without rigid rules or judgment.
             </p>
 
@@ -182,7 +199,7 @@ function WelcomePageContent() {
                 <Icons.arrowForward />
               </Link>
 
-              <div className="flex items-center gap-4 px-4">
+              <div className="flex items-center gap-4 px-4 w-full sm:w-auto justify-center sm:justify-start">
                 <div className="flex -space-x-2">
                   <Image 
                     alt="User" 
@@ -216,8 +233,6 @@ function WelcomePageContent() {
                 </div>
               </div>
             </div>
-
-           
           </div>
         </div>
       </section>
@@ -227,15 +242,15 @@ function WelcomePageContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div className="p-4">
-              <div className="text-5xl font-display font-bold text-primary mb-2">80%</div>
+              <div className="text-4xl sm:text-5xl font-display font-bold text-primary mb-2">80%</div>
               <div className="text-text-muted-light font-medium">See reduced alcohol use within 2 months</div>
             </div>
             <div className="p-4 border-l-0 md:border-l border-gray-100">
-              <div className="text-5xl font-display font-bold text-primary mb-2">52k</div>
+              <div className="text-4xl sm:text-5xl font-display font-bold text-primary mb-2">52k</div>
               <div className="text-text-muted-light font-medium">Professionals currently enrolled</div>
             </div>
             <div className="p-4 border-l-0 md:border-l border-gray-100">
-              <div className="text-5xl font-display font-bold text-primary mb-2">1M+</div>
+              <div className="text-4xl sm:text-5xl font-display font-bold text-primary mb-2">1M+</div>
               <div className="text-text-muted-light font-medium">Drinks eliminated in the last year</div>
             </div>
           </div>
@@ -243,20 +258,20 @@ function WelcomePageContent() {
       </section>
 
       {/* App Preview Section */}
-      <section className="py-20 bg-background-light">
+      <section className="py-12 sm:py-20 bg-background-light">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl shadow-blue-900/5 border border-gray-100 relative overflow-hidden flex flex-col md:flex-row items-center gap-10">
-            <div className="relative z-10 flex-1">
+          <div className="bg-white rounded-3xl p-6 sm:p-12 shadow-xl shadow-blue-900/5 border border-gray-100 relative overflow-hidden flex flex-col lg:flex-row items-center gap-10">
+            <div className="relative z-10 flex-1 w-full text-center lg:text-left">
               <div className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider rounded-md mb-4">
                 Your Daily Companion
               </div>
-              <h2 className="text-3xl font-display font-bold text-text-light mb-4">
+              <h2 className="text-3xl sm:text-4xl font-display font-bold text-text-light mb-4">
                 Track your progress every day.
               </h2>
-              <p className="text-text-muted-light text-lg mb-6">
+              <p className="text-text-muted-light text-base sm:text-lg mb-6 max-w-2xl mx-auto lg:mx-0">
                 Get personalized daily tasks, micro-lessons, and track your alcohol-free journey with our intuitive dashboard. Watch your streak grow as you build healthier habits.
               </p>
-              <div className="flex flex-wrap gap-4 mb-8">
+              <div className="flex flex-wrap gap-x-4 gap-y-2 mb-8 justify-center lg:justify-start">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-green-500"></span>
                   <span className="text-sm font-medium text-text-muted-light">Daily lessons</span>
@@ -272,7 +287,7 @@ function WelcomePageContent() {
               </div>
               <Link 
                 href="/quiz"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-dark text-white rounded-full font-semibold transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary hover:bg-primary-dark text-white rounded-full font-semibold transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40"
               >
                 Start Your Journey
                 <Icons.arrowForward />
@@ -280,8 +295,8 @@ function WelcomePageContent() {
             </div>
 
             {/* Phone Mockup */}
-            <div className="w-full md:w-auto relative z-10 flex justify-center">
-              <div className="relative w-[280px] h-[560px]">
+            <div className="w-full lg:w-auto relative z-10 flex justify-center mt-8 lg:mt-0">
+              <div className="relative w-[240px] sm:w-[280px] h-[480px] sm:h-[560px]">
                 <Image
                   src="/assets/app-mockup.png"
                   alt="ClarioMind App Dashboard"
@@ -296,19 +311,19 @@ function WelcomePageContent() {
       </section>
 
       {/* Features Section */}
-      <section className="py-24 bg-white" id="features">
+      <section className="py-16 sm:py-24 bg-white" id="features">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
+          <div className="text-center mb-12 sm:mb-20">
             <h2 className="text-3xl md:text-5xl font-display font-bold text-text-light mb-6">
               We do science, not <span className="text-primary">stigma</span>.
             </h2>
-            <p className="text-lg text-text-muted-light max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-text-muted-light max-w-2xl mx-auto">
               Developed with hundreds of medical and mental health experts, ClarioMind is a revolutionary alcohol habit-change app built for the modern professional.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-            <div className="bg-background-light rounded-3xl p-8 lg:p-12 flex flex-col justify-between group hover:shadow-lg transition-all duration-300">
+            <div className="bg-background-light rounded-3xl p-6 sm:p-12 flex flex-col justify-between group hover:shadow-lg transition-all duration-300">
               <div>
                 <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-8 text-primary group-hover:scale-110 transition-transform duration-300">
                   <Icons.lightbulb />
@@ -328,7 +343,7 @@ function WelcomePageContent() {
               </div>
             </div>
 
-            <div className="bg-background-light rounded-3xl p-8 lg:p-12 flex flex-col justify-between group hover:shadow-lg transition-all duration-300">
+            <div className="bg-background-light rounded-3xl p-6 sm:p-12 flex flex-col justify-between group hover:shadow-lg transition-all duration-300">
               <div>
                 <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-8 text-primary group-hover:scale-110 transition-transform duration-300">
                   <Icons.psychology />
@@ -352,64 +367,58 @@ function WelcomePageContent() {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-24 bg-background-light" id="how-it-works">
+      <section className="py-16 sm:py-24 bg-background-light" id="how-it-works">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="order-2 md:order-1 relative rounded-3xl overflow-hidden shadow-xl border border-gray-100 bg-surface-light aspect-[9/19] max-h-[600px] mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 sm:gap-16 items-center">
+            <div className="order-2 md:order-1 relative rounded-3xl overflow-hidden shadow-xl border border-gray-100 bg-surface-light aspect-[9/19] w-full max-w-[300px] sm:max-w-none max-h-[500px] sm:max-h-[600px] mx-auto">
               <video autoPlay muted loop playsInline className="w-full h-full object-cover">
                 <source src="/assets/animation.mp4" type="video/mp4" />
               </video>
             </div>
 
-            <div className="order-1 md:order-2">
-              <h2 className="text-4xl font-display font-bold text-text-light mb-6">
+            <div className="order-1 md:order-2 text-center md:text-left">
+              <h2 className="text-3xl sm:text-4xl font-display font-bold text-text-light mb-6">
                 How ClarioMind Works
               </h2>
-              <p className="text-lg text-text-muted-light mb-12">
+              <p className="text-base sm:text-lg text-text-muted-light mb-8 sm:mb-12">
                 Three simple steps to regain your power, backed by cognitive behavioral therapy.
               </p>
 
-              <div className="space-y-10">
-                <div className="flex gap-6">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-primary font-bold text-lg">
-                    01
+              <div className="space-y-8 sm:space-y-10">
+                {[
+                  {
+                    num: "01",
+                    title: "We get to know you",
+                    text: "Tell us about your triggers, your goals, and what's been holding you back through our comprehensive assessment."
+                  },
+                  {
+                    num: "02",
+                    title: "Daily 5-minute Lessons",
+                    text: "Short, practical lessons about the neuroscience of habits tailored to your profile. Learn why you drink, not just that you shouldn't."
+                  },
+                  {
+                    num: "03",
+                    title: "Track & Transform",
+                    text: "See your progress in real-time. Celebrate the wins. Watch your life change as data proves your transformation."
+                  }
+                ].map((step, i) => (
+                  <div key={i} className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center sm:items-start">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-primary font-bold text-lg">
+                      {step.num}
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-text-light mb-2">{step.title}</h3>
+                      <p className="text-text-muted-light leading-relaxed">
+                        {step.text}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-text-light mb-2">We get to know you</h3>
-                    <p className="text-text-muted-light leading-relaxed">
-                      Tell us about your triggers, your goals, and what&apos;s been holding you back through our comprehensive assessment.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-6">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-primary font-bold text-lg">
-                    02
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-text-light mb-2">Daily 5-minute Lessons</h3>
-                    <p className="text-text-muted-light leading-relaxed">
-                      Short, practical lessons about the neuroscience of habits tailored to your profile. Learn <em>why</em> you drink, not just that you shouldn&apos;t.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-6">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-primary font-bold text-lg">
-                    03
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-text-light mb-2">Track &amp; Transform</h3>
-                    <p className="text-text-muted-light leading-relaxed">
-                      See your progress in real-time. Celebrate the wins. Watch your life change as data proves your transformation.
-                    </p>
-                  </div>
-                </div>
+                ))}
               </div>
 
-              <div className="mt-12">
+              <div className="mt-10 sm:mt-12">
                 <Link 
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary hover:bg-primary-dark transition-colors" 
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-full text-white bg-primary hover:bg-primary-dark transition-colors shadow-lg shadow-primary/25" 
                   href="/quiz"
                 >
                   See How It Works
@@ -422,68 +431,56 @@ function WelcomePageContent() {
       </section>
 
       {/* What You'll Get Section */}
-      <section className="py-24 bg-surface-light">
+      <section className="py-16 sm:py-24 bg-surface-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl md:text-4xl font-display font-bold text-text-light mb-4">
               What You&apos;ll Get Inside
             </h2>
             <p className="text-text-muted-light">A comprehensive toolkit for your journey.</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="p-8 bg-background-light rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1">
-              <div className="w-full h-40 rounded-lg mb-4 overflow-hidden relative">
-                <Image
-                  src="/assets/daily-micro-lessons.jpeg"
-                  alt="Daily Micro-Lessons"
-                  fill
-                  className="object-cover"
-                />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                img: "/assets/daily-micro-lessons.jpeg",
+                title: "Daily Micro-Lessons",
+                text: "Understand how alcohol affects your brain and why changing creates lasting transformation."
+              },
+              {
+                img: "/assets/community.jpeg",
+                title: "24/7 Anonymous Community",
+                text: "Connect with thousands on the same path. Celebrate wins, get support during tough moments."
+              },
+              {
+                img: "/assets/smart-tracking.jpeg",
+                title: "Smart Tracking",
+                text: "Monitor your progress in real-time. Log drinks without resetting your start date because slips happen."
+              }
+            ].map((item, i) => (
+              <div key={i} className="p-6 sm:p-8 bg-background-light rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1">
+                <div className="w-full h-40 rounded-lg mb-4 overflow-hidden relative">
+                  <Image
+                    src={item.img}
+                    alt={item.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <h3 className="text-lg font-bold text-text-light mb-2">{item.title}</h3>
+                <p className="text-sm text-text-muted-light leading-relaxed">
+                  {item.text}
+                </p>
               </div>
-              <h3 className="text-lg font-bold text-text-light mb-2">Daily Micro-Lessons</h3>
-              <p className="text-sm text-text-muted-light leading-relaxed">
-                Understand how alcohol affects your brain and why changing creates lasting transformation.
-              </p>
-            </div>
-
-            <div className="p-8 bg-background-light rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1">
-              <div className="w-full h-40 rounded-lg mb-4 overflow-hidden relative">
-                <Image
-                  src="/assets/community.jpeg"
-                  alt="Community"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <h3 className="text-lg font-bold text-text-light mb-2">24/7 Anonymous Community</h3>
-              <p className="text-sm text-text-muted-light leading-relaxed">
-                Connect with thousands on the same path. Celebrate wins, get support during tough moments.
-              </p>
-            </div>
-
-            <div className="p-8 bg-background-light rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1">
-              <div className="w-full h-40 rounded-lg mb-4 overflow-hidden relative">
-                <Image
-                  src="/assets/smart-tracking.jpeg"
-                  alt="Smart Tracking"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <h3 className="text-lg font-bold text-text-light mb-2">Smart Tracking</h3>
-              <p className="text-sm text-text-muted-light leading-relaxed">
-                Monitor your progress in real-time. Log drinks without resetting your start date because slips happen.
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Banner Image Section */}
-      <section className="py-12 bg-background-light">
+      <section className="py-8 sm:py-12 bg-background-light">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="rounded-3xl overflow-hidden shadow-2xl border border-gray-100 relative aspect-[16/9]">
+          <div className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-gray-100 relative aspect-video sm:aspect-[16/9]">
             <Image
               src="/assets/your-why-is-your-power.jpeg"
               alt="Your Why is Your Power"
@@ -495,9 +492,9 @@ function WelcomePageContent() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-24 bg-white" id="faq">
+      <section className="py-16 sm:py-24 bg-white" id="faq">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-text-light text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-display font-bold text-text-light text-center mb-8 sm:mb-12">
             Frequently Asked Questions
           </h2>
 
@@ -523,18 +520,18 @@ function WelcomePageContent() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-background-light relative overflow-hidden">
+      <section className="py-16 sm:py-24 bg-background-light relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-[3rem] p-10 md:p-20 text-center relative overflow-hidden shadow-2xl shadow-blue-900/20">
+          <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-[2rem] sm:rounded-[3rem] p-8 sm:p-20 text-center relative overflow-hidden shadow-2xl shadow-blue-900/20">
             <div className="relative z-10">
-              <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">
+              <h2 className="text-3xl sm:text-6xl font-display font-bold text-white mb-6">
                 Ready to transform <br />your life?
               </h2>
-              <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
+              <p className="text-lg sm:text-xl text-blue-100 mb-8 sm:mb-10 max-w-2xl mx-auto">
                 Join thousands of professionals who&apos;ve already started their journey with ClarioMind.
               </p>
               <Link 
-                className="inline-flex items-center justify-center px-10 py-5 bg-white text-primary hover:bg-gray-50 rounded-full font-bold text-lg shadow-lg transition-all hover:-translate-y-1 gap-2" 
+                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 sm:px-10 sm:py-5 bg-white text-primary hover:bg-gray-50 rounded-full font-bold text-lg shadow-lg transition-all hover:-translate-y-1 gap-2" 
                 href="/quiz"
               >
                 Start Your Journey To Recovery
@@ -549,63 +546,53 @@ function WelcomePageContent() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-surface-light border-t border-gray-100 pt-20 pb-10">
+      <footer className="bg-surface-light border-t border-gray-100 pt-16 sm:pt-20 pb-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-16">
-            <div className="col-span-2 lg:col-span-2">
-              <div className="flex items-center gap-2 mb-6">
-                <Image 
-                  src="/assets/clariomind.png" 
-                  alt="ClarioMind Logo" 
-                  width={128}
-                  height={32}
-                  className="h-8 w-auto"
-                />
-              </div>
-              <p className="text-text-muted-light text-sm leading-relaxed max-w-xs mb-6">
-                The science-backed app for professionals looking to change their relationship with alcohol.
-              </p>
-              <div className="flex gap-4">
-                <a
-                  className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-primary hover:text-white transition-colors"
-                  href="mailto:info@clariomind.com"
-                  aria-label="Contact Email"
-                >
-                  <Icons.mail />
-                </a>
-                <a
-                  className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-primary hover:text-white transition-colors"
-                  href="https://www.instagram.com/clariomindapp/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Instagram"
-                >
-                  <Icons.globe />
-                </a>
-              </div>
+          <div className="flex flex-col items-center text-center">
+            <div className="mb-8">
+              <Image 
+                src="/assets/clariomind.png" 
+                alt="ClarioMind Logo" 
+                width={128}
+                height={32}
+                className="h-10 w-auto"
+              />
+            </div>
+            
+            <p className="text-text-muted-light text-base leading-relaxed max-w-md mb-8">
+              The science-backed app for professionals looking to change their relationship with alcohol.
+            </p>
+
+            <div className="flex gap-4 mb-12">
+              <a
+                className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-primary hover:text-white transition-colors"
+                href="mailto:info@clariomind.com"
+                aria-label="Contact Email"
+              >
+                <Icons.mail />
+              </a>
+              <a
+                className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-primary hover:text-white transition-colors"
+                href="https://www.instagram.com/clariomindapp/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+              >
+                <Icons.globe />
+              </a>
             </div>
 
-            <div>
-              <h4 className="font-bold text-text-light mb-4">Product</h4>
-              <ul className="space-y-3 text-sm text-text-muted-light">
-                <li><a className="hover:text-primary transition-colors" href="#features">Features</a></li>
-                <li><a className="hover:text-primary transition-colors" href="#">Pricing</a></li>
-                <li><a className="hover:text-primary transition-colors" href="#">Methodology</a></li>
-                <li><a className="hover:text-primary transition-colors" href="#">Success Stories</a></li>
-              </ul>
-            </div>
-
-         
-
-          <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-text-muted-light">
-            <div>© 2024 ClarioMind Inc. All rights reserved.</div>
-            <div className="flex gap-6">
-              <Link className="hover:text-primary transition-colors" href="/privacy">Privacy</Link>
-              <Link className="hover:text-primary transition-colors" href="/terms">Terms</Link>
-              <a className="hover:text-primary transition-colors" href="#">Cookies</a>
+            <div className="w-full pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-6">
+              <div className="text-sm text-text-muted-light font-medium">
+                © 2024 ClarioMind Inc. All rights reserved.
+              </div>
+              <div className="flex gap-8 text-sm">
+                <Link className="text-text-muted-light hover:text-primary transition-colors font-medium" href="/privacy">Privacy</Link>
+                <Link className="text-text-muted-light hover:text-primary transition-colors font-medium" href="/terms">Terms</Link>
+                <a className="text-text-muted-light hover:text-primary transition-colors font-medium" href="#">Cookies</a>
+              </div>
             </div>
           </div>
-        </div>
         </div>
       </footer>
     </div>
@@ -622,13 +609,13 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
         className="flex justify-between items-center font-medium cursor-pointer p-6 text-text-light hover:text-primary transition-colors w-full text-left"
         onClick={() => setIsOpen(!isOpen)}
       >
-        {question}
-        <span className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
+        <span className="pr-4">{question}</span>
+        <span className={`flex-shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
           <Icons.expandMore />
         </span>
       </button>
       {isOpen && (
-        <div className="text-text-muted-light p-6 pt-0 leading-relaxed border-t border-gray-100 mt-2">
+        <div className="text-text-muted-light p-6 pt-0 leading-relaxed border-t border-gray-100 mt-2 bg-white/50">
           {answer}
         </div>
       )}
