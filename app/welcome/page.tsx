@@ -67,7 +67,7 @@ function WelcomePageContent() {
     <div className="bg-background-light text-text-light font-body transition-colors duration-300">
       {/* Navigation */}
       <nav className="fixed w-full z-50 bg-surface-light/90 backdrop-blur-md border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16">
           <div className="flex justify-between items-center h-20">
             <div className="flex-shrink-0 flex items-center gap-2">
               <Image 
@@ -93,13 +93,13 @@ function WelcomePageContent() {
               <div className="h-6 w-px bg-gray-200"></div>
               <Link className="text-sm font-medium text-primary hover:text-primary-dark" href="/auth/login">
                 Log in
-              </Link>
+            </Link>
               <Link 
                 className="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40" 
                 href="/quiz"
               >
                 Take the Quiz
-              </Link>
+            </Link>
             </div>
 
             {/* Mobile menu button */}
@@ -174,58 +174,51 @@ function WelcomePageContent() {
           <div className="absolute inset-0 bg-gradient-to-r from-background-light/60 via-background-light/30 to-transparent"></div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full text-left">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-primary text-xs font-semibold mb-6 animate-fade-in-up">
+        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 relative z-10 w-full">
+          <div className="max-w-3xl lg:max-w-4xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/40 backdrop-blur-md border border-white/40 text-primary text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-8 animate-fade-in-up">
               <Icons.verified />
               Neuroscience-backed. Evidence-based.
-            </div>
+      </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold tracking-tight mb-6 text-text-light leading-[1.1]">
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-display font-bold tracking-tight mb-8 text-text-light leading-[1.05]">
               Build Healthier <br className="hidden sm:block" />
               <span className="text-primary">Drinking Habits.</span>
-            </h1>
+        </h1>
 
-            <p className="mt-6 text-lg sm:text-xl text-text-muted-light leading-relaxed max-w-xl">
+            <p className="mt-8 text-lg sm:text-xl text-text-muted-light leading-relaxed max-w-xl">
               Use neuroscience to reframe your relationship with alcohol. Unlock your healthiest, happiest self without rigid rules or judgment.
             </p>
 
-            <div className="mt-10 flex flex-col sm:flex-row items-center gap-4">
+            <div className="mt-12 flex flex-col sm:flex-row items-center gap-6">
               <Link 
-                className="w-full sm:w-auto px-8 py-3 sm:py-4 bg-primary hover:bg-primary-dark text-white rounded-full font-semibold text-base sm:text-lg shadow-xl shadow-primary/30 transition-all hover:-translate-y-1 flex items-center justify-center gap-2" 
+                className="w-full sm:w-auto px-10 py-4 sm:py-5 bg-primary hover:bg-primary-dark text-white rounded-full font-bold text-lg shadow-2xl shadow-primary/30 transition-all hover:-translate-y-1 flex items-center justify-center gap-3" 
                 href="/quiz"
               >
                 Start Your Journey
                 <Icons.arrowForward />
-              </Link>
+            </Link>
 
-              <div className="flex items-center gap-4 px-4 w-full sm:w-auto justify-center sm:justify-start">
-                <div className="flex -space-x-2">
-                  <Image 
-                    alt="User" 
-                    className="w-8 h-8 rounded-full border-2 border-white" 
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1-taOqjPNtacAjOTfCyhhq7CEkSiz67G7fry1B1lj8V3GBJ-xOUK-40gpZgXxzbIzXqu44XYdLoPDL0P0o2BIf7h0jVgD6JOtCFSlMrnISGXDB2VvaGrQ28J52hlgodRwv0rC8hXjIRw99dI_3vi7nBq70cHe6y2FlCUsMt2uSLaYxF4RANylrXxvlYagkE4fzh4eJqk44A1D_z7AK5fMm6-aPLcIZuTa5l91HgkAevKq46oiKhWYC90xCK9gmDtjrJ2bznclSMlx"
-                    width={32}
-                    height={32}
-                  />
-                  <Image 
-                    alt="User" 
-                    className="w-8 h-8 rounded-full border-2 border-white" 
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjjhJboYBmsnSru86wozTU8h557cKg01pwwziJZ5d_HYpoI6tfmFLnjwwRqg3zjcdMNIW0P9nS_q0fWLirX0V7DlaX91Pt4kHtyuL9HKRIVi5Glhauqj_eK4BAgL2QC2Ik_4e3915zCotOWzrSMxQdj1TTgvlP9zZs9HODF7bxlggp3hgCACBipYljKv9C2N_Wzvgd5BsJ2WMxp9xGrk4fZmy8KLqhBpgoHKnZHbX2UwfFdZd4TIjeImnpnKI581MnLPd_iyLfK45O"
-                    width={32}
-                    height={32}
-                  />
-                  <Image 
-                    alt="User" 
-                    className="w-8 h-8 rounded-full border-2 border-white" 
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAs0tCnvOMuHQPqqd75MRFGEbCRc3qfvLofFn6pwJq3yP9fHm8oCBFv0LlxasDwcXwuf61w42IQNjMpakV75fijmJn6dTmNJPcE7R4kU28oUh1rpfVv3HtF5TZEMNdz0HEt0Oesq1CpWL0FFc_MU2flqvohjh3ZQiaxlIib9BX76Vo-f7IZDNCUNKP9f-v4mhz8mm0x4AFGKR-dQBFCBtWj01FXPqtgOq1xpDzRiHtXlskgOXnyqXVWXv5JTafLCemfcsK5R1NR4yK4"
-                    width={32}
-                    height={32}
-                  />
+              <div className="flex items-center gap-5 px-4 w-full sm:w-auto justify-center sm:justify-start">
+                <div className="flex -space-x-3">
+                  {[
+                    "https://lh3.googleusercontent.com/aida-public/AB6AXuC1-taOqjPNtacAjOTfCyhhq7CEkSiz67G7fry1B1lj8V3GBJ-xOUK-40gpZgXxzbIzXqu44XYdLoPDL0P0o2BIf7h0jVgD6JOtCFSlMrnISGXDB2VvaGrQ28J52hlgodRwv0rC8hXjIRw99dI_3vi7nBq70cHe6y2FlCUsMt2uSLaYxF4RANylrXxvlYagkE4fzh4eJqk44A1D_z7AK5fMm6-aPLcIZuTa5l91HgkAevKq46oiKhWYC90xCK9gmDtjrJ2bznclSMlx",
+                    "https://lh3.googleusercontent.com/aida-public/AB6AXuCjjhJboYBmsnSru86wozTU8h557cKg01pwwziJZ5d_HYpoI6tfmFLnjwwRqg3zjcdMNIW0P9nS_q0fWLirX0V7DlaX91Pt4kHtyuL9HKRIVi5Glhauqj_eK4BAgL2QC2Ik_4e3915zCotOWzrSMxQdj1TTgvlP9zZs9HODF7bxlggp3hgCACBipYljKv9C2N_Wzvgd5BsJ2WMxp9xGrk4fZmy8KLqhBpgoHKnZHbX2UwfFdZd4TIjeImnpnKI581MnLPd_iyLfK45O",
+                    "https://lh3.googleusercontent.com/aida-public/AB6AXuAs0tCnvOMuHQPqqd75MRFGEbCRc3qfvLofFn6pwJq3yP9fHm8oCBFv0LlxasDwcXwuf61w42IQNjMpakV75fijmJn6dTmNJPcE7R4kU28oUh1rpfVv3HtF5TZEMNdz0HEt0Oesq1CpWL0FFc_MU2flqvohjh3ZQiaxlIib9BX76Vo-f7IZDNCUNKP9f-v4mhz8mm0x4AFGKR-dQBFCBtWj01FXPqtgOq1xpDzRiHtXlskgOXnyqXVWXv5JTafLCemfcsK5R1NR4yK4"
+                  ].map((src, i) => (
+                    <Image 
+                      key={i}
+                      alt="User" 
+                      className="w-10 h-10 rounded-full border-2 border-white shadow-sm" 
+                      src={src}
+                      width={40}
+                      height={40}
+                    />
+                  ))}
                 </div>
-                <div className="text-sm">
-                  <span className="font-bold text-text-light block">10k+ Trusted Users</span>
-                  <div className="flex text-yellow-400 text-xs">
+                <div className="flex flex-col">
+                  <span className="font-bold text-text-light text-sm">10k+ Trusted Users</span>
+                  <div className="flex text-yellow-400">
                     {[...Array(5)].map((_, i) => (
                       <Icons.star key={i} />
                     ))}
@@ -411,10 +404,10 @@ function WelcomePageContent() {
                       <p className="text-text-muted-light leading-relaxed">
                         {step.text}
                       </p>
-                    </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
+        </div>
 
               <div className="mt-10 sm:mt-12">
                 <Link 
@@ -423,7 +416,7 @@ function WelcomePageContent() {
                 >
                   See How It Works
                   <Icons.arrowForward />
-                </Link>
+              </Link>
               </div>
             </div>
           </div>
@@ -496,7 +489,7 @@ function WelcomePageContent() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-display font-bold text-text-light text-center mb-8 sm:mb-12">
             Frequently Asked Questions
-          </h2>
+            </h2>
 
           <div className="space-y-4">
             <FAQItem 
@@ -526,7 +519,7 @@ function WelcomePageContent() {
             <div className="relative z-10">
               <h2 className="text-3xl sm:text-6xl font-display font-bold text-white mb-6">
                 Ready to transform <br />your life?
-              </h2>
+            </h2>
               <p className="text-lg sm:text-xl text-blue-100 mb-8 sm:mb-10 max-w-2xl mx-auto">
                 Join thousands of professionals who&apos;ve already started their journey with ClarioMind.
               </p>
@@ -540,7 +533,7 @@ function WelcomePageContent() {
               <p className="mt-6 text-sm text-blue-200 opacity-80">
                 No credit card required for initial assessment.
               </p>
-            </div>
+              </div>
           </div>
         </div>
       </section>
@@ -593,7 +586,7 @@ function WelcomePageContent() {
               </div>
             </div>
           </div>
-        </div>
+      </div>
       </footer>
     </div>
   );
@@ -623,10 +616,10 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   );
 }
 
-export default function WelcomePage() {
-  return (
+  export default function WelcomePage() {
+    return (
     <Suspense fallback={<div className="min-h-screen bg-background-light" />}>
-      <WelcomePageContent />
-    </Suspense>
+        <WelcomePageContent />
+      </Suspense>
   );
-}
+  }
