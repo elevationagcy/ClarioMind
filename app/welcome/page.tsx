@@ -47,9 +47,9 @@ const Icons = {
       <path fillRule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clipRule="evenodd" />
     </svg>
   ),
-  globe: () => (
+  instagram: () => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-      <path d="M21.721 12.752a9.711 9.711 0 00-.945-5.003 12.754 12.754 0 01-4.339 2.708 18.991 18.991 0 01-.214 4.772 17.165 17.165 0 005.498-2.477zM14.634 15.55a17.324 17.324 0 00.332-4.647c-.952.227-1.945.347-2.966.347-1.021 0-2.014-.12-2.966-.347a17.515 17.515 0 00.332 4.647 17.385 17.385 0 005.268 0zM9.772 17.119a18.963 18.963 0 004.456 0A17.182 17.182 0 0112 21.724a17.18 17.18 0 01-2.228-4.605zM7.777 15.23a18.87 18.87 0 01-.214-4.774 12.753 12.753 0 01-4.34-2.708 9.711 9.711 0 00-.944 5.004 17.165 17.165 0 005.498 2.477zM21.356 14.752a9.765 9.765 0 01-7.478 6.817 18.64 18.64 0 001.988-4.718 18.627 18.627 0 005.49-2.098zM2.644 14.752c1.682.971 3.53 1.688 5.49 2.099a18.64 18.64 0 001.988 4.718 9.765 9.765 0 01-7.478-6.816zM13.878 2.43a9.755 9.755 0 016.116 3.986 11.267 11.267 0 01-3.746 2.504 18.63 18.63 0 00-2.37-6.49zM12 2.276a17.152 17.152 0 012.805 7.121c-.897.23-1.837.353-2.805.353-.968 0-1.908-.122-2.805-.353A17.151 17.151 0 0112 2.276zM10.122 2.43a18.629 18.629 0 00-2.37 6.49 11.266 11.266 0 01-3.746-2.504 9.754 9.754 0 016.116-3.985z" />
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.209-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
     </svg>
   ),
   mail: () => (
@@ -192,7 +192,7 @@ function WelcomePageContent() {
 
             <div className="mt-10 flex flex-col sm:flex-row items-center gap-4">
               <Link 
-                className="w-full sm:w-auto px-8 py-4 bg-primary hover:bg-primary-dark text-white rounded-full font-semibold text-lg shadow-xl shadow-primary/30 transition-all hover:-translate-y-1 flex items-center justify-center gap-2" 
+                className="w-full sm:w-auto px-8 py-3 sm:py-4 bg-primary hover:bg-primary-dark text-white rounded-full font-semibold text-base sm:text-lg shadow-xl shadow-primary/30 transition-all hover:-translate-y-1 flex items-center justify-center gap-2" 
                 href="/quiz"
               >
                 Start Your Journey
@@ -287,7 +287,7 @@ function WelcomePageContent() {
               </div>
               <Link 
                 href="/quiz"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary hover:bg-primary-dark text-white rounded-full font-semibold transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 sm:py-4 bg-primary hover:bg-primary-dark text-white rounded-full font-semibold text-base transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40"
               >
                 Start Your Journey
                 <Icons.arrowForward />
@@ -418,7 +418,7 @@ function WelcomePageContent() {
 
               <div className="mt-10 sm:mt-12">
                 <Link 
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-full text-white bg-primary hover:bg-primary-dark transition-colors shadow-lg shadow-primary/25" 
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 sm:py-4 border border-transparent text-sm sm:text-base font-medium rounded-full text-white bg-primary hover:bg-primary-dark transition-colors shadow-lg shadow-primary/25" 
                   href="/quiz"
                 >
                   See How It Works
@@ -531,7 +531,7 @@ function WelcomePageContent() {
                 Join thousands of professionals who&apos;ve already started their journey with ClarioMind.
               </p>
               <Link 
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 sm:px-10 sm:py-5 bg-white text-primary hover:bg-gray-50 rounded-full font-bold text-lg shadow-lg transition-all hover:-translate-y-1 gap-2" 
+                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 sm:py-5 bg-white text-primary hover:bg-gray-50 rounded-full font-bold text-sm sm:text-lg shadow-lg transition-all hover:-translate-y-1 gap-2 whitespace-nowrap" 
                 href="/quiz"
               >
                 Start Your Journey To Recovery
@@ -578,7 +578,7 @@ function WelcomePageContent() {
                 rel="noopener noreferrer"
                 aria-label="Instagram"
               >
-                <Icons.globe />
+                <Icons.instagram />
               </a>
             </div>
 
