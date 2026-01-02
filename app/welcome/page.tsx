@@ -584,7 +584,7 @@ function WelcomePageContent() {
 
             <div className="w-full pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-6">
               <div className="text-sm text-text-muted-light font-medium">
-                © 2024 ClarioMind Inc. All rights reserved.
+                © 2026 ClarioMind Inc. All rights reserved.
               </div>
               <div className="flex gap-8 text-sm">
                 <Link className="text-text-muted-light hover:text-primary transition-colors font-medium" href="/privacy">Privacy</Link>
