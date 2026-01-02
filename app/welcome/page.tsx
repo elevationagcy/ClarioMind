@@ -150,11 +150,11 @@ function WelcomePageContent() {
             muted 
             loop 
             playsInline 
-            className="absolute inset-0 w-full h-full object-cover opacity-30"
+            className="absolute inset-0 w-full h-full object-cover opacity-60"
           >
             <source src="/assets/Clario-banner.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-r from-background-light/80 via-background-light/50 to-background-light/10"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-background-light/60 via-background-light/30 to-transparent"></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full text-left">
@@ -217,14 +217,7 @@ function WelcomePageContent() {
               </div>
             </div>
 
-            <div className="mt-12 flex gap-6 text-text-muted-light items-center">
-              <span className="text-sm font-medium uppercase tracking-wider opacity-60">Featured in</span>
-              <div className="h-8 opacity-50 grayscale hover:grayscale-0 transition-all">
-                <span className="font-display font-bold text-xl mr-4">Forbes</span>
-                <span className="font-display font-bold text-xl mr-4">TechCrunch</span>
-                <span className="font-display font-bold text-xl">PsyPost</span>
-              </div>
-            </div>
+           
           </div>
         </div>
       </section>
@@ -573,11 +566,21 @@ function WelcomePageContent() {
                 The science-backed app for professionals looking to change their relationship with alcohol.
               </p>
               <div className="flex gap-4">
-                <a className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-primary hover:text-white transition-colors" href="#">
-                  <Icons.globe />
-                </a>
-                <a className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-primary hover:text-white transition-colors" href="#">
+                <a
+                  className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-primary hover:text-white transition-colors"
+                  href="mailto:info@clariomind.com"
+                  aria-label="Contact Email"
+                >
                   <Icons.mail />
+                </a>
+                <a
+                  className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-primary hover:text-white transition-colors"
+                  href="https://www.instagram.com/clariomindapp/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                >
+                  <Icons.globe />
                 </a>
               </div>
             </div>
@@ -592,26 +595,7 @@ function WelcomePageContent() {
               </ul>
             </div>
 
-            <div>
-              <h4 className="font-bold text-text-light mb-4">Company</h4>
-              <ul className="space-y-3 text-sm text-text-muted-light">
-                <li><a className="hover:text-primary transition-colors" href="#">About Us</a></li>
-                <li><a className="hover:text-primary transition-colors" href="#">Careers</a></li>
-                <li><a className="hover:text-primary transition-colors" href="#">Blog</a></li>
-                <li><a className="hover:text-primary transition-colors" href="#">Press</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-text-light mb-4">Support</h4>
-              <ul className="space-y-3 text-sm text-text-muted-light">
-                <li><a className="hover:text-primary transition-colors" href="#">Help Center</a></li>
-                <li><a className="hover:text-primary transition-colors" href="#">Community Guidelines</a></li>
-                <li><Link className="hover:text-primary transition-colors" href="/privacy">Privacy Policy</Link></li>
-                <li><Link className="hover:text-primary transition-colors" href="/terms">Terms of Service</Link></li>
-              </ul>
-            </div>
-          </div>
+         
 
           <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-text-muted-light">
             <div>© 2024 ClarioMind Inc. All rights reserved.</div>
@@ -621,6 +605,7 @@ function WelcomePageContent() {
               <a className="hover:text-primary transition-colors" href="#">Cookies</a>
             </div>
           </div>
+        </div>
         </div>
       </footer>
     </div>
