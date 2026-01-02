@@ -91,7 +91,7 @@ export default function AdminDashboard() {
       <div className="bg-gradient-to-r from-primary to-primary-dark p-6 text-white shadow-lg flex items-center justify-between">
         <div>
           <Logo size="md" className="brightness-0 invert mb-1" />
-          <p className="text-white/80">Manage your app content and users</p>
+        <p className="text-white/80">Manage your app content and users</p>
         </div>
         <div className="bg-white/10 px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm">
           Admin
