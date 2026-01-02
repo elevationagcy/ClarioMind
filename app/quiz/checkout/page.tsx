@@ -2,6 +2,8 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import Image from 'next/image'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { 
   ArrowLeft, 
@@ -20,8 +22,6 @@ import {
   Heart
 } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
-import Image from 'next/image'
-import Link from 'next/link'
 
 interface Plan {
   id: string
@@ -48,16 +48,6 @@ const plans: Plan[] = [
     priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_1_MONTH || '',
   },
   {
-    id: '3-month',
-    name: '3-month plan',
-    duration: 'every 3 months',
-    pricePerDay: '0.67',
-    totalPrice: '59.99',
-    billingPeriod: 'USD 59.99',
-    savings: '33%',
-    priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_3_MONTH || '',
-  },
-  {
     id: '6-month',
     name: '6-month plan',
     duration: 'every 6 months',
@@ -67,6 +57,16 @@ const plans: Plan[] = [
     savings: '50%',
     recommended: true,
     priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_6_MONTH || '',
+  },
+  {
+    id: '3-month',
+    name: '3-month plan',
+    duration: 'every 3 months',
+    pricePerDay: '0.67',
+    totalPrice: '59.99',
+    billingPeriod: 'USD 59.99',
+    savings: '33%',
+    priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_3_MONTH || '',
   },
 ]
 
@@ -175,7 +175,7 @@ function CheckoutPageContent() {
       <header className="bg-white border-b border-slate-100 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <button 
-            onClick={() => router.back()}
+            onClick={() => router.push('/quiz/results')}
             className="flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -192,127 +192,123 @@ function CheckoutPageContent() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 px-4 py-8 sm:py-12 max-w-6xl mx-auto w-full">
+      <main className="flex-1 px-4 py-12 sm:py-20 max-w-7xl mx-auto w-full">
         {/* Title Section */}
-        <div className="text-center mb-10 sm:mb-16">
-          <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-4 tracking-tight">Choose Your Plan</h1>
-          <p className="text-slate-600 text-lg">Start your transformation journey today</p>
-        </div>
-
-        {/* Plan Selection Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
-          {plans.map((plan) => (
-            <div
-              key={plan.id}
-              onClick={() => setSelectedPlan(plan.id)}
-              className={`group relative cursor-pointer rounded-[2.5rem] border-2 transition-all duration-300 bg-white flex flex-col h-full ${
-                selectedPlan === plan.id
-                  ? 'border-blue-500 shadow-2xl shadow-blue-100 ring-4 ring-blue-50'
-                  : 'border-slate-200 hover:border-slate-300'
-              }`}
-            >
-              {/* Top Badge */}
-              {plan.badge && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
-                  <div className="bg-blue-600 text-white text-[10px] sm:text-xs font-bold px-5 py-2 rounded-full shadow-lg whitespace-nowrap uppercase tracking-wider">
-                    {plan.badge}
-                  </div>
-                </div>
-              )}
-
-              {/* Savings Badge */}
-              {plan.savings && (
-                <div className="absolute top-6 right-6">
-                  <div className="bg-green-100 text-green-700 text-[10px] font-bold px-3 py-1 rounded-full border border-green-200 uppercase tracking-tight">
-                    Save {plan.savings}
-                  </div>
-                </div>
-              )}
-
-              <div className="p-8 sm:p-10 flex flex-col flex-1">
-                <div className="flex items-start justify-between mb-6">
-                  {/* Radio Circle */}
-                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                    selectedPlan === plan.id
-                      ? 'border-blue-500 bg-blue-500'
-                      : 'border-slate-300 group-hover:border-slate-400'
-                  }`}>
-                    {selectedPlan === plan.id && (
-                      <div className="w-2.5 h-2.5 bg-white rounded-full" />
-                    )}
-                  </div>
-                </div>
-
-                {/* Plan Info */}
-                <div className="mb-8">
-                  <h3 className="text-3xl font-bold text-slate-900 mb-1 leading-tight">
-                    {plan.id.split('-')[0]}-<br />month plan
-                  </h3>
-                  <p className="text-slate-400 text-sm font-medium mb-4">{plan.duration}</p>
-                  
-                  {/* Per Day Price */}
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-slate-400 text-lg font-bold">USD</span>
-                    <span className={`text-5xl font-black tracking-tighter ${
-                      selectedPlan === plan.id ? 'text-blue-600' : 'text-slate-900'
-                    }`}>
-                      {plan.pricePerDay}
-                    </span>
-                    <span className="text-slate-400 text-sm font-medium ml-1">per day</span>
-                  </div>
-                </div>
-
-                {/* Billing Info */}
-                <div className="mt-auto pt-6 border-t border-slate-50">
-                  <div className="text-slate-400 text-sm font-medium">
-                    USD<br />
-                    {plan.totalPrice}
-                  </div>
-                </div>
-
-                {/* Recommended Section at Bottom */}
-                {plan.recommended && (
-                  <div className={`mt-6 p-4 rounded-3xl flex items-center gap-3 transition-colors ${
-                    selectedPlan === plan.id ? 'bg-amber-50 border border-amber-100' : 'bg-slate-50 border border-slate-100'
-                  }`}>
-                    <Sparkles className={`w-4 h-4 ${selectedPlan === plan.id ? 'text-amber-500' : 'text-slate-400'}`} />
-                    <span className={`text-xs font-bold leading-tight ${selectedPlan === plan.id ? 'text-amber-700' : 'text-slate-500'}`}>
-                      Recommended for your profile
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Selected Plan Summary Card */}
-        <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm p-8 sm:p-12 mb-12 text-center">
-          <p className="text-slate-500 text-sm font-bold uppercase tracking-widest mb-2">Your selected plan</p>
-          <div className="flex items-baseline justify-center gap-2 mb-2">
-            <span className="text-5xl font-black text-slate-900">${currentPlan?.totalPrice}</span>
-            <span className="text-slate-400 text-xl font-medium">/{currentPlan?.id.split('-')[0]} months</span>
+        <div className="text-center mb-16 sm:mb-24">
+          <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-xs font-black uppercase tracking-[0.2em] mb-6 shadow-sm border border-blue-100">
+            <Sparkles className="w-4 h-4" />
+            Your Personalized Path is Ready
           </div>
-          <p className="text-green-600 font-bold flex items-center justify-center gap-1.5">
-            <Check className="w-5 h-5 stroke-[3px]" />
-            Only ${currentPlan?.pricePerDay}/day
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-slate-900 mb-6 tracking-tight leading-[1.1]">
+            Investment in <span className="text-blue-600">Your Future</span>
+          </h1>
+          <p className="text-slate-500 text-lg sm:text-2xl max-w-3xl mx-auto font-medium leading-relaxed">
+            Join 52,000+ high-performing professionals who have reclaimed their mental clarity and physical vitality.
           </p>
         </div>
 
-        {/* Features Breakdown */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-12">
-          <div className="lg:col-span-8">
-            <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm p-8 sm:p-12">
-              <h2 className="text-2xl font-bold text-slate-900 mb-8">What&apos;s included in your program:</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Plan Selection Cards - Left Column */}
+          <div className="lg:col-span-8 space-y-4 sm:space-y-6">
+            <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+              <Zap className="w-5 h-5 text-blue-600 fill-blue-600" />
+              Select a Subscription Plan
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
+              {plans.map((plan) => (
+                <div
+                  key={plan.id}
+                  onClick={() => setSelectedPlan(plan.id)}
+                  className={`group relative cursor-pointer rounded-[2.5rem] border-2 transition-all duration-500 bg-white flex flex-col h-full ${
+                    selectedPlan === plan.id
+                      ? 'border-blue-600 shadow-2xl shadow-blue-100 ring-[6px] ring-blue-50/50 z-10 scale-[1.02]'
+                      : 'border-slate-100 hover:border-blue-200 hover:shadow-xl translate-y-1 hover:-translate-y-1'
+                  }`}
+                >
+                  {/* Badge */}
+                  {(plan.badge || plan.recommended) && (
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20 w-full flex justify-center px-2">
+                      <div className={`${
+                        plan.recommended ? 'bg-amber-500 shadow-amber-200' : 'bg-blue-600 shadow-blue-200'
+                      } text-white text-[10px] sm:text-xs font-black px-5 py-2 rounded-full shadow-xl whitespace-nowrap uppercase tracking-widest flex items-center gap-2`}>
+                        {plan.recommended && <Sparkles className="w-3.5 h-3.5 fill-current" />}
+                        {plan.badge || 'Most Popular'}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className={`p-4 sm:p-6 flex flex-col flex-1 ${plan.badge || plan.recommended ? 'pt-9 sm:pt-12' : 'pt-7 sm:pt-10'}`}>
+                    {/* Header Info */}
+                    <div className="text-center mb-2 sm:mb-4">
+                      <h3 className="font-black text-slate-900 text-xl mb-2 tracking-tight">{plan.name}</h3>
+                      <div className="inline-flex items-center gap-2 text-slate-400 text-xs font-bold uppercase tracking-widest">
+                        <Calendar className="w-3.5 h-3.5" />
+                        {plan.duration}
+                      </div>
+                    </div>
+
+                    {/* Price Info */}
+                    <div className="flex-1 flex flex-col items-center justify-center py-2 sm:py-4">
+                      <div className="flex items-start gap-1 mb-1">
+                        <span className="text-slate-400 text-xl font-bold mt-2">$</span>
+                        <span className={`text-6xl font-black tracking-tighter transition-colors duration-300 ${
+                          selectedPlan === plan.id ? 'text-blue-600' : 'text-slate-900'
+                        }`}>
+                          {plan.pricePerDay}
+                        </span>
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <p className="text-slate-400 font-bold text-[10px] uppercase tracking-[0.2em] mb-2">per day</p>
+                        {plan.savings && (
+                          <div className="px-4 py-1.5 bg-green-50 text-green-600 text-[11px] font-black rounded-full border border-green-100 shadow-sm uppercase tracking-wider">
+                            SAVE {plan.savings}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Footer Info */}
+                    <div className="mt-auto pt-4 sm:pt-6 border-t border-slate-50">
+                      <div className="text-center mb-2 sm:mb-4">
+                        <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest leading-relaxed">
+                          Billed as {plan.billingPeriod}
+                        </p>
+                      </div>
+                      <div className={`w-full py-4 rounded-2xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
+                        selectedPlan === plan.id
+                          ? 'bg-blue-600 text-white shadow-xl shadow-blue-200'
+                          : 'bg-slate-50 text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-600'
+                      }`}>
+                        {selectedPlan === plan.id ? (
+                          <>
+                            <CheckCircle2 className="w-5 h-5" />
+                            Selected
+                          </>
+                        ) : 'Choose Plan'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Features Breakdown */}
+            <div className="bg-white rounded-[3rem] border border-slate-100 shadow-2xl shadow-slate-100/50 p-10 sm:p-16 mt-16 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50/50 rounded-full blur-3xl -mr-32 -mt-32" />
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-50/50 rounded-full blur-3xl -ml-32 -mb-32" />
+              
+              <h2 className="text-3xl font-black text-slate-900 mb-12 tracking-tight relative">
+                Everything you need to <span className="text-blue-600">succeed:</span>
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-10 relative">
                 {features.map((feature, index) => (
-                  <div key={index} className="flex items-start gap-5 group">
-                    <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center border border-blue-100 flex-shrink-0 group-hover:scale-110 transition-transform">
-                      <feature.icon className="w-6 h-6 text-blue-600" />
+                  <div key={index} className="flex items-start gap-6 group">
+                    <div className="w-16 h-16 bg-blue-50 rounded-[1.25rem] flex items-center justify-center border border-blue-100 flex-shrink-0 group-hover:scale-110 group-hover:bg-blue-100 transition-all duration-300 shadow-sm">
+                      <feature.icon className="w-7 h-7 text-blue-600" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-slate-900 text-lg mb-1">{feature.title}</h3>
-                      <p className="text-slate-500 leading-relaxed">{feature.description}</p>
+                      <h3 className="font-black text-slate-900 text-lg mb-2 tracking-tight group-hover:text-blue-600 transition-colors">{feature.title}</h3>
+                      <p className="text-slate-500 leading-relaxed text-sm font-medium">{feature.description}</p>
                     </div>
                   </div>
                 ))}
@@ -320,88 +316,139 @@ function CheckoutPageContent() {
             </div>
           </div>
 
-          <div className="lg:col-span-4 space-y-6">
-            <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-xl p-8 sm:p-10">
-              <div className="bg-green-600 text-white text-center py-2 rounded-full text-[10px] font-black uppercase tracking-widest mb-8">
+          {/* Checkout Summary - Right Column */}
+          <div className="lg:col-span-4 lg:sticky lg:top-24">
+            <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-2xl shadow-slate-200/50 overflow-hidden relative">
+              {/* Guarantee Ribbon */}
+              <div className="bg-green-600 text-white text-center py-3 text-[10px] font-black uppercase tracking-[0.3em]">
                 30-Day Money Back Guarantee
               </div>
               
-              <h3 className="text-xl font-bold text-slate-900 mb-6">Order Summary</h3>
-              <div className="space-y-4 mb-8">
-                <div className="flex justify-between items-center text-slate-600 font-bold pb-4 border-b border-slate-50">
-                  <span>{currentPlan?.name}</span>
-                  <span>${currentPlan?.totalPrice}</span>
-                </div>
-                <div className="flex justify-between items-center text-slate-900 font-black text-2xl pt-2">
-                  <span>Total Due Today</span>
-                  <span className="text-blue-600">${currentPlan?.totalPrice}</span>
-                </div>
-              </div>
-
-              {error && (
-                <div className="bg-red-50 border border-red-100 rounded-2xl p-4 mb-6 text-red-600 text-sm font-bold flex items-start gap-3">
-                  <div className="w-5 h-5 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-xs font-bold">!</span>
+              <div className="p-8 sm:p-10">
+                <h3 className="text-xl font-black text-slate-900 mb-8 tracking-tight flex items-center gap-2">
+                  <Lock className="w-5 h-5 text-slate-400" />
+                  Order Summary
+                </h3>
+                
+                {/* Selected Plan Details */}
+                <div className="space-y-6 mb-10">
+                  <div className="flex justify-between items-center text-slate-600 font-bold pb-6 border-b border-slate-50">
+                    <span className="text-sm uppercase tracking-wider">{currentPlan?.name}</span>
+                    <span className="text-slate-900">${currentPlan?.totalPrice}</span>
                   </div>
-                  {error}
+                  <div className="flex justify-between items-center text-slate-900 font-black text-3xl pt-2 tracking-tighter">
+                    <span>Total Due Today</span>
+                    <span className="text-blue-600">${currentPlan?.totalPrice}</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-relaxed font-bold uppercase tracking-[0.1em]">
+                    Billed {currentPlan?.duration} at ${currentPlan?.totalPrice}. Secure transaction. Cancel anytime.
+                  </p>
                 </div>
-              )}
 
-              <Button
-                onClick={handleCheckout}
-                disabled={loading}
-                className="w-full py-8 rounded-2xl text-xl font-black bg-blue-600 hover:bg-blue-700 text-white shadow-2xl shadow-blue-200 transition-all hover:-translate-y-1"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="w-6 h-6 animate-spin mr-3" />
-                    Processing...
-                  </>
-                ) : (
-                  <>
-                    Secure Checkout
-                    <CheckCircle2 className="ml-3 w-6 h-6" />
-                  </>
+                {/* Trust Points */}
+                <div className="space-y-5 mb-10">
+                  <div className="flex items-center gap-4 text-sm font-bold text-slate-700 group">
+                    <div className="w-8 h-8 bg-green-50 rounded-xl flex items-center justify-center border border-green-100 group-hover:bg-green-100 transition-colors">
+                      <Check className="w-4 h-4 text-green-600 stroke-[4px]" />
+                    </div>
+                    <span>Instant Program Access</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-sm font-bold text-slate-700 group">
+                    <div className="w-8 h-8 bg-green-50 rounded-xl flex items-center justify-center border border-green-100 group-hover:bg-green-100 transition-colors">
+                      <Check className="w-4 h-4 text-green-600 stroke-[4px]" />
+                    </div>
+                    <span>One-Click Cancellation</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-sm font-bold text-slate-700 group">
+                    <div className="w-8 h-8 bg-green-50 rounded-xl flex items-center justify-center border border-green-100 group-hover:bg-green-100 transition-colors">
+                      <Check className="w-4 h-4 text-green-600 stroke-[4px]" />
+                    </div>
+                    <span>Risk-Free Guarantee</span>
+                  </div>
+                </div>
+
+                {/* Error Message */}
+                {error && (
+                  <div className="bg-red-50 border border-red-100 rounded-2xl p-4 mb-6 text-red-600 text-sm font-medium flex items-start gap-3">
+                    <div className="w-5 h-5 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-xs font-bold">!</span>
+                    </div>
+                    {error}
+                  </div>
                 )}
-              </Button>
 
-              <div className="mt-8 flex flex-col items-center gap-4">
-                <div className="flex items-center gap-2 text-[10px] text-slate-400 font-black uppercase tracking-widest">
-                  <Lock className="w-3.5 h-3.5" />
-                  Secure SSL Encryption
-                </div>
-                <div className="flex items-center gap-6 grayscale opacity-40">
-                  <Image src="https://nogqecshcnkaohjrbpns.supabase.co/storage/v1/object/public/assets/stripe-logo.png" alt="Stripe" width={60} height={25} className="h-5 w-auto" />
+                {/* CTA Button */}
+                <Button
+                  onClick={handleCheckout}
+                  disabled={loading}
+                  className="w-full py-9 rounded-2xl text-xl font-black bg-blue-600 hover:bg-blue-700 text-white shadow-2xl shadow-blue-200 transition-all hover:-translate-y-1 hover:shadow-blue-300 active:scale-95"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-6 h-6 animate-spin mr-3" />
+                      SECURELY LOADING...
+                    </>
+                  ) : (
+                    <>
+                      START MY TRANSFORMATION
+                      <Zap className="ml-3 w-6 h-6 fill-current" />
+                    </>
+                  )}
+                </Button>
+
+                {/* Security Indicators */}
+                <div className="mt-8 flex flex-col items-center gap-5">
+                  <div className="flex items-center gap-2 text-[10px] text-slate-400 font-black uppercase tracking-[0.2em]">
+                    <Shield className="w-3.5 h-3.5 text-green-500" />
+                    256-Bit SSL Secured Checkout
+                  </div>
+                  <div className="flex items-center gap-6 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all">
+                    <Image 
+                      src="https://nogqecshcnkaohjrbpns.supabase.co/storage/v1/object/public/assets/stripe-logo.png" 
+                      alt="Stripe Secure Payments" 
+                      width={60} 
+                      height={25} 
+                      className="h-5 w-auto" 
+                    />
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-amber-50 rounded-3xl border border-amber-100 p-6 flex items-center gap-4">
-              <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm">
-                <Shield className="w-6 h-6 text-amber-500" />
+            {/* Mini Trust Box */}
+            <div className="mt-6 bg-slate-900 rounded-3xl p-8 flex items-center gap-5 shadow-xl shadow-slate-200">
+              <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 border border-white/10">
+                <Shield className="w-7 h-7 text-blue-400" />
               </div>
-              <p className="text-xs text-amber-800 leading-relaxed font-bold">
-                Your privacy is our priority. All data is encrypted and HIPAA compliant.
-              </p>
+              <div>
+                <h4 className="text-white font-bold text-sm mb-1">Privacy Guarantee</h4>
+                <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
+                  Your journey is personal. All data is encrypted and 100% HIPAA compliant.
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Extended Trust Indicators */}
-        <div className="mt-20 py-16 border-t border-slate-100">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="mt-32 py-24 border-t border-slate-100">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-black text-slate-900 mb-4 tracking-tight">The Science-Backed Leader in Habit Change</h2>
+            <p className="text-slate-500 text-lg font-medium">Helping thousands of professionals reclaim their lives every day.</p>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
             {[
               { icon: TrendingUp, value: '98%', label: 'See Improvement' },
-              { icon: Users, value: '52k+', label: 'Active Professionals' },
+              { icon: Users, value: '52k+', label: 'Active Members' },
               { icon: Heart, value: '4.9★', label: 'User Rating' },
               { icon: Shield, value: '100%', label: 'Confidential' },
             ].map((stat, index) => (
-              <div key={index} className="text-center group">
-                <div className="w-12 h-12 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                  <stat.icon className="w-6 h-6 text-blue-600" />
+              <div key={index} className="text-center group p-8 rounded-[2rem] hover:bg-white hover:shadow-2xl hover:shadow-slate-100 transition-all duration-500">
+                <div className="w-16 h-16 bg-white rounded-2xl shadow-lg border border-slate-50 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <stat.icon className="w-8 h-8 text-blue-600" />
                 </div>
-                <div className="text-3xl font-black text-slate-900 mb-1 tracking-tight">{stat.value}</div>
-                <div className="text-xs font-black text-slate-400 uppercase tracking-widest">{stat.label}</div>
+                <div className="text-4xl font-black text-slate-900 mb-2 tracking-tighter transition-colors group-hover:text-blue-600">{stat.value}</div>
+                <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -412,15 +459,15 @@ function CheckoutPageContent() {
       <footer className="bg-white border-t border-slate-100 py-12">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <Logo size="sm" />
-          <p className="mt-6 text-slate-400 text-sm max-w-md mx-auto font-medium">
+          <p className="mt-6 text-slate-400 text-sm max-w-md mx-auto">
             ClarioMind is a science-backed platform designed for high-functioning professionals looking to change their relationship with alcohol.
           </p>
-          <div className="mt-8 flex justify-center gap-8 text-xs font-black text-slate-400 uppercase tracking-[0.2em]">
+          <div className="mt-8 flex justify-center gap-8 text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">
             <Link href="/privacy" className="hover:text-blue-600 transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-blue-600 transition-colors">Terms</Link>
             <a href="mailto:support@clariomind.com" className="hover:text-blue-600 transition-colors">Support</a>
           </div>
-          <p className="mt-12 text-slate-300 text-[10px] font-black tracking-widest uppercase">
+          <p className="mt-12 text-slate-300 text-[10px] font-medium tracking-widest">
             © 2026 CLARIOMIND INC. ALL RIGHTS RESERVED.
           </p>
         </div>

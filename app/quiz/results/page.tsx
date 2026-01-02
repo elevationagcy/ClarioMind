@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, ArrowRight, Shield, Mail, Loader2, CheckCircle2, AlertCircle, Sparkles, Lock } from 'lucide-react'
+import { ArrowRight, Shield, Mail, Loader2, CheckCircle2, AlertCircle, Sparkles, Lock } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
 import { calculateQuizResult, QuizResult } from '@/lib/utils/quiz-scoring'
 
@@ -94,16 +94,8 @@ export default function QuizResultsPage() {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50 flex flex-col">
       {/* Header */}
       <header className="bg-white border-b border-slate-100">
-        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
-          <button 
-            onClick={() => router.push('/quiz')}
-            className="flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span className="hidden sm:inline font-medium">Back to quiz</span>
-          </button>
+        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-center">
           <Logo size="sm" />
-          <div className="w-8" />
         </div>
       </header>
 
