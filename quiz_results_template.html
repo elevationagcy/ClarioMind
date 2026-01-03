@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Risk Factor Scale</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#2563EB",
+                        "background-light": "#F0F5FA",
+                        "background-dark": "#111827",
+                        "card-light": "#FFFFFF",
+                        "card-dark": "#1F2937",
+                        // New scale colors
+                        "scale-1": "#EF4444", // Very bad (Red)
+                        "scale-2": "#F97316", // Bad (Orange)
+                        "scale-3": "#F59E0B", // Neutral (Amber)
+                        "scale-4": "#84CC16", // Good (Lime)
+                        "scale-5": "#10B981", // Very good (Emerald)
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "1rem",
+                        'xl': "1.5rem",
+                    },
+                },
+            },
+        };
+    </script>
+<style type="text/tailwindcss">
+        body {
+            min-height: max(884px, 100dvh);
+        }.radial-meter {
+            position: relative;
+            width: 200px;height: 200px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .arc {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            clip: rect(0px, 100px, 200px, 0px);border-width: 16px;border-style: solid;
+            border-color: transparent;
+            box-sizing: border-box;
+            transform-origin: center center;
+            opacity: 0.5;}.arc-segment-1 {
+            border-top-color: theme('colors.scale-1');
+            transform: rotate(-108deg);clip: rect(0px, 200px, 200px, 100px);}
+        .arc-segment-2 {
+            border-top-color: theme('colors.scale-2');
+            transform: rotate(-36deg);clip: rect(0px, 200px, 200px, 100px);
+        }
+        .arc-segment-3 {
+            border-top-color: theme('colors.scale-3');
+            transform: rotate(36deg);clip: rect(0px, 200px, 200px, 100px);
+        }.arc-segment-4 {
+            border-left-color: theme('colors.scale-4');
+            transform: rotate(108deg);clip: rect(0px, 100px, 200px, 0px);}
+        .arc-segment-5 {
+            border-left-color: theme('colors.scale-5');
+            transform: rotate(180deg);clip: rect(0px, 100px, 200px, 0px);
+        }.arc.active {
+            opacity: 1;
+            border-width: 20px;filter: drop-shadow(0 0 10px rgba(var(--active-color-rgb), 0.6));}:root {
+            --scale-1-rgb: 239, 68, 68;
+            --scale-2-rgb: 249, 115, 22;
+            --scale-3-rgb: 245, 158, 11;
+            --scale-4-rgb: 132, 204, 22;
+            --scale-5-rgb: 16, 185, 129;
+        }.pointer {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            width: 8px;height: 8px;border-radius: 50%;background-color: transparent;
+            z-index: 10;
+        }
+        .pointer::before {
+            content: '';
+            position: absolute;
+            bottom: 0px;
+            left: -4px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 20px solid currentColor;transform: translateY(20px);}.pointer.segment-1 { transform: rotate(-108deg) translateY(-85px); color: theme('colors.scale-1'); }
+        .pointer.segment-2 { transform: rotate(-36deg) translateY(-85px); color: theme('colors.scale-2'); }
+        .pointer.segment-3 { transform: rotate(36deg) translateY(-85px); color: theme('colors.scale-3'); }
+        .pointer.segment-4 { transform: rotate(108deg) translateY(-85px); color: theme('colors.scale-4'); }
+        .pointer.segment-5 { transform: rotate(180deg) translateY(-85px); color: theme('colors.scale-5'); }.radial-meter-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;}
+        .segment {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            clip: rect(0px, 100px, 200px, 0px);transform-origin: center center;
+            box-sizing: border-box;
+            background-color: transparent;}</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-body antialiased text-gray-800 dark:text-gray-100 min-h-screen flex flex-col">
+<header class="flex items-center justify-between px-6 py-4 bg-white dark:bg-card-dark sticky top-0 z-10 shadow-sm">
+<button class="flex items-center text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">
+<span class="material-icons-round text-2xl">arrow_back</span>
+</button>
+<div class="flex items-center gap-1">
+<div class="text-primary font-bold text-xl tracking-tight flex items-center">
+            Clari<span class="text-[#3b82f6]">Mind</span>
+<span class="material-icons-round text-sm ml-1">psychology</span>
+</div>
+</div>
+<div class="w-8"></div>
+</header>
+<main class="flex-1 flex flex-col p-6 max-w-md mx-auto w-full space-y-6">
+<div class="bg-primary rounded-xl p-6 text-center text-white shadow-lg relative overflow-hidden">
+<div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"></div>
+<div class="absolute bottom-0 left-0 -mb-4 -ml-4 w-20 h-20 bg-blue-300 opacity-20 rounded-full blur-xl"></div>
+<div class="relative z-10">
+<div class="inline-flex items-center justify-center px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-medium mb-3 border border-white/30">
+<span class="material-icons-round text-sm mr-1">auto_awesome</span>
+                Assessment Complete
+            </div>
+<h1 class="text-2xl font-bold mb-1">Your Results</h1>
+<p class="text-blue-100 text-sm">Based on your recent answers</p>
+</div>
+</div>
+<div class="bg-card-light dark:bg-card-dark rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+<div class="flex justify-center mb-6">
+<div class="px-5 py-2 bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-orange-800 rounded-full flex items-center gap-2">
+<span class="material-icons-round text-scale-2 text-xl">warning_amber</span>
+<span class="text-scale-2 font-bold text-lg">Caution</span>
+</div>
+</div>
+<div class="flex flex-col items-center justify-center py-4 relative">
+<div class="relative w-[280px] h-[280px] rounded-full flex items-center justify-center mb-6">
+<div class="absolute inset-0 border-[16px] border-gray-100 dark:border-gray-700 rounded-full opacity-50"></div>
+<div class="absolute inset-[10px] rounded-full" style="
+                        background: conic-gradient(
+                            var(--tw-colors-scale-1) 0% 20%,
+                            var(--tw-colors-scale-2) 20% 40%,
+                            var(--tw-colors-scale-3) 40% 60%,
+                            var(--tw-colors-scale-4) 60% 80%,
+                            var(--tw-colors-scale-5) 80% 100%
+                        );
+                        mask: radial-gradient(farthest-side, transparent calc(100% - 20px), #000 calc(100% - 20px + 1px));
+                        -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 20px), #000 calc(100% - 20px + 1px));
+                        filter: drop-shadow(0 0 8px rgba(0,0,0,0.2));"></div>
+<div class="absolute inset-[8px] rounded-full z-10" style="
+                        background: conic-gradient(
+                            transparent 0% 20%,
+                            var(--tw-colors-scale-2) 20% 40%,
+                            transparent 40% 100%
+                        );
+                        mask: radial-gradient(farthest-side, transparent calc(100% - 24px), #000 calc(100% - 24px + 1px));
+                        -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 24px), #000 calc(100% - 24px + 1px));
+                        filter: drop-shadow(0 0 15px rgba(249, 115, 22, 0.7));"></div>
+<div class="relative z-20 flex flex-col items-center justify-center text-center">
+<p class="text-gray-500 dark:text-gray-400 text-sm font-medium uppercase tracking-wide mb-1">Risk Level</p>
+<p class="text-4xl font-extrabold text-scale-2 drop-shadow-md">Bad</p>
+<p class="text-xs text-gray-400 mt-1">Current Assessment</p>
+</div>
+<div class="absolute w-3 h-3 bg-scale-2 rounded-full shadow-lg" style="
+                         transform: rotate(108deg) translate(0, -110px);transform-origin: center calc(50% + 110px);filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.8));
+                     ">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 flex flex-col items-center rotate-[-108deg]">
+<div class="bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-xs font-bold px-2 py-1 rounded shadow-lg whitespace-nowrap">
+                            You are here
+                        </div>
+<div class="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-gray-900 dark:border-t-white"></div>
+</div>
+</div>
+</div>
+<div class="relative w-full grid grid-cols-5 text-center text-xs font-medium -mt-4">
+<p class="text-scale-1">Very<br/>Bad</p>
+<p class="text-scale-2 font-bold">Bad</p>
+<p class="text-scale-3">Neutral</p>
+<p class="text-scale-4">Good</p>
+<p class="text-scale-5">Very<br/>Good</p>
+</div>
+</div>
+<div class="text-center mt-6 border-t border-gray-100 dark:border-gray-700 pt-4">
+<p class="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wide mb-1">Risk Score</p>
+<div class="text-3xl font-bold text-gray-900 dark:text-white flex items-baseline justify-center gap-1">
+                35 <span class="text-lg text-gray-400 font-normal">/ 100</span>
+</div>
+<p class="text-xs text-gray-400 mt-1">Lower scores indicate higher risk</p>
+</div>
+</div>
+<div class="bg-blue-50 dark:bg-blue-900/10 rounded-xl p-5 border border-blue-100 dark:border-blue-800/30">
+<h3 class="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
+<span class="material-icons-round text-primary mr-2">info</span>
+            Analysis
+        </h3>
+<p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+            Your responses indicate significant patterns that deserve attention. Many individuals with this score profile benefit from early intervention strategies.
+        </p>
+<div class="mt-4 pt-4 border-t border-blue-100 dark:border-blue-800/30">
+<p class="text-sm font-medium text-primary dark:text-blue-400">
+                ClariMind offers discreet, science-backed support tailored to your needs.
+            </p>
+</div>
+</div>
+<div class="flex items-start gap-3 px-2">
+<span class="material-icons-round text-primary text-lg mt-0.5">verified_user</span>
+<p class="text-xs text-gray-500 dark:text-gray-400 leading-tight">
+            Your results are completely confidential. We adhere to strict HIPAA standards and never share your personal information.
+        </p>
+</div>
+</main>
+<div class="p-6 bg-white dark:bg-card-dark border-t border-gray-100 dark:border-gray-800 sticky bottom-0 z-20">
+<button class="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-xl shadow-lg shadow-blue-500/30 transition-all active:scale-[0.98] flex items-center justify-center group">
+        See Your Personalized Plan
+        <span class="material-icons-round ml-2 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+
+</body></html>
