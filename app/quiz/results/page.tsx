@@ -173,7 +173,7 @@ export default function QuizResultsPage() {
               {/* Text in middle */}
               <div className="relative z-20 flex flex-col items-center justify-center text-center">
                 <p className="text-gray-500 text-sm font-medium uppercase tracking-wide mb-1">Risk Level</p>
-                <p className={`text-4xl font-extrabold ${levelConfig.color} drop-shadow-md`}>{result.title}</p>
+                <p className={`text-3xl font-extrabold ${levelConfig.color} drop-shadow-md`}>{result.title}</p>
                 <p className="text-xs text-gray-400 mt-1">Current Assessment</p>
               </div>
             </div>
