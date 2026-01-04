@@ -252,7 +252,7 @@ export default function QuizResultsPage() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full py-6 rounded-xl text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/30 transition-all active:scale-[0.98]"
+                className="w-full py-6 rounded-xl text-sm sm:text-base font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/30 transition-all active:scale-[0.98]"
               >
                 {loading ? (
                   <Loader2 className="w-5 h-5 animate-spin mr-2" />

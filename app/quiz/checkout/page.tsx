@@ -402,15 +402,6 @@ function CheckoutPageContent() {
                     <Shield className="w-3.5 h-3.5 text-green-500" />
                     256-Bit SSL Secured Checkout
                   </div>
-                  <div className="flex items-center gap-6 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all">
-                    <Image 
-                      src="https://nogqecshcnkaohjrbpns.supabase.co/storage/v1/object/public/assets/stripe-logo.png" 
-                      alt="Stripe Secure Payments" 
-                      width={60} 
-                      height={25} 
-                      className="h-5 w-auto" 
-                    />
-                  </div>
                 </div>
               </div>
             </div>
