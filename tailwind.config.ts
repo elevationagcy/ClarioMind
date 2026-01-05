@@ -44,6 +44,15 @@ const config: Config = {
           light: "#DBEAFE",
           dark: "#1E3A8A",
         },
+        clario: {
+          100: "#E0F2FE",
+          200: "#BAE6FD",
+          300: "#7DD3FC",
+          400: "#38BDF8",
+          500: "#0EA5E9",
+          600: "#0284C7",
+          700: "#0369A1",
+        },
       },
       borderRadius: {
         DEFAULT: "0.75rem",
