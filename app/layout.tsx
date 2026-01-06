@@ -28,6 +28,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${jakarta.variable}`}>
+      {/* Microsoft Clarity */}
+      <Script id="microsoft-clarity" strategy="afterInteractive">
+        {`
+          (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+          })(window, document, "clarity", "script", "uv14fe3u39");
+        `}
+      </Script>
+      {/* Google Analytics */}
+      <Script src="https://www.googletagmanager.com/gtag/js?id=G-RE2927FZ2E" strategy="afterInteractive" />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-RE2927FZ2E');
+        `}
+      </Script>
+      {/* Meta Pixel */}
       <Script id="meta-pixel" strategy="afterInteractive">
         {`
           !function(f,b,e,v,n,t,s)
