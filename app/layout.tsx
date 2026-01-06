@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { QueryProvider } from "@/lib/providers/query-provider";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import Script from "next/script";
 
@@ -67,6 +68,7 @@ export default function RootLayout({
         <QueryProvider>
           {children}
         </QueryProvider>
+        <Analytics />
       </body>
     </html>
   );
