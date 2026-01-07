@@ -113,7 +113,9 @@ function UpsellPageContent() {
       <div className="container mx-auto px-4 py-8">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <Logo  size="md" />
+          <button onClick={() => router.push('/')} className="hover:opacity-80 transition-opacity">
+            <Logo size="md" />
+          </button>
         </div>
 
         {/* Main Content */}

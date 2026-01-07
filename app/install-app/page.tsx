@@ -33,7 +33,9 @@ export default function InstallAppPage() {
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md border-b border-slate-100 sticky top-0 z-10">
         <div className="max-w-lg mx-auto px-4 py-4 flex items-center justify-center">
-          <Logo size="sm" />
+          <button onClick={() => router.push('/')} className="hover:opacity-80 transition-opacity">
+            <Logo size="sm" />
+          </button>
         </div>
       </header>
 

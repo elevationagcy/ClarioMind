@@ -101,7 +101,9 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-blue-50">
       {/* Header */}
       <div className="px-6 pt-6 pb-2">
-        <Logo size="md" className="mb-2" />
+        <button onClick={() => router.push('/')} className="hover:opacity-80 transition-opacity mb-2">
+          <Logo size="md" />
+        </button>
         <p className="text-sm text-slate-500">
           A neuroscience-based program developed by leading experts
         </p>

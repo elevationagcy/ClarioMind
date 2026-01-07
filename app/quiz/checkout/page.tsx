@@ -451,7 +451,9 @@ function CheckoutPageContent() {
       {/* Footer */}
       <footer className="bg-white border-t border-slate-100 py-12">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <Logo size="sm" />
+          <Link href="/" className="inline-block hover:opacity-80 transition-opacity">
+            <Logo size="sm" />
+          </Link>
           <p className="mt-6 text-slate-400 text-sm max-w-md mx-auto">
             ClarioMind is a science-backed platform designed for high-functioning professionals looking to change their relationship with alcohol.
           </p>

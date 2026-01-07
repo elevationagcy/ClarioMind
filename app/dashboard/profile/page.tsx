@@ -50,9 +50,9 @@ export default function ProfilePage() {
       {/* Header */}
       <div className="bg-blue-600 p-6 text-white rounded-b-3xl">
         <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-2">
+          <button onClick={() => router.push('/')} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <Logo size="sm" />
-          </div>
+          </button>
           <button 
             onClick={() => router.push('/dashboard/settings')}
             className="p-2 hover:bg-white/10 rounded-full transition-colors"

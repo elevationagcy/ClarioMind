@@ -68,7 +68,9 @@ export default function IntroPage() {
             ) : (
               <div className="w-8" />
         )}
-            <Logo size="sm" />
+            <button onClick={() => router.push('/')} className="hover:opacity-80 transition-opacity">
+              <Logo size="sm" />
+            </button>
             <div className="w-8" />
       </div>
 

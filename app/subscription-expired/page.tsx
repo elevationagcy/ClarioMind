@@ -86,7 +86,9 @@ export default function SubscriptionExpiredPage() {
       {/* Header */}
       <header className="bg-white border-b border-slate-100">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-center">
-          <Logo size="sm" />
+          <button onClick={() => router.push('/')} className="hover:opacity-80 transition-opacity">
+            <Logo size="sm" />
+          </button>
         </div>
       </header>
 

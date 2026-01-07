@@ -209,7 +209,9 @@ export default function RegisterPage() {
             <ArrowLeft className="w-5 h-5" />
             <span className="text-sm font-medium hidden sm:inline">Back</span>
         </Link>
-          <Logo size="sm" />
+          <Link href="/" className="hover:opacity-80 transition-opacity">
+            <Logo size="sm" />
+          </Link>
           <div className="w-8" />
         </div>
       </header>

@@ -108,23 +108,23 @@ export default function QuizResultsPage() {
   return (
     <div className="min-h-screen bg-[#F0F5FA] font-sans antialiased text-gray-800 flex flex-col transition-colors duration-200">
       {/* Header */}
-      <header className="flex items-center justify-between px-6 py-4 bg-white sticky top-0 z-10 shadow-sm border-b border-gray-100">
+      <header className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3 sm:py-4 bg-white sticky top-0 z-50 shadow-sm border-b border-gray-100">
         <button
           onClick={() => router.push('/quiz')}
           className="flex items-center text-gray-500 hover:text-blue-600 transition-colors"
         >
-          <ChevronLeft className="w-6 h-6" />
+          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
-        <div className="flex items-center gap-1">
-          <Logo size="md" />
-        </div>
-        <div className="w-8"></div>
+        <button onClick={() => router.push('/')} className="flex items-center gap-1 hover:opacity-80 transition-opacity">
+          <Logo size="sm" />
+        </button>
+        <div className="w-6 sm:w-8"></div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col p-6 max-w-md mx-auto w-full space-y-6">
+      <main className="flex-1 flex flex-col p-4 sm:p-6 lg:p-8 max-w-md lg:max-w-4xl xl:max-w-5xl mx-auto w-full space-y-4 sm:space-y-6">
         {/* Assessment Complete Card */}
-        <div className="bg-blue-600 rounded-xl p-6 text-center text-white shadow-lg relative overflow-hidden lg:p-8">
+        <div className="bg-blue-600 rounded-xl p-5 sm:p-6 lg:p-8 text-center text-white shadow-lg relative overflow-hidden">
           <div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"></div>
           <div className="absolute bottom-0 left-0 -mb-4 -ml-4 w-20 h-20 bg-blue-300 opacity-20 rounded-full blur-xl"></div>
           <div className="relative z-10">
@@ -132,103 +132,109 @@ export default function QuizResultsPage() {
               <Sparkles className="w-3.5 h-3.5 mr-1" />
               Assessment Complete
             </div>
-            <h1 className="text-2xl font-bold mb-1">Your Results</h1>
-            <p className="text-blue-100 text-sm">Based on your recent answers</p>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-1">Your Results</h1>
+            <p className="text-blue-100 text-sm lg:text-base">Based on your recent answers</p>
           </div>
         </div>
 
-        {/* Meter Card */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-          <div className="flex justify-center mb-8">
-            <div className={`px-5 py-2 ${levelConfig.bg} border ${levelConfig.border} rounded-full flex items-center gap-2`}>
-              {levelConfig.icon}
-              <span className={`${levelConfig.color} font-bold text-lg`}>{levelConfig.label}</span>
+        {/* Desktop Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+          {/* Meter Card */}
+          <div className="bg-white rounded-xl p-4 sm:p-6 lg:p-8 shadow-sm border lg:col-span-2 border-gray-100">
+            <div className="flex justify-center mb-6 sm:mb-8">
+              <div className={`px-4 sm:px-5 lg:px-6 py-2 lg:py-3 ${levelConfig.bg} border ${levelConfig.border} rounded-full flex items-center gap-2 lg:gap-3`}>
+                {levelConfig.icon}
+                <span className={`${levelConfig.color} font-bold text-base sm:text-lg lg:text-xl`}>{levelConfig.label}</span>
+              </div>
             </div>
-          </div>
 
-          <div className="flex flex-col items-center justify-center py-4 relative">
-            <div className="relative w-[280px] h-[280px] rounded-full flex items-center justify-center mb-6">
-              {/* Background ring */}
-              <div className="absolute inset-0 border-[20px] border-white/5 rounded-full"></div>
-              
-              {/* Progress ring with gradient - green (low risk) to red (high risk) */}
-              <div 
-                className="absolute inset-0 rounded-full transition-all duration-1000 ease-out" 
-                style={{
-                  background: 'conic-gradient(from 180deg, #10B981 0%, #84CC16 25%, #F59E0B 50%, #F97316 75%, #EF4444 100%)',
-                  mask: `radial-gradient(farthest-side, transparent calc(100% - 20px), #000 calc(100% - 20px + 1px))`,
-                  WebkitMask: `radial-gradient(farthest-side, transparent calc(100% - 20px), #000 calc(100% - 20px + 1px))`,
-                }}
-              >
-                {/* Mask to show only the percentage filled */}
+            <div className="flex flex-col items-center justify-center py-2 sm:py-4 relative">
+              <div className="relative w-[240px] h-[240px] sm:w-[280px] sm:h-[280px] lg:w-[380px] lg:h-[380px] rounded-full flex items-center justify-center mb-4 sm:mb-6">
+                {/* Background ring */}
+                <div className="absolute inset-0 border-[16px] sm:border-[20px] lg:border-[28px] border-white/5 rounded-full"></div>
+                
+                {/* Progress ring with gradient - green (low risk) to red (high risk) */}
                 <div 
-                  className="absolute inset-[-1px] rounded-full bg-gray-100" 
+                  className="absolute inset-0 rounded-full transition-all duration-1000 ease-out" 
                   style={{
-                    mask: `conic-gradient(from 180deg, transparent 0%, transparent ${result.percentage}%, black ${result.percentage}%, black 100%)`,
-                    WebkitMask: `conic-gradient(from 180deg, transparent 0%, transparent ${result.percentage}%, black ${result.percentage}%, black 100%)`,
+                    background: 'conic-gradient(from 180deg, #10B981 0%, #84CC16 25%, #F59E0B 50%, #F97316 75%, #EF4444 100%)',
+                    mask: `radial-gradient(farthest-side, transparent calc(100% - 24px), #000 calc(100% - 24px + 1px))`,
+                    WebkitMask: `radial-gradient(farthest-side, transparent calc(100% - 24px), #000 calc(100% - 24px + 1px))`,
                   }}
-                />
+                >
+                  {/* Mask to show only the percentage filled */}
+                  <div 
+                    className="absolute inset-[-1px] rounded-full bg-gray-100" 
+                    style={{
+                      mask: `conic-gradient(from 180deg, transparent 0%, transparent ${result.percentage}%, black ${result.percentage}%, black 100%)`,
+                      WebkitMask: `conic-gradient(from 180deg, transparent 0%, transparent ${result.percentage}%, black ${result.percentage}%, black 100%)`,
+                    }}
+                  />
+                </div>
+
+                {/* Text in middle */}
+                <div className="relative z-20 flex flex-col items-center justify-center text-center">
+                  <p className="text-gray-500 text-xs sm:text-sm lg:text-base font-medium uppercase tracking-wide mb-1">Risk Level</p>
+                  <p className={`text-2xl sm:text-3xl lg:text-4xl font-extrabold ${levelConfig.color} drop-shadow-md`}>{result.title}</p>
+                  <p className="text-[10px] sm:text-xs lg:text-sm text-gray-400 mt-1">Current Assessment</p>
+                </div>
               </div>
 
-              {/* Text in middle */}
-              <div className="relative z-20 flex flex-col items-center justify-center text-center">
-                <p className="text-gray-500 text-sm font-medium uppercase tracking-wide mb-1">Risk Level</p>
-                <p className={`text-3xl font-extrabold ${levelConfig.color} drop-shadow-md`}>{result.title}</p>
-                <p className="text-xs text-gray-400 mt-1">Current Assessment</p>
+              {/* Labels under meter */}
+              <div className="relative w-[240px] sm:w-[280px] lg:w-[380px] grid grid-cols-5 text-center text-[9px] sm:text-[10px] lg:text-base font-semibold -mt-2 sm:-mt-4">
+                <p className="text-[#10B981]">Healthy</p>
+                <p className="text-[#84CC16]">Low</p>
+                <p className="text-[#F59E0B]">Moderate</p>
+                <p className="text-[#F97316]">Elevated</p>
+                <p className="text-[#EF4444]">High<br/>Risk</p>
               </div>
             </div>
 
-            {/* Labels under meter */}
-            <div className="relative w-full grid grid-cols-5 text-center text-[10px] font-medium -mt-4 px-2">
-              <p className="text-[#10B981]">Healthy</p>
-              <p className="text-[#84CC16]">Low</p>
-              <p className="text-[#F59E0B]">Moderate</p>
-              <p className="text-[#F97316]">Elevated</p>
-              <p className="text-[#EF4444]">High<br/>Risk</p>
+            <div className="text-center mt-4 sm:mt-6 border-t border-gray-100 pt-3 sm:pt-4">
+              <p className="text-gray-500 text-[10px] sm:text-xs lg:text-sm font-medium uppercase tracking-wide mb-1">Risk Score</p>
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 flex items-baseline justify-center gap-1">
+                {result.percentage} <span className="text-base sm:text-lg lg:text-xl text-gray-400 font-normal">/ 100</span>
+              </div>
+              <p className="text-[10px] sm:text-xs lg:text-sm text-gray-400 mt-1">Higher scores indicate higher risk</p>
             </div>
           </div>
 
-          <div className="text-center mt-6 border-t border-gray-100 pt-4">
-            <p className="text-gray-500 text-xs font-medium uppercase tracking-wide mb-1">Risk Score</p>
-            <div className="text-3xl font-bold text-gray-900 flex items-baseline justify-center gap-1">
-              {result.percentage} <span className="text-lg text-gray-400 font-normal">/ 100</span>
+          {/* Right Column - Analysis & Privacy */}
+          <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8">
+            {/* Analysis Card */}
+            <div className="bg-blue-50 rounded-xl p-4 sm:p-5 lg:p-6 border border-blue-100 flex-1">
+              <h3 className="font-semibold text-gray-900 mb-2 lg:mb-3 flex items-center text-base sm:text-lg lg:text-xl">
+                <Info className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-blue-600 mr-2 lg:mr-3" />
+                Analysis
+              </h3>
+              <p className="text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed">
+                {result.description}
+              </p>
+              <div className="mt-4 lg:mt-6 pt-4 lg:pt-6 border-t border-blue-100">
+                <p className="text-sm sm:text-base lg:text-lg font-medium text-blue-600">
+                  {result.recommendation}
+                </p>
+              </div>
             </div>
-            <p className="text-xs text-gray-400 mt-1">Higher scores indicate higher risk</p>
-          </div>
-        </div>
 
-        {/* Analysis Card */}
-        <div className="bg-blue-50 rounded-xl p-5 border border-blue-100">
-          <h3 className="font-semibold text-gray-900 mb-2 flex items-center">
-            <Info className="w-4 h-4 text-blue-600 mr-2" />
-            Analysis
-          </h3>
-          <p className="text-sm text-gray-600 leading-relaxed">
-            {result.description}
-          </p>
-          <div className="mt-4 pt-4 border-t border-blue-100">
-            <p className="text-sm font-medium text-blue-600">
-              {result.recommendation}
-            </p>
+            {/* Privacy Note */}
+            <div className="flex items-start gap-3 lg:gap-4 px-2 lg:px-0">
+              <Shield className="w-4 h-4 lg:w-5 lg:h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+              <p className="text-xs sm:text-sm lg:text-base text-gray-500 leading-relaxed">
+                Your results are completely confidential. We adhere to strict privacy standards and never share your personal information.
+              </p>
+            </div>
           </div>
-        </div>
-
-        {/* Privacy Note */}
-        <div className="flex items-start gap-3 px-2">
-          <Shield className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-          <p className="text-xs text-gray-500 leading-tight">
-            Your results are completely confidential. We adhere to strict privacy standards and never share your personal information.
-          </p>
         </div>
 
         {/* Email Form */}
-        <div className={`transition-all duration-700 ${showEmailForm ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-            <div className="text-center mb-6">
-              <h2 className="text-lg font-bold text-gray-900 mb-2">
+        <div className={`transition-all duration-700 lg:max-w-xl lg:mx-auto ${showEmailForm ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 sm:p-6 lg:p-8">
+            <div className="text-center mb-4 sm:mb-6">
+              <h2 className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 mb-2">
                 Get Your Personalized Plan
               </h2>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm sm:text-base text-gray-600">
                 Enter your email to receive your detailed results and unlock your path to recovery.
               </p>
             </div>
@@ -241,7 +247,7 @@ export default function QuizResultsPage() {
                   placeholder="Enter your email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                  className="w-full pl-12 pr-4 py-3 sm:py-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
                 />
               </div>
 
@@ -252,7 +258,7 @@ export default function QuizResultsPage() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full py-6 rounded-xl text-sm sm:text-base font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/30 transition-all active:scale-[0.98]"
+                className="w-full py-5 sm:py-6 rounded-xl text-sm sm:text-base font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/30 transition-all active:scale-[0.98]"
               >
                 {loading ? (
                   <Loader2 className="w-5 h-5 animate-spin mr-2" />
@@ -262,7 +268,7 @@ export default function QuizResultsPage() {
               </Button>
             </form>
 
-            <div className="flex items-center justify-center gap-2 mt-4 text-[10px] text-gray-500">
+            <div className="flex items-center justify-center gap-2 mt-4 text-[10px] sm:text-xs text-gray-500">
               <Lock className="w-3 h-3" />
               <span>Confidential & Secure Assessment</span>
             </div>

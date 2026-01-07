@@ -84,7 +84,7 @@ export default function QuizPage() {
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-20 px-4 sm:px-5 lg:px-6 py-3 sm:py-4 bg-white/90 backdrop-blur-sm">
+      <header className="sticky top-0 z-50 px-4 sm:px-5 lg:px-6 py-3 sm:py-4 bg-white shadow-sm border-b border-slate-100">
         <div className="max-w-md lg:max-w-xl xl:max-w-2xl mx-auto w-full flex items-center justify-between mb-3 sm:mb-4">
           <button 
             onClick={handleBack}

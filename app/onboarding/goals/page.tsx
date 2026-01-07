@@ -90,7 +90,9 @@ export default function GoalsPage() {
             >
               <ArrowLeft className="w-5 h-5" />
         </button>
-            <Logo size="sm" />
+            <button onClick={() => router.push('/')} className="hover:opacity-80 transition-opacity">
+              <Logo size="sm" />
+            </button>
             <div className="w-8" />
       </div>
           <OnboardingProgress currentPage="goals" currentStep={step} />

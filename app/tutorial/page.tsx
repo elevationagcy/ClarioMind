@@ -50,7 +50,9 @@ export default function TutorialPage() {
       <div className="p-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-gray-500 text-sm font-medium">Welcome to</span>
-          <Logo size="sm" />
+          <button onClick={() => router.push('/')} className="hover:opacity-80 transition-opacity">
+            <Logo size="sm" />
+          </button>
         </div>
         <button onClick={handleSkip} className="text-gray-900">
           <X className="w-6 h-6" />
