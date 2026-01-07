@@ -151,11 +151,11 @@ export default function QuizResultsPage() {
               {/* Background ring */}
               <div className="absolute inset-0 border-[20px] border-white/5 rounded-full"></div>
               
-              {/* Progress ring with gradient */}
+              {/* Progress ring with gradient - green (low risk) to red (high risk) */}
               <div 
                 className="absolute inset-0 rounded-full transition-all duration-1000 ease-out" 
                 style={{
-                  background: 'conic-gradient(from 180deg, #EF4444 0%, #EF4444 20%, #F97316 25%, #F59E0B 50%, #84CC16 75%, #10B981 100%)',
+                  background: 'conic-gradient(from 180deg, #10B981 0%, #84CC16 25%, #F59E0B 50%, #F97316 75%, #EF4444 100%)',
                   mask: `radial-gradient(farthest-side, transparent calc(100% - 20px), #000 calc(100% - 20px + 1px))`,
                   WebkitMask: `radial-gradient(farthest-side, transparent calc(100% - 20px), #000 calc(100% - 20px + 1px))`,
                 }}
@@ -180,11 +180,11 @@ export default function QuizResultsPage() {
 
             {/* Labels under meter */}
             <div className="relative w-full grid grid-cols-5 text-center text-[10px] font-medium -mt-4 px-2">
-              <p className="text-[#EF4444]">High<br/>Risk</p>
-              <p className="text-[#F97316]">Elevated</p>
-              <p className="text-[#F59E0B]">Moderate</p>
-              <p className="text-[#84CC16]">Low</p>
               <p className="text-[#10B981]">Healthy</p>
+              <p className="text-[#84CC16]">Low</p>
+              <p className="text-[#F59E0B]">Moderate</p>
+              <p className="text-[#F97316]">Elevated</p>
+              <p className="text-[#EF4444]">High<br/>Risk</p>
             </div>
           </div>
 
@@ -193,7 +193,7 @@ export default function QuizResultsPage() {
             <div className="text-3xl font-bold text-gray-900 flex items-baseline justify-center gap-1">
               {result.percentage} <span className="text-lg text-gray-400 font-normal">/ 100</span>
             </div>
-            <p className="text-xs text-gray-400 mt-1">Lower scores indicate higher risk</p>
+            <p className="text-xs text-gray-400 mt-1">Higher scores indicate higher risk</p>
           </div>
         </div>
 

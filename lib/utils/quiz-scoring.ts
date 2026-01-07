@@ -191,24 +191,24 @@ export function calculateQuizResult(answers: Record<string, number>): QuizResult
   })
   
   const riskPercentage = Math.round((totalScore / maxScore) * 100)
-  const healthPercentage = 100 - riskPercentage
   
   let level: QuizResult['level']
   let title: string
   let description: string
   let recommendation: string
   
-  if (healthPercentage >= 80) {
+  // Higher score = higher risk
+  if (riskPercentage <= 20) {
     level = 'low'
     title = 'Low Risk'
     description = 'Your responses suggest a low level of alcohol-related concerns. However, if you\'re here, there may be patterns you want to explore or change.'
     recommendation = 'ClarioMind can help you maintain healthy habits and build awareness around your relationship with alcohol.'
-  } else if (healthPercentage >= 60) {
+  } else if (riskPercentage <= 40) {
     level = 'moderate'
     title = 'Moderate Risk'
     description = 'Your responses indicate some patterns that could benefit from attention. You may be experiencing subtle signs of dependency that professionals often overlook.'
     recommendation = 'ClarioMind\'s neuroscience-based approach can help you understand and address these patterns before they escalate.'
-  } else if (healthPercentage >= 35) {
+  } else if (riskPercentage <= 65) {
     level = 'elevated'
     title = 'Elevated Risk'
     description = 'Your responses suggest elevated alcohol-related concerns. You\'re likely experiencing patterns that affect your daily life and work, even if others don\'t notice.'
@@ -223,7 +223,7 @@ export function calculateQuizResult(answers: Record<string, number>): QuizResult
   return {
     totalScore,
     maxScore,
-    percentage: healthPercentage,
+    percentage: riskPercentage,
     level,
     title,
     description,
