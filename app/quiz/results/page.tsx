@@ -124,7 +124,7 @@ export default function QuizResultsPage() {
       {/* Main Content */}
       <main className="flex-1 flex flex-col p-6 max-w-md mx-auto w-full space-y-6">
         {/* Assessment Complete Card */}
-        <div className="bg-blue-600 rounded-xl p-6 text-center text-white shadow-lg relative overflow-hidden">
+        <div className="bg-blue-600 rounded-xl p-6 text-center text-white shadow-lg relative overflow-hidden lg:p-8">
           <div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"></div>
           <div className="absolute bottom-0 left-0 -mb-4 -ml-4 w-20 h-20 bg-blue-300 opacity-20 rounded-full blur-xl"></div>
           <div className="relative z-10">

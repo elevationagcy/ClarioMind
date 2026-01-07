@@ -182,7 +182,9 @@ function CheckoutPageContent() {
             <span className="hidden sm:inline font-medium">Back to results</span>
           </button>
           <div className="absolute left-1/2 -translate-x-1/2">
-            <Logo size="sm" />
+            <button onClick={() => router.push('/')} className="hover:opacity-80 transition-opacity">
+              <Logo size="sm" />
+            </button>
           </div>
           <div className="flex items-center gap-2 text-green-600 text-xs sm:text-sm font-semibold">
             <Shield className="w-4 h-4" />
@@ -200,7 +202,7 @@ function CheckoutPageContent() {
             Your Personalized Path is Ready
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-slate-900 mb-6 tracking-tight leading-[1.1]">
-            Investment in <span className="text-blue-600">Your Future</span>
+            An Investment in <span className="text-blue-600">Your Future</span>
           </h1>
           <p className="text-slate-500 text-lg sm:text-2xl max-w-3xl mx-auto font-medium leading-relaxed">
             Join 52,000+ high-performing professionals who have reclaimed their mental clarity and physical vitality.

@@ -474,12 +474,14 @@ function WelcomePageContent() {
       <section className="py-8 sm:py-12 bg-background-light">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-gray-100 relative aspect-video sm:aspect-[16/9]">
-            <Image
-              src="/assets/your-why-is-your-power.jpeg"
-              alt="Your Why is Your Power"
-              fill
-              className="object-cover"
-            />
+            <Link href="/quiz">
+              <Image
+                src="/assets/your-why-is-your-power.jpeg"
+                alt="Your Why is Your Power"
+                fill
+                className="object-cover"
+              />
+            </Link>
           </div>
         </div>
       </section>
