@@ -1,11 +1,18 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ArrowRight, Shield, Mail, Loader2, Sparkles, Lock, Info, AlertTriangle, CheckCircle2 } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
 import { calculateQuizResult, QuizResult } from '@/lib/utils/quiz-scoring'
+
+// Track Meta Pixel events
+const trackEvent = (eventName: string, params?: Record<string, unknown>) => {
+  if (typeof window !== 'undefined' && (window as any).fbq) {
+    (window as any).fbq('track', eventName, params);
+  }
+};
 
 export default function QuizResultsPage() {
   const router = useRouter()
@@ -15,6 +22,8 @@ export default function QuizResultsPage() {
   const [showEmailForm, setShowEmailForm] = useState(false)
   const [error, setError] = useState('')
 
+  const hasTrackedView = useRef(false)
+
   useEffect(() => {
     const storedAnswers = localStorage.getItem('quizAnswers')
     if (storedAnswers) {
@@ -22,6 +31,17 @@ export default function QuizResultsPage() {
       const calculatedResult = calculateQuizResult(answers)
       setResult(calculatedResult)
       setTimeout(() => setShowEmailForm(true), 1500)
+      
+      // Track ViewContent for results page (only once)
+      if (!hasTrackedView.current) {
+        hasTrackedView.current = true;
+        trackEvent('ViewContent', { 
+          content_name: 'Quiz Results',
+          content_category: 'Quiz',
+          value: calculatedResult.percentage,
+          content_ids: [calculatedResult.level]
+        });
+      }
     } else {
       router.push('/quiz')
     }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect, Suspense, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -22,6 +22,19 @@ import {
   Heart
 } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
+
+// Track Meta Pixel events
+const trackEvent = (eventName: string, params?: Record<string, unknown>) => {
+  if (typeof window !== 'undefined' && (window as any).fbq) {
+    (window as any).fbq('track', eventName, params);
+  }
+};
+
+const trackCustomEvent = (eventName: string, params?: Record<string, unknown>) => {
+  if (typeof window !== 'undefined' && (window as any).fbq) {
+    (window as any).fbq('trackCustom', eventName, params);
+  }
+};
 
 interface Plan {
   id: string
@@ -77,6 +90,7 @@ function CheckoutPageContent() {
   const [email, setEmail] = useState<string | null>(null)
   const [error, setError] = useState('')
   const [selectedPlan, setSelectedPlan] = useState<string>('6-month')
+  const hasTrackedInitiate = useRef(false)
 
   useEffect(() => {
     const storedEmail = localStorage.getItem('quizEmail')
@@ -85,6 +99,21 @@ function CheckoutPageContent() {
       return
     }
     setEmail(storedEmail)
+
+    // Track Checkout Initiated on page load (only once)
+    if (!hasTrackedInitiate.current) {
+      hasTrackedInitiate.current = true;
+      const defaultPlan = plans.find(p => p.id === '6-month');
+      trackEvent('InitiateCheckout', {
+        content_name: 'ClarioMind Subscription',
+        content_ids: ['6-month'],
+        value: defaultPlan ? parseFloat(defaultPlan.totalPrice) : 95.99,
+        currency: 'USD'
+      });
+      trackCustomEvent('CheckoutInitiated', {
+        plan_id: '6-month'
+      });
+    }
 
     if (searchParams.get('canceled') === 'true') {
       setError('Checkout was canceled. You can try again when ready.')

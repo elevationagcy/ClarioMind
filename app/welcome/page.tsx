@@ -2,7 +2,23 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
+
+// Track Meta Pixel events
+const trackEvent = (eventName: string, params?: Record<string, unknown>) => {
+  if (typeof window !== 'undefined' && (window as any).fbq) {
+    (window as any).fbq('track', eventName, params);
+  }
+};
+
+// Track Quiz Started event
+const trackQuizStarted = () => {
+  trackEvent('Lead', { content_name: 'Quiz Started' });
+  // Also track custom event for more granular tracking
+  if (typeof window !== 'undefined' && (window as any).fbq) {
+    (window as any).fbq('trackCustom', 'QuizStarted');
+  }
+};
 
 // Icon Components
 const Icons = {
@@ -63,6 +79,11 @@ const Icons = {
 function WelcomePageContent() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Track Content View on page load
+  useEffect(() => {
+    trackEvent('ViewContent', { content_name: 'Welcome Page' });
+  }, []);
+
   return (
     <div className="bg-background-light text-text-light font-body transition-colors duration-300">
       {/* Navigation */}
@@ -97,6 +118,7 @@ function WelcomePageContent() {
               <Link 
                 className="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40" 
                 href="/quiz"
+                onClick={trackQuizStarted}
               >
                 Take the Quiz
             </Link>
@@ -150,7 +172,10 @@ function WelcomePageContent() {
               <Link 
                 className="block w-full text-center bg-primary text-white px-6 py-3 rounded-full text-sm font-semibold shadow-lg shadow-primary/25" 
                 href="/quiz"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  trackQuizStarted();
+                }}
               >
                 Take the Quiz
               </Link>
@@ -194,6 +219,7 @@ function WelcomePageContent() {
               <Link 
                 className="w-full sm:w-auto px-10 py-4 sm:py-5 bg-primary hover:bg-primary-dark text-white rounded-full font-bold text-lg shadow-2xl shadow-primary/30 transition-all hover:-translate-y-1 flex items-center justify-center gap-3" 
                 href="/quiz"
+                onClick={trackQuizStarted}
               >
                 Start Your Journey
                 <Icons.arrowForward />
@@ -281,6 +307,7 @@ function WelcomePageContent() {
               <Link 
                 href="/quiz"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 sm:py-4 bg-primary hover:bg-primary-dark text-white rounded-full font-semibold text-base transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40"
+                onClick={trackQuizStarted}
               >
                 Start Your Journey
                 <Icons.arrowForward />
@@ -413,6 +440,7 @@ function WelcomePageContent() {
                 <Link 
                   className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 sm:py-4 border border-transparent text-sm sm:text-base font-medium rounded-full text-white bg-primary hover:bg-primary-dark transition-colors shadow-lg shadow-primary/25" 
                   href="/quiz"
+                  onClick={trackQuizStarted}
                 >
                   See How It Works
                   <Icons.arrowForward />
@@ -474,7 +502,7 @@ function WelcomePageContent() {
       <section className="py-8 sm:py-12 bg-background-light">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-gray-100 relative aspect-video sm:aspect-[16/9]">
-            <Link href="/quiz">
+            <Link href="/quiz" onClick={trackQuizStarted}>
               <Image
                 src="/assets/your-why-is-your-power.jpeg"
                 alt="Your Why is Your Power"
@@ -528,6 +556,7 @@ function WelcomePageContent() {
               <Link 
                 className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 sm:py-5 bg-white text-primary hover:bg-gray-50 rounded-full font-bold text-sm sm:text-lg shadow-lg transition-all hover:-translate-y-1 gap-2 whitespace-nowrap" 
                 href="/quiz"
+                onClick={trackQuizStarted}
               >
                 Start Your Journey To Recovery
                 <Icons.arrowForward />

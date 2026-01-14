@@ -7,6 +7,19 @@ import { ChevronLeft, X, Check, Brain, Clock, Activity, Target, Users, Sparkles 
 import { Logo } from '@/components/ui/logo'
 import { quizQuestions } from '@/lib/utils/quiz-scoring'
 
+// Track Meta Pixel events
+const trackEvent = (eventName: string, params?: Record<string, unknown>) => {
+  if (typeof window !== 'undefined' && (window as any).fbq) {
+    (window as any).fbq('track', eventName, params);
+  }
+};
+
+const trackCustomEvent = (eventName: string, params?: Record<string, unknown>) => {
+  if (typeof window !== 'undefined' && (window as any).fbq) {
+    (window as any).fbq('trackCustom', eventName, params);
+  }
+};
+
 export default function QuizPage() {
   const router = useRouter()
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -17,6 +30,13 @@ export default function QuizPage() {
   const question = quizQuestions[currentQuestion]
   const progress = ((currentQuestion + 1) / quizQuestions.length) * 100
   const isLastQuestion = currentQuestion === quizQuestions.length - 1
+
+  // Track ViewContent and Quiz Started on first load
+  useEffect(() => {
+    trackEvent('ViewContent', { content_name: 'Quiz Page' });
+    // Also fire QuizStarted custom event when quiz page loads
+    trackCustomEvent('QuizStarted', { total_questions: quizQuestions.length });
+  }, []);
 
   useEffect(() => {
     if (answers[question.id] !== undefined) {
@@ -42,8 +62,19 @@ export default function QuizPage() {
 
     if (isLastQuestion) {
       localStorage.setItem('quizAnswers', JSON.stringify(newAnswers))
+      // Track Quiz Completed
+      trackEvent('CompleteRegistration', { content_name: 'Quiz Completed' });
+      trackCustomEvent('QuizCompleted', { 
+        total_questions: quizQuestions.length 
+      });
       router.push('/quiz/results')
     } else {
+      // Track Quiz Progress
+      trackCustomEvent('QuizProgress', { 
+        question_number: currentQuestion + 1,
+        total_questions: quizQuestions.length,
+        progress_percentage: Math.round(((currentQuestion + 1) / quizQuestions.length) * 100)
+      });
       setIsAnimating(true)
       setTimeout(() => {
         setCurrentQuestion(currentQuestion + 1)
